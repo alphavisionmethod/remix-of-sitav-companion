@@ -36,13 +36,50 @@ export function resolveTaskTarget(job: BackgroundJobVM): BackgroundJobNavigation
     case "workflow_runs":
       return { module: "operations", label: "Open Workflows" };
 
-    case "recovery_jobs":
-      // Lead-recovery is the operator-facing recovery surface.
+    case "recovery_jobs": {
+      // Phase 7 lineage: route to the most specific surface available
+      // for the originating entity, falling back to the recovery list.
+      const linked = job.linkedEntity;
+      if (linked?.type === "appointment") {
+        return {
+          module: "appointments",
+          entityId: linked.id,
+          entityType: "appointment",
+          label: "Open appointment",
+        };
+      }
+      if (linked?.type === "lead") {
+        return {
+          module: "lead-recovery",
+          entityId: linked.id,
+          entityType: "lead",
+          label: "Open lead in Recovery",
+        };
+      }
+      if (linked?.type === "customer") {
+        return {
+          module: "crm",
+          entityId: linked.id,
+          entityType: "customer",
+          label: "Open contact",
+        };
+      }
       return { module: "lead-recovery", label: "Open Lead Recovery" };
+    }
 
-    case "audit_logs":
-      // Audit entries route to the proof surface for full lineage view.
+    case "audit_logs": {
+      const linked = job.linkedEntity;
+      if (linked) {
+        // Map the audit subject to the closest operator surface.
+        if (linked.type === "appointment") return { module: "appointments", entityId: linked.id, entityType: "appointment", label: "Open appointment" };
+        if (linked.type === "lead")        return { module: "lead-recovery", entityId: linked.id, entityType: "lead", label: "Open lead" };
+        if (linked.type === "invoice")     return { module: "billing", entityId: linked.id, entityType: "invoice", label: "Open invoice" };
+        if (linked.type === "opportunity") return { module: "opportunities", entityId: linked.id, entityType: "opportunity", label: "Open opportunity" };
+        if (linked.type === "customer")    return { module: "crm", entityId: linked.id, entityType: "customer", label: "Open contact" };
+      }
+      // Otherwise fall back to the proof surface for full lineage view.
       return { module: "proof", label: "Open Proof" };
+    }
 
     case "ai_invocations":
       // AI invocations are surfaced inside the boardroom proof tab.
