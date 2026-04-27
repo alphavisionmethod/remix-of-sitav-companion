@@ -22,7 +22,6 @@ const StorageManager = lazy(() => import("@/pages/StorageManager"));
 const NetworkUtility = lazy(() => import("@/pages/NetworkUtility"));
 const PlanningCanvas = lazy(() => import("@/pages/PlanningCanvas"));
 const MyActivity = lazy(() => import("@/pages/MyActivity"));
-const WealthCommandCenter = lazy(() => import("@/pages/WealthCommandCenter"));
 const TimeMachinePage = lazy(() => import("@/pages/TimeMachinePage"));
 const AchievementsPage = lazy(() => import("@/pages/AchievementsPage"));
 const SimulationEnginePage = lazy(() => import("@/pages/SimulationEnginePage"));
@@ -110,7 +109,6 @@ export function getOSRoutes() {
       <Route path="/life-simulator" element={<LifeSimulator />} />
       <Route path="/downloads" element={<DownloadsCenter />} />
       <Route path="/download" element={<DownloadPage />} />
-      <Route path="/wealth-command" element={<WealthCommandCenter />} />
       <Route path="/time-machine" element={<TimeMachinePage />} />
       <Route path="/achievements" element={<AchievementsPage />} />
       <Route path="/simulation-engine" element={<SimulationEnginePage />} />

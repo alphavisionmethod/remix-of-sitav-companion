@@ -29,7 +29,6 @@ export const ROUTE_CONTEXT_BINDINGS: readonly MembershipBinding[] = [
   { kind: "route", identifier: "/team",                contextId: "business-os" },
   // Finance OS
   { kind: "route", identifier: "/money",               contextId: "finance-os" },
-  { kind: "route", identifier: "/wealth-command",      contextId: "finance-os" },
   { kind: "route", identifier: "/ai-economics",        contextId: "finance-os" },
   { kind: "route", identifier: "/recovered-value",     contextId: "finance-os" },
   { kind: "route", identifier: "/spillovers",          contextId: "finance-os" },
