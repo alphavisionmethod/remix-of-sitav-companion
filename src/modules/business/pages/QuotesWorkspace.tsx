@@ -23,6 +23,7 @@ import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { setLinkedContext, consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { FinanceContactBackLink } from "@/modules/business/components/business/finance/FinanceContactBackLink";
 
 const QuotesWorkspace = () => {
   const { primaryMode } = useBusinessProfile();
@@ -286,6 +287,14 @@ const QuotesWorkspace = () => {
           )}
         </AppSurface>
       )}
+
+      {/* Phase 2 — reverse navigation Finance → CRM (canonical bridge). */}
+      <FinanceContactBackLink
+        customerId={selected.customer_id ?? null}
+        crmContactId={selected.crm_contact_id ?? null}
+        crmCompanyId={selected.crm_company_id ?? null}
+        variant="card"
+      />
 
       <AppSurface level={2} className="p-4 space-y-2.5">
         <div className="flex justify-between text-[12px]">
