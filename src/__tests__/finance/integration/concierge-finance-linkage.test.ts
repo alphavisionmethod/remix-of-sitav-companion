@@ -21,7 +21,7 @@
 import { describe, it, expect } from "vitest";
 
 import { summarizeRecurringObligations } from "@/lib/services/finance-os/recurring-obligation.service";
-import { calculatePeaceScore } from "@/lib/services/finance-os/peace-score.service";
+import { computePeaceScore } from "@/lib/services/finance-os/peace-score.service";
 import {
   CROSS_OS_LINKS,
   getCrossOSLinks,
@@ -106,7 +106,7 @@ describe("Phase 7 — int.concierge-finance-linkage (Finance ↔ Concierge)", ()
   // ── Trust lineage: Peace Score consumes Concierge signal ────
 
   it("Peace Score includes the 'household' dimension fed by the Concierge coordination signal", () => {
-    const result = calculatePeaceScore(
+    const result = computePeaceScore(
       makePeaceScoreInput({
         // Concierge has reported that household coordination is strong.
         householdCoordinationScore: 90,
@@ -121,10 +121,10 @@ describe("Phase 7 — int.concierge-finance-linkage (Finance ↔ Concierge)", ()
   });
 
   it("a low Concierge household-coordination signal lowers the Peace Score insight (lineage flows end-to-end)", () => {
-    const high = calculatePeaceScore(
+    const high = computePeaceScore(
       makePeaceScoreInput({ householdCoordinationScore: 90 }),
     );
-    const low = calculatePeaceScore(
+    const low = computePeaceScore(
       makePeaceScoreInput({ householdCoordinationScore: 20 }),
     );
     const highHousehold = high.dimensions.find((d) => d.key === "household");
@@ -132,6 +132,6 @@ describe("Phase 7 — int.concierge-finance-linkage (Finance ↔ Concierge)", ()
     expect(highHousehold?.score).toBeGreaterThan(lowHousehold?.score ?? 0);
     // Same input deltas across a single dimension must produce a strictly
     // higher overall score for the Concierge-aligned scenario.
-    expect(high.overallScore).toBeGreaterThan(low.overallScore);
+    expect(high.compositeScore).toBeGreaterThan(low.compositeScore);
   });
 });
