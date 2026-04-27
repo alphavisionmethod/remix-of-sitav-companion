@@ -328,7 +328,7 @@ export function useRecoverNoShow() {
         toast.success("Recovery message prepared");
         void queryClient.invalidateQueries({ queryKey: [SCHEDULE_KEY] });
       } else {
-        toast.error(out.error ?? "Recovery failed");
+        toast.error(("error" in out ? out.error : null) ?? "Recovery failed");
       }
     },
     onError: (err) => {
