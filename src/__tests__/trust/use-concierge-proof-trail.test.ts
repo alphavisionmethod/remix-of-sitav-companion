@@ -66,7 +66,9 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
     const { result } = renderHook(() => useConciergeProofTrail(), {
       wrapper: wrapper(),
     });
-    await waitFor(() => !result.current.isLoading);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(likeCalls).toEqual(["concierge.%"]);
     expect(containsCalls).toHaveLength(0);
   });
@@ -100,7 +102,9 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
       () => useConciergeProofTrail({ entityType: "grocery_list", entityId: "l1" }),
       { wrapper: wrapper() },
     );
-    await waitFor(() => !result.current.isLoading);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(containsCalls).toHaveLength(3);
     expect(containsCalls[0]).toEqual({
       entity_ref: { entity_id: "l1", entity_type: "grocery_list" },
@@ -117,7 +121,9 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
       () => useConciergeProofTrail({ entityType: "provider", entityId: "p1" }),
       { wrapper: wrapper() },
     );
-    await waitFor(() => !result.current.isLoading);
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
     expect(containsCalls[1]).toEqual({
       entity_ref: { related: { provider_id: "p1" } },
     });
