@@ -2,6 +2,10 @@
 // SITA OS — Mobile Trusted Device: Quick Capture
 // Photo/file capture, quick note, handoff to desktop workflows
 // ═══════════════════════════════════════════════════════════════
+// truth-allow: ia-config — CAPTURE_MODES / WORKFLOW_TARGETS below are
+// static action catalogs (mode labels, handoff targets), not telemetry.
+// Real telemetry (recentCaptures) lives in the demo fixture and is
+// gated via isDemo at the consume site.
 
 import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { Camera, FileText, Upload, Send, Image, Mic, StickyNote, CheckCircle, ArrowRight, Sparkles } from "lucide-react";
