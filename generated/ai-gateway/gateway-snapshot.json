@@ -1,0 +1,192 @@
+{
+  "generatedAt": "2026-04-27T16:06:38.725Z",
+  "canonicalGateway": "supabase/functions/ai-gateway/index.ts",
+  "canonicalClient": "src/lib/services/ai-gateway/invoke.ts",
+  "invariants": {
+    "hasAuthCheck": true,
+    "hasKillSwitchGate": true,
+    "hasBudgetGate": true,
+    "writesUsageLedger": true,
+    "writesReceiptRecord": true,
+    "writesInferenceReceipt": true,
+    "writesFallbackEvent": true,
+    "rejectsRawSystemOnR3Plus": true,
+    "hasRateLimit": true
+  },
+  "directProviderCallers": [
+    {
+      "file": "supabase/functions/admin-ai-workforce-run/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/advisor-agent-loop/index.ts",
+      "urls": [
+        "https://ai-gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/advisor-avatar-generate/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/advisor-conversation/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/advisor-deep-intelligence/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/advisor-weekly-report/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/ai-health/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/ai-orchestrator-stream/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/ai-runtime-nightly-verify/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/brain-core/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/business-advisor-intelligence/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/chat-advisor/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/file-ingestion/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/intelligence-api/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/personal-brain-cron/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/personal-brain/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/runtime-probes/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/models"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/sita-council-prevote/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/sita-reflection-loop/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    },
+    {
+      "file": "supabase/functions/voice-spine/index.ts",
+      "urls": [
+        "https://ai.gateway.lovable.dev/v1/chat/completions"
+      ],
+      "context": "edge"
+    }
+  ],
+  "directSdkImports": [],
+  "canonicalCallers": [
+    {
+      "file": "src/lib/core-services/inference-gateway/inference-gateway.ts",
+      "surface": "functions.invoke ai-gateway"
+    },
+    {
+      "file": "src/lib/services/ai-gateway/callable.ts",
+      "surface": "functions.invoke ai-gateway"
+    },
+    {
+      "file": "src/lib/services/ai-gateway/invoke.ts",
+      "surface": "functions.invoke ai-gateway"
+    },
+    {
+      "file": "src/platform/sita/components/sita/CommandPalette.tsx",
+      "surface": "functions.invoke ai-gateway"
+    },
+    {
+      "file": "src/platform/sita/components/sita/RuntimeTruthProbe.tsx",
+      "surface": "functions.invoke ai-gateway"
+    },
+    {
+      "file": "supabase/functions/api-gateway/index.ts",
+      "surface": "functions.invoke ai-gateway"
+    }
+  ],
+  "counts": {
+    "directProviderCallers": 20,
+    "directSdkImports": 0,
+    "canonicalCallers": 6,
+    "edgeProviderCallers": 20,
+    "srcProviderCallers": 0
+  }
+}
