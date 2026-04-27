@@ -22,7 +22,6 @@ const StorageManager = lazy(() => import("@/pages/StorageManager"));
 const NetworkUtility = lazy(() => import("@/pages/NetworkUtility"));
 const PlanningCanvas = lazy(() => import("@/pages/PlanningCanvas"));
 const MyActivity = lazy(() => import("@/pages/MyActivity"));
-const WealthCommandCenter = lazy(() => import("@/pages/WealthCommandCenter"));
 const TimeMachinePage = lazy(() => import("@/pages/TimeMachinePage"));
 const AchievementsPage = lazy(() => import("@/pages/AchievementsPage"));
 const SimulationEnginePage = lazy(() => import("@/pages/SimulationEnginePage"));
