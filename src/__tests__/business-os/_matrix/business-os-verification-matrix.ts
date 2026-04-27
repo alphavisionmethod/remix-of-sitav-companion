@@ -101,6 +101,7 @@ export const TRUST_SURFACES: SurfaceEntry[] = [
   { id: "trust.approval-routing", kind: "trust", ref: "src/lib/policy/", tests: ["src/__tests__/business-os/trust/approval-routing.test.ts"], status: "behavioral", priority: "P0" },
   { id: "trust.proof-lineage", kind: "trust", ref: "src/lib/services/business-os/continuity-verification.service.ts", tests: ["src/__tests__/business-os/trust/proof-lineage.test.ts"], status: "behavioral", priority: "P1" },
   { id: "trust.edge-receipt-binding", kind: "trust", ref: "supabase/functions/_shared/receipt-emitter.ts", tests: ["src/__tests__/business-os/trust/edge-receipt-binding.test.ts"], status: "behavioral", priority: "P0", notes: "Phase 8 — drift gate proving every edge writer to ai_action_receipts carries canonical lineage columns" },
+  { id: "trust.journey-e2e", kind: "trust", ref: "src/lib/services/canonical-pipeline/pipeline-orchestrator.ts", tests: ["src/__tests__/business-os/trust/trust-journey-e2e.test.ts"], status: "behavioral", priority: "P0", notes: "Phase 9 — full 9-stage canonical pipeline E2E + approval-map ↔ proof-requirements lineage coherence" },
 ];
 
 // ── Cross-module integration ──────────────────────────────────

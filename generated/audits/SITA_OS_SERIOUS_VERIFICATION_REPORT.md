@@ -350,3 +350,49 @@ Test Files  5 passed (5)
 - The drift gate in `edge-receipt-binding.test.ts` will catch (and refuse to ship) any future edge function that bypasses the canonical helper without explicit declaration.
 
 Phase 8 closes the cross-domain trust lineage from the Business side and converts the receipt ledger contract from "documented" to "machine-enforced at deploy time."
+
+---
+
+## Phase 9 — Trust Journey E2E (9-stage canonical pipeline)
+
+### Goal
+Stitch the full **9-stage canonical pipeline** (`intake → conscience_gate → retrieval → routing → inference → tool_execution → critique → return → receipt`) into a single behavioral E2E suite, and prove that **policy approvals** and **proof requirements** are coherent end-to-end.
+
+### Deliverables
+- **`src/__tests__/business-os/trust/trust-journey-e2e.test.ts`** (9 tests, all passing) covering:
+  - **Happy path** — `chat-query` (low-risk, no approval) traverses the mandatory stages, propagates `correlationId` to the trace log, and emits a `receipted` decision bound to the `pipelineId`.
+  - **Block path** — invalid input (missing required `message`) is **refused at `conscience_gate`**; the pipeline never reaches inference, the gate verdict is `block|refuse`, and a **negative receipt** is emitted with `gateSource: "conscience-gate"`.
+  - **Approval path** — `recommendation-generate` (with synthetic A-grade evidence) parks at `tool_execution` with decision `awaiting_approval`, while still emitting a final `receipted` lifecycle event.
+  - **Stage ordering** — every recorded stage is a monotonic subsequence of the canonical 1→9 sequence (no out-of-order execution).
+  - **Trace lineage** — `getTraceByCorrelation()` returns the same `pipelineId` and `taskType` as the executed context.
+  - **Policy↔Proof coherence** (4 invariants):
+    1. Every approval cell with `tier ≠ none` has a matching proof requirement.
+    2. Every proof requirement at R4+ requires approval.
+    3. R5 cells always demand `boardroom` or `dual-approval`.
+    4. R5 proof bundles always include `biometric-step-up` + `rollback-pointer` + `minEvidenceGrade: A`.
+    5. Any proof requiring `approval-receipt` maps to a non-`none` approval tier.
+
+- **Matrix update** — added `trust.journey-e2e` (P0, behavioral) row in `business-os-verification-matrix.ts` referencing the canonical pipeline orchestrator as `ref` and the new test file.
+
+### Verification
+```
+✓ src/__tests__/business-os/trust/edge-receipt-binding.test.ts            (7 tests)
+✓ src/__tests__/business-os/_matrix/matrix.test.ts                        (6 tests)
+✓ src/__tests__/business-os/trust/proof-lineage.test.ts                   (4 tests)
+✓ src/__tests__/business-os/trust/trust-journey-e2e.test.ts               (9 tests)  ← NEW
+✓ src/__tests__/business-os/trust/approval-routing.test.ts                (7 tests)
+✓ src/__tests__/business-os/trust/receipt-emission.test.tsx               (6 tests)
+
+Test Files  6 passed (6)
+     Tests  39 passed (39)
+```
+`tsc --noEmit` clean.
+
+### No-duplication guarantees
+- Reused the **real `pipelineOrchestrator` singleton** — no parallel pipeline runner is constructed.
+- Reused the canonical `APPROVAL_MAP` / `PROOF_REQUIREMENTS` / `getApprovalMapping` / `getProofRequirement` exports from `src/lib/policy/` — the lineage tests run against the live policy registry, not a fixture copy.
+- Reused the existing `chat-query` and `recommendation-generate` task contracts from the **Global Contracts Registry** to drive both happy-path and approval-path scenarios.
+- The AI gateway is **mocked at the module boundary** (`@/lib/services/ai-gateway/callable`) — inference stays deterministic and offline without any duplicated provider plumbing.
+- The trust matrix `trust.journey-e2e` row points at the **canonical orchestrator file** as `ref` so any future refactor that breaks the 9-stage contract trips this test before merge.
+
+Phase 9 collapses the verification surface from "every stage is tested in isolation" to **"the entire trust journey is proven as one continuous lineage"** — refusal, approval-parking, receipt emission, and policy/proof coherence are all gated by a single E2E suite that runs in <30ms.
