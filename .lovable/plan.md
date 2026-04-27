@@ -122,6 +122,15 @@ After reading the actual repository, the **continuity infrastructure is already 
 
 ## PHASE 4 — Lead intake → scoring → triage → recovery → recovered value
 
+**STATUS: ✅ DONE (2026-04-27)**
+
+- Migration `20260427085843_*` adds `crm_contacts.source_lead_inbox_item_id`, `lead_inbox_items.produced_*`, and `recovery_jobs.{lead_id, crm_contact_id, recovered_value_cents, recovered_at}`.
+- `useLeadInbox` materialises a real CRM contact + lead row on accept (idempotent via `source_lead_inbox_item_id`).
+- `LeadDetailPanel` exposes "Open in Recovery" CrossAppAction; `LeadRecoveryPane` deep-links to `/recovered-value`; `LeadRecovery` and `RecoveredValuePage` consume the linked context.
+- Phase 3 carryover closed: `OpportunitiesCenter` now consumes `entityType:"opportunity"` handoffs (silent-drop orphans 1 → 0).
+- Demo gating verified: `LEAD_RECOVERY_CAMPAIGNS` and analytics block strictly behind `isDemo`.
+- Test: `src/__tests__/business-os/integration/lead-recovery-loop.test.ts` (3 cases, all green); full `tsc --noEmit` clean; baseline regenerated (setLinkedContext 15 → 17).
+
 **Goal:** Close the loop from `LeadsInbox` through `LeadRecovery` to `RecoveredValuePage` so recovered leads show measurable outcomes.
 
 **Tasks:**
