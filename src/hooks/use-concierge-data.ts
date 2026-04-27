@@ -396,10 +396,11 @@ export function useCreateGroceryList() {
 export function useCreateGroceryItem() {
   const uid = useUserId();
   const qc = useQueryClient();
-  return useMutation({
-    mutationFn: withTrust(
+  type Input = { list_id: string; name: string; quantity?: number; status?: string; notes?: string };
+  return useMutation<unknown, Error, Input>({
+    mutationFn: withTrust<Input, unknown>(
       "concierge.grocery_item.create",
-      async (input: { list_id: string; name: string; quantity?: number; status?: string; notes?: string }) => {
+      async (input) => {
         const { data, error } = await fromTable("grocery_items")
           .insert({ ...input, user_id: uid! })
           .select()
