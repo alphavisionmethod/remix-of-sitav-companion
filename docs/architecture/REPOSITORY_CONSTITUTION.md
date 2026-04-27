@@ -221,6 +221,17 @@ Full model: `docs/architecture/UI_OWNERSHIP_MODEL.md`.
 
 50. **`src/pages/**` is a route-adapter zone only.** Canonical page bodies live in exactly one of five zones: (1) `src/modules/<pillar>/pages/**` (pillar product pages), (2) `src/platform/<system>/pages/**` (platform system pages), (3) `src/admin/modules/<domain>/views/**` (admin/operator pages — Rule 30 destination), (4) `src/platform/experience/pages/mobile/**` (mobile/shell pages), (5) `src/components/**` and equivalents (reusable UI, NOT page bodies). Allowlisted exceptions inside `src/pages/**`: `NotFound.tsx`, `__tests__/`, `index.ts` barrels, and the legacy `src/pages/admin/**` region governed by the Rule 30 monotone-decrease ratchet. Sealed zones (Wave F): `src/pages/{mobile,business-advisors,owner-mode}/` — bodies physically moved to canonical owners; thick bodies re-emerging here BLOCK CI. Every page shim's `canonicalOwner` target MUST exist; broken shims BLOCK CI. Manifest: `generated/manifests/frontend-page-ownership-map.json`. Baseline: `generated/baselines/frontend-page-canonical-baseline.json` (sealed at 0). Validator (BLOCK): `scripts/architecture/checks/check-frontend-page-canonical-ownership.ts`. Generator: `scripts/architecture/generate/generate-frontend-page-ownership-map.ts`. Complements Rules 30, 33–35, and Wave C §C.1. Full model: `docs/architecture/FRONTEND_PAGE_OWNERSHIP_MODEL.md`.
 
+## Hook & Context Ownership Law (Hardening Wave — phased, warn → BLOCKING)
+
+51. **Hook & context ownership boundaries.** `src/hooks/**` and `src/contexts/**` are precise ownership layers, not convenience buckets. Specifically:
+    - **Shared hooks (`src/hooks/**`)** — only truly cross-cutting React hooks. A hook MUST NOT import from `@/modules/<pillar>/**`, and MUST NOT depend on the internal state of one platform subsystem. Consuming a platform subsystem's *public contract* (registry, types, gateway) is allowed.
+    - **Module-owned hooks** — live under `src/modules/<pillar>/hooks/**` and are exported from `src/modules/<pillar>/index.ts`.
+    - **Platform-owned hooks** — live under `src/platform/<system>/hooks/**` and are exported from `src/platform/<system>/index.ts`.
+    - **App-shell contexts (`src/contexts/**`)** — only app-wide shell-level providers (`AuthContext`, `AppearanceContext`/`ThemeContext`, `DisplayModeContext`, `CalmEngineContext`, `DataModeContext`, `DemoModeProvider`, `ConnectivityContext`, `EntityContext`, `InspectorContext`, `WindowManagerContext`, `RuntimeProvider`). A context in `src/contexts/**` MUST NOT import from `@/modules/<pillar>/**`.
+    - **Module-owned contexts** — live under `src/modules/<pillar>/contexts/**`.
+    - **Platform-owned contexts** — live under `src/platform/<system>/contexts/**`.
+    - Manifests: `generated/manifests/hook-ownership-map.json`, `generated/manifests/context-ownership-map.json`. Generator: `scripts/architecture/emit-hook-context-ownership-map.ts`. Validator: `scripts/architecture/check-hook-context-ownership.ts`. CI gate: `.github/workflows/check-boundaries.yml` step "Run hook & context ownership checker", env `HOOK_CONTEXT_OWNERSHIP_ENFORCE` (warn-only during the migration phases, BLOCKING after Phase 7). Transitional re-export shims tracked in `generated/manifests/hook-context-ownership-exceptions.json`. Full model: `docs/architecture/HOOK_AND_CONTEXT_OWNERSHIP_MODEL.md`.
+
 ## Amendment process
 
 1. Open an ADR under `docs/adr/ADR-<NNN>-<slug>.md` describing the change and its blast radius.
