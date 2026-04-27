@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-04-27T09:10:08.569Z",
-  "scannedFileCount": 5983,
+  "generatedAt": "2026-04-27T09:16:30.142Z",
+  "scannedFileCount": 5985,
   "setLinkedContextSites": [
     {
       "file": "src/modules/business/components/business/InvoiceDetailPane.tsx",
