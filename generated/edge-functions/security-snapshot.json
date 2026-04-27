@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T15:40:24.813Z",
+  "generatedAt": "2026-04-27T15:40:55.823Z",
   "totalFunctions": 221,
   "withIndex": 221,
   "entries": [
@@ -220,7 +220,7 @@
       "cors": {
         "hasAny": true,
         "usesWithCors": true,
-        "hasOptionsHandler": false,
+        "hasOptionsHandler": true,
         "allowsAllOrigins": false
       },
       "auth": {
@@ -255,7 +255,7 @@
       "cors": {
         "hasAny": true,
         "usesWithCors": true,
-        "hasOptionsHandler": false,
+        "hasOptionsHandler": true,
         "allowsAllOrigins": false
       },
       "auth": {
@@ -2065,7 +2065,7 @@
       "cors": {
         "hasAny": true,
         "usesWithCors": true,
-        "hasOptionsHandler": false,
+        "hasOptionsHandler": true,
         "allowsAllOrigins": false
       },
       "auth": {
@@ -2098,7 +2098,7 @@
       "cors": {
         "hasAny": true,
         "usesWithCors": true,
-        "hasOptionsHandler": false,
+        "hasOptionsHandler": true,
         "allowsAllOrigins": false
       },
       "auth": {
@@ -2133,7 +2133,7 @@
       "cors": {
         "hasAny": true,
         "usesWithCors": true,
-        "hasOptionsHandler": false,
+        "hasOptionsHandler": true,
         "allowsAllOrigins": false
       },
       "auth": {
@@ -2166,7 +2166,7 @@
       "cors": {
         "hasAny": true,
         "usesWithCors": true,
-        "hasOptionsHandler": false,
+        "hasOptionsHandler": true,
         "allowsAllOrigins": false
       },
       "auth": {
@@ -5968,7 +5968,7 @@
       "cors": {
         "hasAny": true,
         "usesWithCors": true,
-        "hasOptionsHandler": false,
+        "hasOptionsHandler": true,
         "allowsAllOrigins": false
       },
       "auth": {
@@ -7458,7 +7458,7 @@
       "cors": {
         "hasAny": true,
         "usesWithCors": true,
-        "hasOptionsHandler": false,
+        "hasOptionsHandler": true,
         "allowsAllOrigins": false
       },
       "auth": {
