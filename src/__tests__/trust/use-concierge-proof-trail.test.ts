@@ -86,7 +86,9 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
     const { result } = renderHook(() => useConciergeProofTrail(), {
       wrapper: wrapper(),
     });
-    await waitFor(() => result.current.data !== undefined);
+    await waitFor(() => {
+      expect(result.current.data).toBeDefined();
+    });
     expect(result.current.data).toHaveLength(1);
     expect(result.current.data?.[0].action).toBe("created");
     expect(result.current.data?.[0].source).toBe("concierge.errand.create");
@@ -150,7 +152,9 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
       () => useConciergeProofTrail({ entityType: "errand", entityId: "e1" }),
       { wrapper: wrapper() },
     );
-    await waitFor(() => result.current.data !== undefined);
+    await waitFor(() => {
+      expect(result.current.data).toBeDefined();
+    });
     expect(result.current.data).toHaveLength(1);
     expect(result.current.data?.[0].id).toBe("ok");
   });
@@ -170,7 +174,9 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
       () => useConciergeProofTrail({ entityType: "errand", entityId: "e1" }),
       { wrapper: wrapper() },
     );
-    await waitFor(() => result.current.data !== undefined);
+    await waitFor(() => {
+      expect(result.current.data).toBeDefined();
+    });
     expect(result.current.data).toHaveLength(1);
   });
 
@@ -203,7 +209,9 @@ describe("useConciergeProofTrail (Phase 7.4)", () => {
       () => useConciergeProofTrail({ entityType: "errand", entityId: "e1" }),
       { wrapper: wrapper() },
     );
-    await waitFor(() => result.current.data !== undefined);
+    await waitFor(() => {
+      expect(result.current.data).toBeDefined();
+    });
     expect(result.current.data?.map((e) => e.id)).toEqual(["new", "old"]);
   });
 
