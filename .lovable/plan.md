@@ -176,6 +176,13 @@ After reading the actual repository, the **continuity infrastructure is already 
 
 ## PHASE 6 — Appointments + no-show recovery + calendar continuity
 
+**STATUS: ✅ DONE (2026-04-27)**
+
+- Existing infra verified: `useScheduledAppointments` CRM scoping, `useRecoverNoShow` approval-gated + receipted, `useMarkBookingConfirmed` mirrors to internal calendar via `syncAppointmentEverywhere` with `CalendarSyncBadge` truthful state.
+- New: `recoverNoShow()` now inserts a `callback_queue` row (kind `recovery`, with `crm_contact_id` / `crm_company_id` / `source_appointment_id`) bridging Appointments → Follow-Through Center.
+- Test: `appointment-noshow-recovery.test.ts` (green); full `tsc --noEmit` clean.
+- Honest deferred: cross-module `appointment_kind` discriminator (no concrete conflict yet); calendar OAuth env check pushed to Phase 9.
+
 **Goal:** Make appointments a continuity bridge between CRM, calendar, and follow-through.
 
 **Tasks:**
