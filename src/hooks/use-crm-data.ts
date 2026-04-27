@@ -26,6 +26,8 @@ import {
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { emitRegisteredTrustAction } from "@/platform/trust/registry/emit-registered";
 import type { TrustActionKey } from "@/platform/trust/registry/trust-action-registry";
+import { withApprovalGate, type ApprovalGateResult } from "@/lib/trust/request-approval";
+import { emitClientReceipt } from "@/lib/trust/emit-client-receipt";
 
 /**
  * Wrap any CRM mutation function so it:
@@ -439,5 +441,162 @@ export function useDeleteAutomation() {
   return useMutation({
     mutationFn: withTrust("crm.automation.delete", deleteCRMAutomation),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "automations"] }),
+  });
+}
+
+// ─── Bulk / risky-action gating (Phase 7.2) ─────────────────
+// Bulk delete and bulk outreach are inherently high-blast-radius — they
+// touch many records or many third parties at once. They MUST flow
+// through the canonical approval queue (`withApprovalGate`) so an
+// operator can review the full scope before execution. On approval the
+// queued item is executed via the existing approve→bindExecution chain;
+// this hook is the *request* surface only and never executes inline at
+// or above the gate threshold.
+
+export interface BulkDeleteContactsInput {
+  ids: string[];
+  /** Free-text reason captured on the approval queue row. */
+  reason?: string;
+  /** Demo bypass — when true the gate is skipped and the deletes run inline. */
+  skip?: boolean;
+}
+
+export function useBulkDeleteContacts() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (
+      input: BulkDeleteContactsInput,
+    ): Promise<ApprovalGateResult<{ deleted: number }>> => {
+      const { ids, reason, skip } = input;
+      if (!ids.length) return { gated: false, result: { deleted: 0 } };
+
+      // Risk scales with batch size — anything beyond a small surgical
+      // delete is treated as `critical` and routed to urgent review.
+      const riskTier = ids.length >= 25 ? "critical" : "high";
+
+      const gated = await withApprovalGate(
+        async () => {
+          // Inline execution path — only reached when `skip=true` or the
+          // gate is unavailable. We still emit one canonical receipt per
+          // contact so the proof trail stays complete.
+          let deleted = 0;
+          for (const id of ids) {
+            try {
+              await deleteCRMContact(id);
+              await emitClientReceipt({
+                actionType: "business.crm.contact_delete",
+                summary: `Bulk delete contact ${id}`,
+                payload: { id, entity_ref: { entity_type: "contact", entity_id: id } },
+                riskTier: "high",
+                status: "executed",
+              });
+              deleted += 1;
+            } catch (err) {
+              await emitClientReceipt({
+                actionType: "business.crm.contact_delete",
+                summary: `Bulk delete contact ${id} (failed)`,
+                payload: { id },
+                riskTier: "high",
+                status: "failed",
+                metadata: { error: err instanceof Error ? err.message : String(err) },
+              });
+            }
+          }
+          return { deleted };
+        },
+        {
+          actionType: "business.crm.contact_delete",
+          title: `Bulk delete ${ids.length} contact${ids.length === 1 ? "" : "s"}`,
+          justification:
+            reason ??
+            `Operator requested bulk deletion of ${ids.length} CRM contacts. Action is irreversible and removes PII permanently.`,
+          riskTier,
+          payload: { ids, count: ids.length },
+          launchImplications: `Removes ${ids.length} contact records and their related communications/notes/tasks.`,
+          skip,
+        },
+      );
+      return gated;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "contacts"] }),
+  });
+}
+
+export interface BulkLogCommunicationsInput {
+  /** One row per outreach to log. */
+  items: Array<Parameters<typeof createCRMCommunication>[0]>;
+  /** Free-text reason captured on the approval queue row. */
+  reason?: string;
+  /** Demo bypass — when true the gate is skipped and the logs run inline. */
+  skip?: boolean;
+}
+
+/**
+ * Bulk-log outreach (email / SMS / call). Treated as risky because the
+ * records imply external contact at scale — even when the actual send
+ * happens elsewhere, fabricating logs at scale is a high-trust action.
+ */
+export function useBulkLogCommunications() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (
+      input: BulkLogCommunicationsInput,
+    ): Promise<ApprovalGateResult<{ logged: number }>> => {
+      const { items, reason, skip } = input;
+      if (!items.length) return { gated: false, result: { logged: 0 } };
+
+      const riskTier = items.length >= 10 ? "critical" : "high";
+
+      const gated = await withApprovalGate(
+        async () => {
+          let logged = 0;
+          for (const item of items) {
+            try {
+              const row = await createCRMCommunication(item);
+              await emitClientReceipt({
+                actionType: "crm.communication.log",
+                summary: `Bulk outreach log (${(item as { channel?: string }).channel ?? "comm"})`,
+                payload: {
+                  args: item as unknown as Record<string, unknown>,
+                  entity_ref: {
+                    entity_type: "communication",
+                    entity_id: (row as { id?: string } | null)?.id,
+                    related: (item as { contact_id?: string }).contact_id
+                      ? { contact_id: (item as { contact_id: string }).contact_id }
+                      : undefined,
+                  },
+                },
+                riskTier: "high",
+                status: "executed",
+              });
+              logged += 1;
+            } catch (err) {
+              await emitClientReceipt({
+                actionType: "crm.communication.log",
+                summary: `Bulk outreach log (failed)`,
+                payload: { args: item as unknown as Record<string, unknown> },
+                riskTier: "high",
+                status: "failed",
+                metadata: { error: err instanceof Error ? err.message : String(err) },
+              });
+            }
+          }
+          return { logged };
+        },
+        {
+          actionType: "business.email.campaign_send",
+          title: `Bulk outreach: ${items.length} record${items.length === 1 ? "" : "s"}`,
+          justification:
+            reason ??
+            `Operator requested logging ${items.length} outreach communications in bulk. Reviewed before write to prevent fabricated outreach trails.`,
+          riskTier,
+          payload: { count: items.length },
+          launchImplications: `Creates ${items.length} communication records visible to anyone with CRM access.`,
+          skip,
+        },
+      );
+      return gated;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "communications"] }),
   });
 }
