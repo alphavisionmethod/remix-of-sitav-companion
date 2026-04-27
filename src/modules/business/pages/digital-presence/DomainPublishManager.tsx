@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { useWebsiteManager } from "@/contexts/SitaKernelContext";
+import { useWebsiteManager } from "@/platform/sita/contexts/SitaKernelContext";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

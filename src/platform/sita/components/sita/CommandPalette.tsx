@@ -16,7 +16,7 @@ import {
   ExternalLink, ArrowDownLeft, Loader2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { crossNavigate } from "@/domains/engines/cross-os-integration";
 import { supabase } from "@/integrations/supabase/client";
 import type { LucideIcon } from "lucide-react";

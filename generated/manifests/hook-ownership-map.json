@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T02:13:30.514Z",
+  "generatedAt": "2026-04-27T02:23:46.704Z",
   "kind": "hook",
   "root": "src/hooks",
   "total": 210,
@@ -421,7 +421,9 @@
       "classification": "module:business",
       "evidence": {
         "imports": {
-          "pillars": [],
+          "pillars": [
+            "business"
+          ],
           "platforms": []
         },
         "name": {
@@ -1390,7 +1392,9 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "sita"
+          ]
         },
         "name": {
           "platform": "orchestration"
@@ -1504,7 +1508,9 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "sita"
+          ]
         },
         "name": {
           "platform": "personal-brain"
@@ -1892,7 +1898,9 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "sita"
+          ]
         },
         "name": {
           "platform": "sita"
@@ -1908,7 +1916,9 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "sita"
+          ]
         },
         "name": {
           "platform": "sita"
@@ -1924,7 +1934,9 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "sita"
+          ]
         },
         "name": {
           "platform": "sita"
@@ -2036,7 +2048,9 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "app-platform"
+          ]
         },
         "name": {
           "platform": "sita"
@@ -2260,7 +2274,9 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "sita"
+          ]
         },
         "name": {
           "platform": "trust"
@@ -2324,7 +2340,9 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "sita"
+          ]
         },
         "name": {}
       },
@@ -2928,7 +2946,9 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "sita"
+          ]
         },
         "name": {}
       },
@@ -2942,7 +2962,9 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "sita"
+          ]
         },
         "name": {}
       },
@@ -3070,7 +3092,9 @@
       "evidence": {
         "imports": {
           "pillars": [],
-          "platforms": []
+          "platforms": [
+            "sita"
+          ]
         },
         "name": {}
       },

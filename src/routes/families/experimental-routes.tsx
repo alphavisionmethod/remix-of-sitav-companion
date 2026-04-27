@@ -48,7 +48,7 @@ const RecoveredValuePage = lazy(() => import("@/pages/RecoveredValuePage"));
 const FirstWinActivation = lazy(() => import("@/pages/FirstWinActivation"));
 
 // Revenue Office
-import { RevenueOfficeModeProvider } from "@/contexts/RevenueOfficeModeContext";
+import { RevenueOfficeModeProvider } from "@/modules/business/contexts/RevenueOfficeModeContext";
 const RevenueOfficeModeLayout = () => <RevenueOfficeModeProvider><Outlet /></RevenueOfficeModeProvider>;
 const RevenueGate = lazy(() => import("@/pages/revenue-office/RevenueGate"));
 const GrowthBoardroom = lazy(() => import("@/pages/revenue-office/GrowthBoardroom"));

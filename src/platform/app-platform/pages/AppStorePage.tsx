@@ -7,7 +7,7 @@ import { useState, useMemo } from "react";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Search, Shield, Sparkles } from "lucide-react";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import {
   APP_BUNDLES, APP_CATEGORIES,
 } from "@/lib/app-platform";

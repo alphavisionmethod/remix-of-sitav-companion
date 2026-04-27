@@ -10,7 +10,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { useCanonicalAction } from "@/contexts/SitaKernelContext";
+import { useCanonicalAction } from "@/platform/sita/contexts/SitaKernelContext";
 import { toast } from "sonner";
 import {
   publishAgentPlan,

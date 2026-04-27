@@ -7,7 +7,7 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import { SitaPageHeader, SitaCard, SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
-import { useConstitution } from "@/contexts/SitaKernelContext";
+import { useConstitution } from "@/platform/sita/contexts/SitaKernelContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ScrollText, Plus, Trash2, ToggleLeft, ToggleRight, Brain,

@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useEffect, useState, forwardRef } from "react";
-import { useSitaOS } from "@/contexts/SitaOSContext";
+import { useSitaOS } from "@/platform/sita/contexts/SitaOSContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";

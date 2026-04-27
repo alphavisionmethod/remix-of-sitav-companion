@@ -8,7 +8,7 @@ import { SitaPageHeader, SitaCard, SitaButton } from "@/platform/sita/components
 import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
 import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
-import { useCapabilityLease } from "@/contexts/SitaKernelContext";
+import { useCapabilityLease } from "@/platform/sita/contexts/SitaKernelContext";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Key, Shield, Clock, AlertTriangle, XCircle, CheckCircle, DollarSign,

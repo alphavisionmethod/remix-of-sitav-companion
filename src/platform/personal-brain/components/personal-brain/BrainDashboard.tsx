@@ -22,7 +22,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { VoicePanel } from "./voice/VoicePanel";
 import { ShieldAlert } from "lucide-react";
 import { BrainOnboardingTour } from "./onboarding-tour/BrainOnboardingTour";
-import { useSitaVoice } from "@/contexts/SitaVoiceContext";
+import { useSitaVoice } from "@/platform/sita/contexts/SitaVoiceContext";
 import { SitaContext } from "@/lib/sita-context";
 
 function greetingFor(name?: string | null): string {

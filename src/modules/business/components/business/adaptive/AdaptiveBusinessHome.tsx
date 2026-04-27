@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
+import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import { getTopWidgets, type HomeWidget } from "./BusinessHomeWidgetRegistry";
 import { getQuickActionsForProfile, getStatCardsForProfile } from "./AdaptiveCRMConfig";
 import { getIdentityLayer, getTimeAwareGreeting } from "@/domains/engines/business-identity-layers";

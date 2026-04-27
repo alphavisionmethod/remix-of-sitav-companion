@@ -9,7 +9,7 @@ import {
   type PolicyEvaluationResult,
 } from "@/lib/core-services/policy-engine";
 import type { ReceiptService, Receipt } from "@/lib/core-services/receipt-service";
-import { useSitaKernel } from "@/contexts/SitaKernelContext";
+import { useSitaKernel } from "@/platform/sita/contexts/SitaKernelContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 export interface AdvisorResponse {

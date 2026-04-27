@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback } from "react";
-import { useSitaKernel } from "@/contexts/SitaKernelContext";
+import { useSitaKernel } from "@/platform/sita/contexts/SitaKernelContext";
 import type { Receipt } from "@/lib/core-services/receipt-service";
 
 interface ProofTimelineOptions {

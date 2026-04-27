@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useMemo, useCallback, useEffect, useRef } from "react";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { useAppSurfacing } from "@/hooks/useAppSurfacing";
 import type { AppDefinition, AppCategory } from "@/domains/apps/types";
 

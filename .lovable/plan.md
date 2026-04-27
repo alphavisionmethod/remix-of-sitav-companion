@@ -58,7 +58,7 @@
 
 ---
 
-## Phase 2 — Move Module-Owned Contexts (smallest, highest-confidence batch)
+## Phase 2 — Move Module-Owned Contexts (smallest, highest-confidence batch) ✅ DONE
 
 Move and rewire (each move includes physical relocation, import rewrite for every consumer, barrel update, test update):
 
@@ -78,9 +78,11 @@ For each: `git mv` semantics via Lovable code tools, update `src/modules/<pillar
 
 **Gate:** typecheck clean, validator no longer flags these files, every consumer compiles, app boots in preview, no duplicate context exists.
 
+**Status (2026-04-27):** All 6 module contexts physically moved. 30 importers rewired (15+4+6+1+2+2). Zero stale `@/contexts/{Business,Concierge,Finance}*` references. `tsc --noEmit` green. Trust suite (76 tests) green. Validator no longer flags any of these.
+
 ---
 
-## Phase 3 — Move Platform-Owned Contexts
+## Phase 3 — Move Platform-Owned Contexts ✅ DONE
 
 → `src/platform/<system>/contexts/`:
 - `SitaKernelContext.tsx` → `src/platform/sita/contexts/` (25 importers)
@@ -92,6 +94,8 @@ For each: `git mv` semantics via Lovable code tools, update `src/modules/<pillar
 Update `src/contexts/RuntimeProvider.tsx` to import from new platform paths. Re-export through the existing `RuntimeProvider` hook surface (which already aggregates `useSitaKernel`, `useSitaOS`, `useNovaSDK`) so NO consumer of `useSitaKernel`/`useSitaOS`/`useNovaSDK` from `RuntimeProvider` breaks. Direct `@/contexts/SitaKernelContext` consumers get rewritten to the new platform path or to `@/contexts/RuntimeProvider`.
 
 **Gate:** RuntimeProvider still composes correctly; preview boots; SitaKernel/OS/Nova hooks all resolve; validator no longer flags these.
+
+**Status (2026-04-27):** All 5 platform contexts physically moved (`SitaKernel`/`SitaOS`/`SitaVoice` → `src/platform/sita/contexts/`, `NovaSDK` → `src/platform/nova-sdk/contexts/`, `AppPlatform` → `src/platform/app-platform/contexts/`). 80 importers rewired (25+23+4+1+27). `RuntimeProvider.tsx` re-exports preserved — no consumer of `useSitaKernel`/`useSitaOS`/`useNovaSDK` from `@/contexts/RuntimeProvider` broke. `tsc --noEmit` green. `src/contexts/` is now 12 entries, all `app-shell`. Validator: 0 context violations remaining.
 
 ---
 

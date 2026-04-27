@@ -2,7 +2,7 @@ import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/platfo
 import { KPITile, TimelineItem, ProofCard, OpportunityCard, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useNavigate, useParams } from "react-router-dom";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
+import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import { useState } from "react";
 import {
   ArrowLeft, Phone, Mail, Clock, MapPin, Globe, Building, DollarSign, FileText, CheckCircle,

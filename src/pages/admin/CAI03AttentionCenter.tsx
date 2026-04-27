@@ -1,4 +1,4 @@
-import { useSitaOS } from "@/contexts/SitaOSContext";
+import { useSitaOS } from "@/platform/sita/contexts/SitaOSContext";
 import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
 import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Eye, Brain, Layers, BellOff } from "lucide-react";

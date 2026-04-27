@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
 import { useBoardroomBridge } from "@/hooks/useBoardroomBridge";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
-import { FinanceNavigationContext } from "@/contexts/FinanceNavigationContext";
+import { FinanceNavigationContext } from "@/modules/finance/contexts/FinanceNavigationContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getFinanceAdaptation } from "@/domains/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/platform/sita/components/sita/cross-os/CrossOSLinksPanel";

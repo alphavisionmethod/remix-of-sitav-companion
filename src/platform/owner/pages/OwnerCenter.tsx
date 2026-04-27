@@ -9,7 +9,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useOSRuntime } from "@/hooks/useOSRuntime";
 import { FounderBottleneckEngine } from "@/domains/engines/founder-bottleneck-engine";
 import { useKernelEventStream } from "@/hooks/use-kernel-events";
-import { useKernelStatus } from "@/contexts/SitaKernelContext";
+import { useKernelStatus } from "@/platform/sita/contexts/SitaKernelContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Switch } from "@/components/ui/switch";

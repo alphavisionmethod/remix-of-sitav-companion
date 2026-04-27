@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-26T23:57:48.924Z",
+  "generatedAt": "2026-04-27T02:24:29.673Z",
   "gate": "threshold-drift-regression",
   "repeatCount": 5,
   "epsilonRatio": 0.02,
@@ -70,27 +70,27 @@
       "runs": [
         {
           "iteration": 0,
-          "value": 405,
+          "value": 418,
           "driftFromBaseline": 0
         },
         {
           "iteration": 1,
-          "value": 405,
+          "value": 418,
           "driftFromBaseline": 0
         },
         {
           "iteration": 2,
-          "value": 405,
+          "value": 418,
           "driftFromBaseline": 0
         },
         {
           "iteration": 3,
-          "value": 405,
+          "value": 418,
           "driftFromBaseline": 0
         },
         {
           "iteration": 4,
-          "value": 405,
+          "value": 418,
           "driftFromBaseline": 0
         }
       ]

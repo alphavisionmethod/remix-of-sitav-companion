@@ -16,7 +16,7 @@ import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
+import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 
 const TYPE_META: Record<string, { icon: React.ElementType; color: string; bg: string; label: string }> = {
   email: { icon: Mail, color: "text-blue-400", bg: "bg-blue-500/10", label: "Email" },

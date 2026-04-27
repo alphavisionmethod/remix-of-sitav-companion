@@ -17,7 +17,7 @@ import {
   PermissionDomainCard, InstallSheet, SourceOriginLabel, PackageTypeLabel,
   SandboxLevelBadge, UpdateSourceInfo, TrustInstallBehavior,
 } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

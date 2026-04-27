@@ -7,7 +7,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Download, Check, Shield, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getBundleById } from "@/lib/app-platform";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/domains/apps/types";
 import { toast } from "sonner";

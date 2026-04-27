@@ -7,7 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import { useSLOs } from "@/hooks/use-admin-data";
-import { useCloudControlPlane } from "@/contexts/SitaKernelContext";
+import { useCloudControlPlane } from "@/platform/sita/contexts/SitaKernelContext";
 // Engine-backed connector data (replaces @/lib/mocks import)
 import {
   Shield, Activity, Wifi, CheckCircle, AlertTriangle, Clock, Eye, Lock,

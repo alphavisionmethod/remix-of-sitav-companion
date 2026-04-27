@@ -7,7 +7,7 @@ import {
   HeartCrack, Baby, Briefcase, MapPin, Gift, Accessibility,
   TrendingDown, BarChart3, ChevronRight
 } from "lucide-react";
-import { useLifeSimulator } from "@/contexts/SitaKernelContext";
+import { useLifeSimulator } from "@/platform/sita/contexts/SitaKernelContext";
 import type { ShockType, ShockImpactReport } from "@/lib/services/life-simulation";
 
 const SHOCK_ICONS: Record<ShockType, typeof AlertTriangle> = {

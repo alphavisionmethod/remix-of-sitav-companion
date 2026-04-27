@@ -11,7 +11,7 @@ import {
   Download, Check, AlertTriangle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel, PermissionDomainCard } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

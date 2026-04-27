@@ -1,4 +1,4 @@
-import { useSitaOS } from "@/contexts/SitaOSContext";
+import { useSitaOS } from "@/platform/sita/contexts/SitaOSContext";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
 import { SitaCard, SitaCardHeader, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";

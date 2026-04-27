@@ -11,7 +11,7 @@ import {
   FileText, RefreshCw, Trash2, Lock, Copy, ExternalLink, CheckCircle2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel } from "@/platform/sita/components/sita/app-platform/AppStoreComponents";
 import { exportToJSON } from "@/lib/export-engine";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
