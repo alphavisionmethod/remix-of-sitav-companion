@@ -1,4 +1,4 @@
-// Wave 6 — legacy path re-exports the canonical implementation.
-// Moved to @/modules/concierge/pages/LifeDashboard
-export { default } from "@/modules/concierge/pages/LifeDashboard";
-export * from "@/modules/concierge/pages/LifeDashboard";
+// IA Phase 6 — page archived (orphan, never mounted in ConciergeAppShell).
+// Old shim retained because the legacy /life route prefetch + tests reference it.
+export { default } from "@/modules/concierge/pages/_archived/LifeDashboard";
+export * from "@/modules/concierge/pages/_archived/LifeDashboard";

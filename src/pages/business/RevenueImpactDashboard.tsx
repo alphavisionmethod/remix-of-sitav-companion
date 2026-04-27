@@ -1,3 +1,4 @@
-// Wave 4 — legacy path re-exports the canonical module implementation.
-// Canonical: src/modules/business/pages/RevenueImpactDashboard.tsx
-export { default } from "@/modules/business/pages/RevenueImpactDashboard";
+// IA Phase 6 — page archived. Implementation moved to _archived/.
+// Old shim retained at this path because legacy tests still import the symbol.
+export { default } from "@/modules/business/pages/_archived/RevenueImpactDashboard";
+export * from "@/modules/business/pages/_archived/RevenueImpactDashboard";

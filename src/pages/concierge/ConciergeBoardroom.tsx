@@ -1,3 +1,3 @@
-// Wave 4 — legacy path re-exports the canonical module implementation.
-// Canonical: src/modules/concierge/pages/ConciergeBoardroom.tsx
-export { default } from "@/modules/concierge/pages/ConciergeBoardroom";
+// IA Phase 6 — page archived. ConciergeAppShell mounts FamilyBoardroom for the
+// "boardroom" slug; ConciergeBoardroom is no longer the canonical surface.
+export { default } from "@/modules/concierge/pages/_archived/ConciergeBoardroom";
