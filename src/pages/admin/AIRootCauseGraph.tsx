@@ -2,7 +2,7 @@ import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPage
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { Network, ArrowRight, AlertTriangle, Bug, Server, Layout, Database, Shield, Zap } from "lucide-react";
-import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
+import { useAIEngDomain } from "@/platform/governance/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }> = {

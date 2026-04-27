@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
-import { useRealityClassifications } from "@/hooks/useRealityClassifications";
+import { useRealityClassifications } from "@/platform/runtime/hooks/useRealityClassifications";
 import { ShieldCheck, Activity, Database, Zap, CheckCircle2, AlertTriangle } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
+import { PORTFOLIO } from "@/modules/finance/hooks/useInvestmentOfficeData";
 
 interface PortfolioGlobeProps {
   className?: string;

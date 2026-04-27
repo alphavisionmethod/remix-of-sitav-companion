@@ -12,7 +12,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { predictivePrefetch } from "@/lib/services/predictive-prefetch";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { useIsAdmin } from "@/platform/auth/hooks/useIsAdmin";
 import logo from "@/assets/sita-logo.jpeg";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu,

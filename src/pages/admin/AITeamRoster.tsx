@@ -8,7 +8,7 @@ import {
   Brain, Code, Palette, TestTube, Bug, Shield, Gauge, FileText,
   Rocket, Sparkles, TrendingUp, Users, Eye, AlertTriangle, Activity
 } from "lucide-react";
-import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
+import { useAIEngDomain } from "@/platform/governance/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const AGENTS: any[] = [];

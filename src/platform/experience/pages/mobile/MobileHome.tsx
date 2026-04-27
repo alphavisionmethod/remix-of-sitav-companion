@@ -7,7 +7,7 @@ import { MobileShell } from "@/platform/experience/components/mobile/MobileShell
 import { PulseCard } from "@/platform/experience/components/mobile/PulseCard";
 import { useNavigate } from "react-router-dom";
 import { Heart, TrendingUp, Shield, Wallet, Calendar, Users, ArrowRight, BarChart3 } from "lucide-react";
-import { useMobileHomePulse, useMobileHomeQuickActions, useMobileHomeActivity } from "@/hooks/use-mobile-data";
+import { useMobileHomePulse, useMobileHomeQuickActions, useMobileHomeActivity } from "@/modules/mobile/hooks/use-mobile-data";
 import { MobileEmptyState, MobileErrorState } from "@/platform/experience/components/mobile/MobileEmptyState";
 import { PulseGridSkeleton, QuickActionsSkeleton, ActivityFeedSkeleton } from "@/platform/experience/components/mobile/MobileSectionSkeleton";
 

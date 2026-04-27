@@ -5,8 +5,8 @@ import {
   Briefcase, TrendingUp, Shield, Brain, Link2, ChevronRight, Compass,
   GraduationCap, BarChart3, Eye, DollarSign, Zap, Globe
 } from "lucide-react";
-import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
-import { useInvestmentDecisions } from "@/hooks/use-investment-office";
+import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO, WATCHLISTS } from "@/modules/finance/hooks/useInvestmentOfficeData";
+import { useInvestmentDecisions } from "@/modules/finance/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;

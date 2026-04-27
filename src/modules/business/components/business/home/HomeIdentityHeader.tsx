@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Shield, AlertTriangle, Activity, TrendingUp, TrendingDown, Minus } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer, getTimeAwareGreeting } from "@/domains/engines/business-identity-layers";
 import { BusinessModeIndicator } from "@/modules/business/components/business/adaptive/BusinessModeIndicator";
 

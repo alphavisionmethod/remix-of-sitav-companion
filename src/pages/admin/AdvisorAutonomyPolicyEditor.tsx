@@ -1,4 +1,4 @@
-import { usePolicyDecision } from "@/hooks/use-policy-decision";
+import { usePolicyDecision } from "@/platform/trust/hooks/use-policy-decision";
 import { AdminControlPlaneShell as AdminShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";

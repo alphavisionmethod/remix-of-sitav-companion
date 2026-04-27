@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { usePushNotifications } from "@/hooks/use-push-notifications";
 import { useAuth } from "@/contexts/AuthContext";
-import { useSettingsValue } from "@/hooks/use-settings-value";
+import { useSettingsValue } from "@/platform/settings/hooks/use-settings-value";
 
 const ToggleRow = ({ icon: Icon, label, description, controlled, value, onToggle }: {
   icon: any; label: string; description: string;

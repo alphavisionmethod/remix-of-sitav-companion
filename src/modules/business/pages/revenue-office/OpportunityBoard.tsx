@@ -7,7 +7,7 @@ import { Lightbulb, TrendingUp, UserPlus, Star, RefreshCw, DollarSign, ArrowRigh
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useState, useMemo } from "react";
-import { useDeals } from "@/hooks/use-revenue-office";
+import { useDeals } from "@/modules/business/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const categoryColors: Record<string, string> = {
   Conversion: "bg-blue-500/10 text-blue-400",

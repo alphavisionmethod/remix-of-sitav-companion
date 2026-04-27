@@ -1,6 +1,6 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import { TrendingUp, TrendingDown, BarChart3 } from "lucide-react";
-import { useBusinessKPIData } from "@/hooks/useDesktopWidgetsData";
+import { useBusinessKPIData } from "@/platform/sita/hooks/useDesktopWidgetsData";
 
 interface Props { onLaunchApp?: (appId: string) => void; }
 

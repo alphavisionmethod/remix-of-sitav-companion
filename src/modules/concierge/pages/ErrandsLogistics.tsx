@@ -9,7 +9,7 @@ import { AddErrandDialog } from "@/modules/concierge/components/concierge/AddErr
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { useState, useMemo } from "react";
 import { MapPin, Clock, Zap, Car, CheckCircle, Route, Package, Loader2 } from "lucide-react";
-import { useErrands, useUpdateErrand, useDeleteErrand } from "@/hooks/use-concierge-data";
+import { useErrands, useUpdateErrand, useDeleteErrand } from "@/modules/concierge/hooks/use-concierge-data";
 import { toast } from "sonner";
 
 type ErrandsView = "bundles" | "timeline" | "quick-wins" | "all";

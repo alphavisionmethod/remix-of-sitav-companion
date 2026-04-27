@@ -13,7 +13,7 @@ import {
   NovaToggle, NovaBadge, NovaSlider,
 } from "@/platform/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
-import { useSettingsValue } from "@/hooks/use-settings-value";
+import { useSettingsValue } from "@/platform/settings/hooks/use-settings-value";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";

@@ -3,8 +3,8 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton, SitaSectionHeader 
 import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { StateBadge } from "@/platform/sita/components/sita/StateBadge";
-import { useApprovals } from "@/hooks/use-sita-data";
-import { useApprovalQueue } from "@/hooks/use-brain-core";
+import { useApprovals } from "@/platform/sita/hooks/use-sita-data";
+import { useApprovalQueue } from "@/platform/personal-brain/hooks/use-brain-core";
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useGlobalSearch } from "@/platform/search";

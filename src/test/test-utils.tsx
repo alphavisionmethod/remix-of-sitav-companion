@@ -195,7 +195,7 @@ vi.mock("@/platform/sita/contexts/SitaKernelContext", () => ({
 }));
 
 // Mock OS runtime
-vi.mock("@/hooks/useOSRuntime", () => ({
+vi.mock("@/platform/sita/hooks/useOSRuntime", () => ({
   useOSRuntime: () => ({
     ready: true,
     engines: {

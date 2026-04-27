@@ -6,7 +6,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Bot, ToggleLeft, ToggleRight, ChevronDown, ChevronUp, Zap, Shield, TrendingUp, Target } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { Slider } from "@/components/ui/slider";
 

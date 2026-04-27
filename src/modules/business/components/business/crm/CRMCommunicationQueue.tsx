@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useCRMCommunications, useCRMContacts, useCRMCompanies } from "@/hooks/use-crm-data";
+import { useCRMCommunications, useCRMContacts, useCRMCompanies } from "@/modules/business/hooks/use-crm-data";
 import {
   Mail, Phone, MessageSquare, Clock, AlertTriangle, CheckCircle2, Send,
   ArrowUpRight, ArrowDownLeft, Search, Calendar, Video, FileText, 

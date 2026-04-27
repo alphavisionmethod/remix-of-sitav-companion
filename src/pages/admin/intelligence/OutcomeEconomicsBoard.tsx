@@ -7,8 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useOutcomeEconomics } from "@/hooks/use-intelligence-screen-data";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
+import { useOutcomeEconomics } from "@/platform/personal-brain/hooks/use-intelligence-screen-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const recColors: Record<string, string> = {

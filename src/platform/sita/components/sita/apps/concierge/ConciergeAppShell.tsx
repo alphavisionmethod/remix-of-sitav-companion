@@ -13,12 +13,12 @@ import {
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
-import { useBoardroomBridge } from "@/hooks/useBoardroomBridge";
+import { useBoardroomBridge } from "@/platform/boardroom/hooks/useBoardroomBridge";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 import { useRelationshipContexts, useHumanObligations } from "@/hooks/useCAIData";
 import { ConciergeDataProvider } from "@/modules/concierge/contexts/ConciergeDataContext";
 import { ConciergeNavigationContext } from "@/modules/concierge/contexts/ConciergeNavigationContext";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getConciergeAdaptation } from "@/domains/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/platform/sita/components/sita/cross-os/CrossOSLinksPanel";
 import { CrossDomainIntelligenceBridge } from "@/platform/sita/components/sita/cross-os/CrossDomainIntelligenceBridge";

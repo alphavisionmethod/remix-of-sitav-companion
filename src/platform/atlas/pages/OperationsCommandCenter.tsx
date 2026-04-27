@@ -15,8 +15,8 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
-import { useOperationsCommandCenter } from "@/hooks/use-operations-command-center";
-import type { RunbookRow } from "@/hooks/use-operations-command-center";
+import { useOperationsCommandCenter } from "@/modules/business/hooks/use-operations-command-center";
+import type { RunbookRow } from "@/modules/business/hooks/use-operations-command-center";
 import { RunbookLaunchDialog } from "@/platform/operations/components/operations/RunbookLaunchDialog";
 
 export default function OperationsCommandCenter() {

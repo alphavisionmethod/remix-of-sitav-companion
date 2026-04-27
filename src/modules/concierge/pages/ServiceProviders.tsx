@@ -9,7 +9,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInspector } from "@/contexts/InspectorContext";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
-import { useServiceProvidersList } from "@/hooks/use-concierge-data";
+import { useServiceProvidersList } from "@/modules/concierge/hooks/use-concierge-data";
 
 // Production fallback — seed data removed
 const categories: any[] = [];

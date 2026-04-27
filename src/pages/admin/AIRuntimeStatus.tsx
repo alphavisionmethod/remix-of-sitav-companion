@@ -1,4 +1,4 @@
-import { useAIHealth, getAIStatusMessage, isAIFeatureAvailable } from "@/hooks/use-ai-health";
+import { useAIHealth, getAIStatusMessage, isAIFeatureAvailable } from "@/platform/governance/hooks/use-ai-health";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

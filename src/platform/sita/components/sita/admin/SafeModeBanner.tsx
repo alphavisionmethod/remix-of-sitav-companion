@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { Shield } from "lucide-react";
-import { useMissionControlSummary } from "@/hooks/use-mission-control-views";
+import { useMissionControlSummary } from "@/platform/mission-control/hooks/use-mission-control-views";
 
 export function SafeModeBanner() {
   const summary = useMissionControlSummary();

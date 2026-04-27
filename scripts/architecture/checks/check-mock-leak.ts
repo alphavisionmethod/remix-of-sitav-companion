@@ -23,7 +23,7 @@ const HARD_FORBIDDEN = [
 const SOFT_FORBIDDEN = ["mock-data/"];
 const REAL_DATA_MARKERS = [
   "@/hooks/use-",
-  "@/hooks/useBusinessProfile",
+  "@/modules/business/hooks/useBusinessProfile",
   "@/hooks/useCurrentOrg",
   "@/integrations/supabase/client",
   "@/lib/services/",

@@ -26,7 +26,7 @@ import {
   Shield,
   Zap,
 } from "lucide-react";
-import { useAutonomyFleet, resetCircuitBreaker, type FleetAdvisor } from "@/hooks/useAutonomyFleet";
+import { useAutonomyFleet, resetCircuitBreaker, type FleetAdvisor } from "@/platform/orchestration/hooks/useAutonomyFleet";
 import { AutonomyApprovalQueue } from "@/platform/trust/components/autonomy/AutonomyApprovalQueue";
 import { AutonomyReflectionTimeline } from "@/platform/trust/components/autonomy/AutonomyReflectionTimeline";
 import { BoardroomKernelPanel } from "@/platform/trust/components/autonomy/BoardroomKernelPanel";

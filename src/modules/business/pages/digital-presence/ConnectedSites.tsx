@@ -4,7 +4,7 @@ import { Globe, Link2, RefreshCw, Shield, AlertTriangle, CheckCircle, Plus, Sett
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useSites } from "@/hooks/use-digital-presence";
+import { useSites } from "@/modules/business/hooks/use-digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

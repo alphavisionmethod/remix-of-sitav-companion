@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Users, Swords, Hourglass, Sparkle, AlertOctagon, Boxes } from "lucide-react";
-import { useBoardroomKernel } from "@/hooks/useBoardroomKernel";
+import { useBoardroomKernel } from "@/platform/boardroom/hooks/useBoardroomKernel";
 import type { BoardroomTheme, ThemeKind } from "@/lib/autonomy/boardroom-kernel";
 import { cn } from "@/lib/utils";
 

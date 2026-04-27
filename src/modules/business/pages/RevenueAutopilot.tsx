@@ -14,12 +14,12 @@ import {
   Target, ArrowUpRight, Clock, CheckCircle, XCircle, BarChart3, Shield,
   Search, Users, FileText, Inbox, Activity
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import {
   detectLeakage, suggestRecoveryActions, rankOpportunities, computeRecoveredValueSummary,
   computeAutopilotSummary, type LeakageItem, type RecoveredValueEntry, type RankedOpportunity
 } from "@/lib/domain-engines/revenue-autopilot";
-import { useRevenueLeaksData, useRecoveredValuesData, useRawOpportunities } from "@/hooks/use-business-data";
+import { useRevenueLeaksData, useRecoveredValuesData, useRawOpportunities } from "@/modules/business/hooks/use-business-data";
 
 // ── Severity Colors ─────────────────────────────────────────────
 

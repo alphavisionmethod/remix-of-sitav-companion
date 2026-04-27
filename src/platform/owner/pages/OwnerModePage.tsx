@@ -18,7 +18,7 @@ import {
   useWhatMattersNow, useMissionControlSummary, useFounderCostSummary,
   useTrustSummary, useRecoverySummary, useConnectorSummaries, useAITeamSummary,
   useIncidentSummaries, useSystemActivity,
-} from "@/hooks/use-mission-control-views";
+} from "@/platform/mission-control/hooks/use-mission-control-views";
 import {
   AlertTriangle, DollarSign, Shield, Heart, Wifi, Sparkles, Eye,
   Rocket, Package, Cpu, Settings, RotateCcw, BarChart3, Gauge,

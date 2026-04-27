@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Check, X, Clock, Shield, AlertTriangle } from "lucide-react";
-import type { AdvisorAction } from "@/hooks/use-advisor-agents";
+import type { AdvisorAction } from "@/platform/advisors/hooks/use-advisor-agents";
 
 const STATUS_COLORS: Record<string, string> = {
   proposed: "bg-amber-500/20 text-amber-300",

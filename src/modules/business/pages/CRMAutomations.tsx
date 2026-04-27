@@ -14,10 +14,10 @@ import {
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { useCRMAutomations, useCreateAutomation, useUpdateAutomation, useDeleteAutomation } from "@/hooks/use-crm-data";
+import { useCRMAutomations, useCreateAutomation, useUpdateAutomation, useDeleteAutomation } from "@/modules/business/hooks/use-crm-data";
 import type { CRMAutomation } from "@/data/repositories/crm-data-service";
 import { format, formatDistanceToNow } from "date-fns";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getWorkflowSuggestions } from "@/domains/engines/adaptive-workflow-templates";
 import {
   AUTOMATION_TRIGGER_TYPES,

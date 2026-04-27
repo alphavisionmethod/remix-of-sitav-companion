@@ -7,7 +7,7 @@ import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-sha
 import { SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { SectionSkeleton, KPISkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 
 import { LeadInboxHeader } from "@/modules/business/components/business/lead-inbox/LeadInboxHeader";

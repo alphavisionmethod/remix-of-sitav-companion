@@ -1,6 +1,6 @@
 import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { TrustBadge, TrustLevel } from "@/platform/sita/components/sita/TrustBadge";
-import { useBrainCore, useDemoMode } from "@/hooks/use-brain-core";
+import { useBrainCore, useDemoMode } from "@/platform/personal-brain/hooks/use-brain-core";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Brain, Sparkles, RefreshCw, AlertTriangle, CheckCircle, Cpu, Zap } from "lucide-react";

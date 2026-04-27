@@ -12,11 +12,11 @@ import { Headphones as SupportIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
-import { useBoardroomBridge } from "@/hooks/useBoardroomBridge";
+import { useBoardroomBridge } from "@/platform/boardroom/hooks/useBoardroomBridge";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 import { BusinessNavigationContext } from "@/modules/business/contexts/BusinessNavigationContext";
 import { BusinessProfileProvider } from "@/modules/business/contexts/BusinessProfileContext";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import AdaptiveBusinessHome from "@/modules/business/components/business/adaptive/AdaptiveBusinessHome";
 import BusinessProfileEditor from "@/modules/business/components/business/adaptive/BusinessProfileEditor";
 import ProfileStudio from "@/modules/business/components/business/adaptive/ProfileStudio";
@@ -36,10 +36,10 @@ import AdaptiveBoardroomAgenda from "@/modules/business/components/business/adap
 import { CrossOSLinksPanel } from "@/platform/sita/components/sita/cross-os/CrossOSLinksPanel";
 import { CrossDomainIntelligenceBridge } from "@/platform/sita/components/sita/cross-os/CrossDomainIntelligenceBridge";
 import { AppShellBreadcrumb, useNavigationHistory } from "@/platform/sita/components/sita/shell/AppShellBreadcrumb";
-import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
+import { useBusinessOnboarding } from "@/modules/business/hooks/useBusinessOnboarding";
 import { getVisibleSidebarItems } from "@/lib/business-journey-config";
 import BusinessSettingsPage from "@/pages/business/BusinessSettingsPage";
-import { useOnboardingBridge } from "@/hooks/useOnboardingBridge";
+import { useOnboardingBridge } from "@/modules/business/hooks/useOnboardingBridge";
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
 import LeadsInbox from "@/pages/business/LeadsInbox";

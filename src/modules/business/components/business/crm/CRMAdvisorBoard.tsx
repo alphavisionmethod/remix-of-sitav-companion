@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useCRMContacts, useCRMOpportunities, useCRMTasks, useCRMCommunications, useCRMCompanies } from "@/hooks/use-crm-data";
+import { useCRMContacts, useCRMOpportunities, useCRMTasks, useCRMCommunications, useCRMCompanies } from "@/modules/business/hooks/use-crm-data";
 import {
   BrainCircuit, AlertTriangle, TrendingUp, Clock, Users, Heart, Phone,
   CheckCircle, Shield, ChevronRight, Target, UserX, DollarSign, Star,

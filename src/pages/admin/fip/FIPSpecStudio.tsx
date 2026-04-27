@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useFeatureSpecs, useCreateSpec } from "@/hooks/use-fip-data";
+import { useFeatureSpecs, useCreateSpec } from "@/modules/business/hooks/use-fip-data";
 import { COMPLIANCE_SECTIONS } from "@/lib/fip/types";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const FIPSpecStudio = () => {

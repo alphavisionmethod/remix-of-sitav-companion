@@ -17,7 +17,7 @@ export {
   useCaptureScreenshot,
   useIngestionJob,
   useVerifyPackage,
-} from "@/hooks/use-app-ingestion";
+} from "@/platform/app-platform/hooks/use-app-ingestion";
 
 export function useAppCatalog(filters: CatalogFilters = {}) {
   return useQuery({

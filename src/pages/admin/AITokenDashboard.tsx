@@ -7,14 +7,14 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Gauge, DollarSign, Cpu, TrendingUp, Users, Zap, Plus, Trash2, Shield, Loader2 } from "lucide-react";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
 
 
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import {
   useBudgetPolicies, useBudgetSummary, useUsageLedger, useDailyAggregation,
   useCreateBudgetPolicy, useUpdateBudgetPolicy, useDeleteBudgetPolicy,
-} from "@/hooks/use-ai-budget-data";
+} from "@/platform/governance/hooks/use-ai-budget-data";
 
 export default function AITokenDashboard() {
   const { isAdmin, loading: adminLoading } = useRequireAdmin();

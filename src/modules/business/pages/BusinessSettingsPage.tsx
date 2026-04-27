@@ -12,8 +12,8 @@ import {
   FileText, TrendingUp, Phone, MessageSquare, Truck, AlertTriangle
 } from "lucide-react";
 import { Toggle, SingleSelect, SectionTitle } from "@/pages/revenue-office/onboarding/primitives";
-import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessOnboarding } from "@/modules/business/hooks/useBusinessOnboarding";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 import { getRecommendedJourney } from "@/lib/business-journey-config";
 import type { OnboardingState } from "@/pages/revenue-office/onboarding/types";

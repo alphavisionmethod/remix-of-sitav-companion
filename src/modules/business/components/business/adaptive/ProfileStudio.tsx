@@ -11,7 +11,7 @@ import {
   Palette, Clock, Package, Eye, ChevronRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import ProfileEditorStudio from "./ProfileEditorStudio";
 import ModuleEmphasisPanel from "./ModuleEmphasisPanel";

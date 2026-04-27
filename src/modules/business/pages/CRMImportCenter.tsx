@@ -7,9 +7,9 @@ import { Upload, FileSpreadsheet, Link, Plus, History, CheckCircle, AlertTriangl
 import CRMImportWizard from "@/modules/business/components/business/CRMImportWizard";
 import CRMConnectModal from "@/modules/business/components/business/CRMConnectModal";
 import { CRMImportTemplates, CRMImportQuality } from "@/modules/business/components/business/crm/CRMImportQuality";
-import { useCRMImportJobs } from "@/hooks/use-crm-data";
+import { useCRMImportJobs } from "@/modules/business/hooks/use-crm-data";
 import { format } from "date-fns";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { IMPORT_PLATFORMS, SMART_FIELDS_BY_MODE, type ImportPlatform } from "./_config/CRMImportCenter.config";
 
 const CRMImportCenter = () => {

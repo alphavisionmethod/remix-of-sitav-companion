@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { AdvisorPersona } from "@/domains/engines/business-advisor-personas";
-import type { AIRecommendation } from "@/hooks/useBusinessAdvisorBoard";
+import type { AIRecommendation } from "@/modules/business/hooks/useBusinessAdvisorBoard";
 
 interface Props {
   advisors: AdvisorPersona[];

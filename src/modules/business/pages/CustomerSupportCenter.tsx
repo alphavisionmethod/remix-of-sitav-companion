@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { useState } from "react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { useSupportCases, type SupportSeverity } from "@/hooks/use-support-cases";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
+import { useSupportCases, type SupportSeverity } from "@/platform/operations/hooks/use-support-cases";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import { HeroCard, QueueCard, StatusCard, AdvisorCard } from "@/platform/sita/components/sita/cards";

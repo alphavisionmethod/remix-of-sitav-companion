@@ -13,9 +13,9 @@ import { AppSurface } from "@/platform/sita/components/sita/surfaces/AppSurface"
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { cn } from "@/lib/utils";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
-import { useCommunications } from "@/hooks/use-sita-data";
+import { useCommunications } from "@/platform/sita/hooks/use-sita-data";
 import { useAuth } from "@/contexts/AuthContext";
 import { useActionFn } from "@/hooks/use-action";
 import { useConfirmation } from "@/hooks/use-confirmation";

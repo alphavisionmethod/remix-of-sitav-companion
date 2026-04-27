@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { Store, Package, ShoppingCart, TrendingDown, Star, Layers, Tag, AlertTriangle, Sparkles, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useSites } from "@/hooks/use-digital-presence";
-import { useShopifyProducts, useShopifyCollections } from "@/hooks/useShopifyData";
+import { useSites } from "@/modules/business/hooks/use-digital-presence";
+import { useShopifyProducts, useShopifyCollections } from "@/modules/business/hooks/useShopifyData";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

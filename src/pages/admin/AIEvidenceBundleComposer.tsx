@@ -7,7 +7,7 @@ import {
   FileText, Download, CheckCircle2, AlertTriangle, Shield, Code,
   FileJson, BookOpen, GitBranch, Users, Sparkles, RotateCcw, Eye
 } from "lucide-react";
-import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
+import { useAIEngDomain } from "@/platform/governance/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 type ExportMode = "json" | "markdown" | "approval" | "pr-ready" | "investor";
 

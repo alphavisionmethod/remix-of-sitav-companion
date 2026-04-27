@@ -22,7 +22,7 @@ import { BoardroomLineageView } from "./BoardroomLineageView";
 import { BoardroomCrossAppImpact } from "./BoardroomCrossAppImpact";
 import { BoardroomExplainability } from "./BoardroomExplainability";
 import { BoardroomFollowthroughView } from "./BoardroomFollowthroughView";
-import { useBoardroomSession } from "@/hooks/useBoardroomSession";
+import { useBoardroomSession } from "@/platform/boardroom/hooks/useBoardroomSession";
 
 const MODULES = [
   { id: "executive", label: "Executive", icon: Presentation },

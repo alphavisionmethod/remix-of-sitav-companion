@@ -6,7 +6,7 @@
 
 import { useMemo, useCallback, useEffect, useRef } from "react";
 import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
-import { useAppSurfacing } from "@/hooks/useAppSurfacing";
+import { useAppSurfacing } from "@/platform/app-platform/hooks/useAppSurfacing";
 import type { AppDefinition, AppCategory } from "@/domains/apps/types";
 
 // ── Telemetry ───────────────────────────────────────────────────

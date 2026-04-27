@@ -7,7 +7,7 @@ import {
   Shield, Brain, ChevronUp, ChevronDown, Play,
   DollarSign, Briefcase, Home, Clock
 } from "lucide-react";
-import type { AdvisorAgent } from "@/hooks/use-advisor-agents";
+import type { AdvisorAgent } from "@/platform/advisors/hooks/use-advisor-agents";
 import { LaunchHonestyBadge } from "@/platform/product/components/reality/LaunchHonestyBadge";
 
 const DOMAIN_ICONS: Record<string, React.ElementType> = {

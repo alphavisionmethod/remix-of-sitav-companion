@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Layers, Smartphone, AlertTriangle, CheckCircle2 } from "lucide-react";
-import { useNativeShellPlatforms } from "@/hooks/use-native-shell-data";
+import { useNativeShellPlatforms } from "@/platform/runtime/hooks/use-native-shell-data";
 import NSSSubNav from "@/platform/admin/components/admin/NSSSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const NSS01StrategyBoard = () => {

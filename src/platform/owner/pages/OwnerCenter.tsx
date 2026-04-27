@@ -6,9 +6,9 @@ import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { StateBadge } from "@/platform/sita/components/sita/StateBadge";
 import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/platform/governance/components/governance";
 import { useState, useEffect, useMemo } from "react";
-import { useOSRuntime } from "@/hooks/useOSRuntime";
+import { useOSRuntime } from "@/platform/sita/hooks/useOSRuntime";
 import { FounderBottleneckEngine } from "@/domains/engines/founder-bottleneck-engine";
-import { useKernelEventStream } from "@/hooks/use-kernel-events";
+import { useKernelEventStream } from "@/platform/sita/hooks/use-kernel-events";
 import { useKernelStatus } from "@/platform/sita/contexts/SitaKernelContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -52,7 +52,7 @@ import {
   useInternalAgents, useAgentControls,
   useTrustCenter, useReleases, useModelRouting, useKnowledgeHealth,
   useSupportCases, useChangeReview, useRollbackCenter, useServiceMap } from "@/hooks/use-admin-data";
-import { useApproveApprovalItem, useRejectApprovalItem, useDismissApprovalItem, useApprovalQueue } from "@/hooks/use-approval-queue-mutations";
+import { useApproveApprovalItem, useRejectApprovalItem, useDismissApprovalItem, useApprovalQueue } from "@/platform/trust/hooks/use-approval-queue-mutations";
 import {
   AUTONOMY_TIERS, NEVER_ALLOWED, DESIGN_DRIFT_CHECKLIST, WATCHDOG_CONCERNS, getAutonomyLevel,
   MAY_AUTO_EXECUTE, MUST_SIMULATE_FIRST, PROMOTION_RULES, DEMOTION_TRIGGERS, MUST_REQUIRE_HUMAN_APPROVAL } from "@/lib/internal-agents/rights";

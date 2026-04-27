@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { X, MessageSquare, Shield, Brain } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { AdvisorPersona } from "@/domains/engines/business-advisor-personas";
-import type { AIRecommendation } from "@/hooks/useBusinessAdvisorBoard";
+import type { AIRecommendation } from "@/modules/business/hooks/useBusinessAdvisorBoard";
 import { AdvisorImage } from "@/platform/advisors/components/advisors/AdvisorImage";
 
 interface Props {

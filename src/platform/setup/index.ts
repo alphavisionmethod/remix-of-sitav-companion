@@ -11,9 +11,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 export * from "@/hooks/use-session-restore";
-export * from "@/hooks/useSetupOrchestration";
-export * from "@/hooks/useOnboardingDaemon";
-export * from "@/hooks/useUpdateDaemon";
+export * from "@/platform/orchestration/hooks/useSetupOrchestration";
+export * from "@/platform/setup/hooks/useOnboardingDaemon";
+export * from "@/platform/runtime/hooks/useUpdateDaemon";
 
 // Canonical onboarding surface registry.
 export {

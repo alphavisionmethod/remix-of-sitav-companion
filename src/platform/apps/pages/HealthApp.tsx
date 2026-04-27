@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Heart, Activity, Moon, Dumbbell, Brain, Droplets, Apple, TrendingUp, Plus, Smile, Meh, Frown, Sun, ChevronRight } from "lucide-react";
 import { useState } from "react";
-import { useHealthLogs } from "@/hooks/use-apps-data";
+import { useHealthLogs } from "@/platform/app-platform/hooks/use-apps-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };

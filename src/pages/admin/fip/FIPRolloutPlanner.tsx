@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Rocket, Flag, Power, RotateCcw, ArrowUpRight, Shield, Target } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useRolloutRecords } from "@/hooks/use-fip-data";
+import { useRolloutRecords } from "@/modules/business/hooks/use-fip-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const ringColors: Record<string, string> = {
   dev: 'bg-muted text-muted-foreground', staging: 'bg-blue-500/10 text-blue-500',

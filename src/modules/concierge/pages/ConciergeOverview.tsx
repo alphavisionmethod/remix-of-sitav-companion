@@ -14,7 +14,7 @@ import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useConciergeNavigation } from "@/modules/concierge/contexts/ConciergeNavigationContext";
-import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
+import { useHouseholdTasks, useFamilyEvents } from "@/platform/sita/hooks/use-sita-data";
 import { useMemo } from "react";
 import {
   CheckSquare, Calendar, AlertCircle, Heart, Clock, ShoppingCart,

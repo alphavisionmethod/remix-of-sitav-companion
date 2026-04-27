@@ -24,7 +24,7 @@ import {
   useAISpendSummary,
   useMarginSnapshot,
   useFairUseStatus,
-} from "@/hooks/use-compute-governance";
+} from "@/platform/governance/hooks/use-compute-governance";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

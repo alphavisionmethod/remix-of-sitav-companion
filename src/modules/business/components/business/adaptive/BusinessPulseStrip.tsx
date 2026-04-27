@@ -11,7 +11,7 @@ import {
   ShoppingCart, Users, Calendar, DollarSign, Heart,
   Package, Phone, ArrowUpRight, ArrowDownRight, Minus,
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 
 interface PulseMetric {

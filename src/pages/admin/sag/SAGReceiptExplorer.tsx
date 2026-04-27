@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Receipt, Zap, Eye, CheckCircle2, XCircle, Clock } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useInferenceReceipts, useTaskRequests } from "@/hooks/use-sag-data";
+import { useInferenceReceipts, useTaskRequests } from "@/modules/business/hooks/use-sag-data";
 import SAGSubNav from "@/platform/admin/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

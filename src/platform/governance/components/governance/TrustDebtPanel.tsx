@@ -7,7 +7,7 @@
 import { SitaCard, SitaCardTitle, SitaMetric } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useTrustDebtLedger, useTrustDebtTrend } from "@/hooks/use-meta-governance";
+import { useTrustDebtLedger, useTrustDebtTrend } from "@/platform/governance/hooks/use-meta-governance";
 import { motion } from "framer-motion";
 import { Shield, AlertTriangle, Clock, CheckCircle, XCircle, TrendingUp, TrendingDown } from "lucide-react";
 import { cn } from "@/lib/utils";

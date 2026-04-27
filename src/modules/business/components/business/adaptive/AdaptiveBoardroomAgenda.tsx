@@ -8,7 +8,7 @@ import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { BarChart3, AlertTriangle, Target, Clock, TrendingUp, Users, ShoppingCart, CalendarDays, DollarSign, FileText, Layers, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 

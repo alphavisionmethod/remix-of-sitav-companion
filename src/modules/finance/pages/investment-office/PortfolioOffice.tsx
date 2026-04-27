@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DollarSign, TrendingUp, TrendingDown, PieChart, Shield, RefreshCw, AlertTriangle, Wallet } from "lucide-react";
 import { SparklineChart } from "@/platform/sita/components/sita/SparklineChart";
-import { PLATFORM_CONNECTIONS, PORTFOLIO, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
+import { PLATFORM_CONNECTIONS, PORTFOLIO, SAMPLE_THESES } from "@/modules/finance/hooks/useInvestmentOfficeData";
 import { SPARKLINE_DATA, PERFORMANCE_TIMELINE } from "@/domains/investment";
-import { usePortfolioPositions } from "@/hooks/use-investment-office";
+import { usePortfolioPositions } from "@/modules/finance/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;

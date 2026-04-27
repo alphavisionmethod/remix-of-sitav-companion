@@ -7,7 +7,7 @@ import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
-import { getWallpaperTheme, getCustomWallpaperUrl, WALLPAPER_THEMES } from "@/hooks/use-wallpaper";
+import { getWallpaperTheme, getCustomWallpaperUrl, WALLPAPER_THEMES } from "@/platform/sita/hooks/use-wallpaper";
 import logo from "@/assets/logo.webp";
 
 export type AmbientMood = "serene" | "alert" | "warm" | "focus" | "night";

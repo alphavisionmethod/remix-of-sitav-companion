@@ -17,10 +17,10 @@ import { AutonomyLadder } from "@/platform/sita/components/sita/primitives/Auton
 import type { AutonomyRung } from "@/platform/sita/components/sita/primitives/AutonomyLadder";
 import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import { motion, AnimatePresence } from "framer-motion";
-import { useApprovals } from "@/hooks/use-sita-data";
-import { useApprovalQueue } from "@/hooks/use-brain-core";
-import { useOSOrchestration } from "@/hooks/useOSOrchestration";
-import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { useApprovals } from "@/platform/sita/hooks/use-sita-data";
+import { useApprovalQueue } from "@/platform/personal-brain/hooks/use-brain-core";
+import { useOSOrchestration } from "@/platform/orchestration/hooks/useOSOrchestration";
+import { useIsAdmin } from "@/platform/auth/hooks/useIsAdmin";
 import { useLoopEmitter } from "@/hooks/use-flagship-loop-proof";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";

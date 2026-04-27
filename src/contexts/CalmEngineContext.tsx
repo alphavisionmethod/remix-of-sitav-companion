@@ -6,9 +6,9 @@
 
 import { createContext, useContext, useEffect, useMemo, type ReactNode } from "react";
 import { useIdleDetector, type IdlePhase, idleOpacity } from "@/hooks/useIdleDetector";
-import { useLayerOpacity, type LayerState, type LayerOpacities } from "@/hooks/useLayerOpacity";
-import { useWindowAttention, type AttentionScore } from "@/hooks/useWindowAttention";
-import { useAppSurfacing } from "@/hooks/useAppSurfacing";
+import { useLayerOpacity, type LayerState, type LayerOpacities } from "@/platform/sita/hooks/useLayerOpacity";
+import { useWindowAttention, type AttentionScore } from "@/platform/sita/hooks/useWindowAttention";
+import { useAppSurfacing } from "@/platform/app-platform/hooks/useAppSurfacing";
 import { injectMITimings, MI_TIMINGS } from "@/lib/engine/micro-interactions";
 
 // ── Types ────────────────────────────────────────────────────

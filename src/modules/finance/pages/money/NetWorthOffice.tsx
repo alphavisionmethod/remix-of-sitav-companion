@@ -10,7 +10,7 @@ import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
 import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
-import { useSavingsGoals } from "@/hooks/use-money-data";
+import { useSavingsGoals } from "@/modules/finance/hooks/use-money-data";
 import { DollarSign, TrendingUp, TrendingDown, Building, PiggyBank, CreditCard, BarChart3, ArrowUpRight, ArrowDownRight, Wallet, Clock, Rewind } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";

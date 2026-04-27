@@ -4,7 +4,7 @@
 
 import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { ArrowUpRight, ArrowDownLeft, Wallet } from "lucide-react";
-import { useMobileMoneyAccounts, useMobileMoneyTransactions } from "@/hooks/use-mobile-data";
+import { useMobileMoneyAccounts, useMobileMoneyTransactions } from "@/modules/mobile/hooks/use-mobile-data";
 import { MobileEmptyState, MobileErrorState } from "@/platform/experience/components/mobile/MobileEmptyState";
 import { SafeToSpendSkeleton, AccountListSkeleton, TransactionListSkeleton } from "@/platform/experience/components/mobile/MobileSectionSkeleton";
 

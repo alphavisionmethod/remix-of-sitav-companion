@@ -15,7 +15,7 @@ import {
   Fingerprint, BookOpen, ArrowRight, History, Scale
 } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
-import { useCRMEntityProofTrail, type CRMProofEntityType } from "@/hooks/use-crm-proof-trail";
+import { useCRMEntityProofTrail, type CRMProofEntityType } from "@/modules/business/hooks/use-crm-proof-trail";
 import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
 import type { ProofEntry, ProofActionKind } from "@/lib/trust";
 

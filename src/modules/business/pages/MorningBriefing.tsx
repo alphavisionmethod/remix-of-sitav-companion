@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
-import { useMorningBriefing } from "@/hooks/use-operational-rituals";
+import { useMorningBriefing } from "@/platform/operations/hooks/use-operational-rituals";
 
 const sevClasses: Record<string, string> = {
   critical: "border-[hsl(var(--destructive))]/20 bg-[hsl(var(--destructive))]/5",

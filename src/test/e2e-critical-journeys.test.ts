@@ -166,14 +166,14 @@ describe("Critical Journey: Performance Hooks", () => {
   });
 
   it("useAIChatPerformance exports chat perf utilities", async () => {
-    const mod = await import("@/hooks/useAIChatPerformance");
+    const mod = await import("@/platform/governance/hooks/useAIChatPerformance");
     expect(mod.useAIChatPerformance).toBeDefined();
     expect(mod.computeChatPercentiles).toBeDefined();
     expect(mod.getChatPerfLog).toBeDefined();
   });
 
   it("chat percentiles return zeroes on empty", async () => {
-    const { computeChatPercentiles } = await import("@/hooks/useAIChatPerformance");
+    const { computeChatPercentiles } = await import("@/platform/governance/hooks/useAIChatPerformance");
     const r = computeChatPercentiles();
     expect(r.p50).toBe(0);
     expect(r.count).toBe(0);

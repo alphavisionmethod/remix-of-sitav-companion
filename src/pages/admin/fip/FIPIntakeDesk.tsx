@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { useFeatureIntakes, useCreateIntake } from "@/hooks/use-fip-data";
+import { useFeatureIntakes, useCreateIntake } from "@/modules/business/hooks/use-fip-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 

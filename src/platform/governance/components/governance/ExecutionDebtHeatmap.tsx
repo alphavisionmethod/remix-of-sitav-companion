@@ -6,7 +6,7 @@
 
 import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
-import { useExecutionDebtLedger, useExecutionDebtHeatmap } from "@/hooks/use-meta-governance";
+import { useExecutionDebtLedger, useExecutionDebtHeatmap } from "@/platform/governance/hooks/use-meta-governance";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { motion } from "framer-motion";
 import { Activity, AlertTriangle, CheckCircle } from "lucide-react";

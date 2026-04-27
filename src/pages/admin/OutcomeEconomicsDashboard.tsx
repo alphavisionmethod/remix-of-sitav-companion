@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
 import { cn } from "@/lib/utils";
 import type { OutcomeCategory } from "@/lib/intelligence-architecture/outcome-economics-engine";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

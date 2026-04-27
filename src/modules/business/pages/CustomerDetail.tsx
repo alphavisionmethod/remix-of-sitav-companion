@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
-import { useCustomerDetail } from "@/hooks/use-customer-detail";
+import { useCustomerDetail } from "@/modules/business/hooks/use-customer-detail";
 
 const TIMELINE_ICONS: Record<string, typeof FileText> = {
   invoice: DollarSign,

@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Zap, ArrowRight, Shield, RotateCcw, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useExecutionPaths } from "@/hooks/use-fip-data";
+import { useExecutionPaths } from "@/modules/business/hooks/use-fip-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 

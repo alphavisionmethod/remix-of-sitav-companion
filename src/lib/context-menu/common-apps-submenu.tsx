@@ -3,7 +3,7 @@
 // Lists installed apps for quick launch from a context menu.
 // ═══════════════════════════════════════════════════════════════
 
-import { useInstalledApps } from "@/hooks/use-app-platform";
+import { useInstalledApps } from "@/platform/app-platform/hooks/use-app-platform";
 import {
   ContextMenuItem,
   ContextMenuSub,

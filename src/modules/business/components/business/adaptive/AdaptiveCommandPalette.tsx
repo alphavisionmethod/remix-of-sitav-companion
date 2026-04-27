@@ -12,7 +12,7 @@ import {
   BarChart3, RefreshCw, Settings, Brain, Shield, Crown,
   Package, Heart, MapPin, Bot, Globe, ClipboardList,
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 

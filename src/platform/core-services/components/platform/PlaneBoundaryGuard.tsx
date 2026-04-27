@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useCurrentPlane } from "@/hooks/useCurrentPlane";
-import { useRequireAdminPermission } from "@/hooks/useRequireAdminPermission";
+import { useRequireAdminPermission } from "@/platform/auth/hooks/useRequireAdminPermission";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Monitor, Server, Layers, Cpu, Terminal } from "lucide-react";
 import type { PlaneKey } from "@/lib/platform-plane";

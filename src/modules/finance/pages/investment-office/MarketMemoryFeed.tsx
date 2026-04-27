@@ -1,7 +1,7 @@
 // truth-allow: ia-config
 import { motion } from "framer-motion";
 import { History, TrendingUp, TrendingDown, AlertTriangle, Brain, RefreshCw, Zap, Shield, FileText, Globe } from "lucide-react";
-import { useMarketMemoryEvents, useAdvisorObservations, useCatalystEvents, useBehavioralSignals, usePortfolioPositionsMemory } from "@/hooks/use-investment-memory";
+import { useMarketMemoryEvents, useAdvisorObservations, useCatalystEvents, useBehavioralSignals, usePortfolioPositionsMemory } from "@/modules/finance/hooks/use-investment-memory";
 import { computeWhatChanged } from "@/lib/services/finance-os/investment-memory.service";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const SEVERITY_STYLES: Record<string, string> = {

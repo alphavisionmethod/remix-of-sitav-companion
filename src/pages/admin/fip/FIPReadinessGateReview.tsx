@@ -4,7 +4,7 @@ import { GraduationCap, CheckCircle2, XCircle, ArrowRight, Shield, AlertTriangle
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useReadinessGates } from "@/hooks/use-fip-data";
+import { useReadinessGates } from "@/modules/business/hooks/use-fip-data";
 import { READINESS_STAGES, RED_TEAM_QUESTIONS } from "@/lib/fip/types";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

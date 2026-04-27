@@ -15,7 +15,7 @@ import {
   AlertTriangle, CheckCircle, Target, Sparkles, Wallet
 } from "lucide-react";
 import { useMoneyKPIs, useReservesSavings } from "@/hooks/use-domain-data";
-import { useSubscriptions } from "@/hooks/use-sita-data";
+import { useSubscriptions } from "@/platform/sita/hooks/use-sita-data";
 
 const FinanceBoardroom = () => {
   const [mode, setMode] = useState("weekly");

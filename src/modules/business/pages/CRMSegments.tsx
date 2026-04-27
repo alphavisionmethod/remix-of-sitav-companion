@@ -3,14 +3,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { useCRMContacts, useCRMSegments } from "@/hooks/use-crm-data";
+import { useCRMContacts, useCRMSegments } from "@/modules/business/hooks/use-crm-data";
 import { Filter, Plus, Users, AlertTriangle, Clock, Star, TrendingUp, X, Search, Eye, Save, Trash2, ChevronDown } from "lucide-react";
 import { isPast, differenceInDays } from "date-fns";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { dbAny } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { SEGMENT_FILTER_FIELDS, SEGMENT_OPERATORS } from "./_config/CRMSegments.config";
 
 type FilterCondition = {

@@ -14,12 +14,12 @@ import {
   NovaToggle, NovaSlider, NovaBadge,
 } from "@/platform/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
-import { useSettingsValue } from "@/hooks/use-settings-value";
+import { useSettingsValue } from "@/platform/settings/hooks/use-settings-value";
 import { toast } from "sonner";
 import { SettingRow } from "./shared";
 import { ResetSectionButton } from "./shared";
 import { SettingsService } from "@/platform/nova-sdk/services/settings-service";
-import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useOSOrchestration } from "@/platform/orchestration/hooks/useOSOrchestration";
 import { Link as LinkIcon } from "lucide-react";
 
 // Wallpaper imports
@@ -28,7 +28,7 @@ import wallpaperAmber from "@/assets/wallpapers/amber.jpg";
 import wallpaperOcean from "@/assets/wallpapers/ocean.jpg";
 import wallpaperAurora from "@/assets/wallpapers/aurora.jpg";
 import wallpaperRose from "@/assets/wallpapers/rose.jpg";
-import { WALLPAPER_THEMES, getCustomWallpaperUrl, setCustomWallpaperUrl } from "@/hooks/use-wallpaper";
+import { WALLPAPER_THEMES, getCustomWallpaperUrl, setCustomWallpaperUrl } from "@/platform/sita/hooks/use-wallpaper";
 
 const PHOTO_WALLPAPERS = [
   { id: "nebula", label: "Nebula", src: wallpaperNebula, description: "Deep purple & blue" },
@@ -1495,7 +1495,7 @@ const WIDGET_ICON_MAP: Record<string, any> = {
   "calendar-today": Clock,
 };
 
-import { useDesktopWidgets } from "@/hooks/useDesktopWidgets";
+import { useDesktopWidgets } from "@/platform/sita/hooks/useDesktopWidgets";
 import { DollarSign, TrendingUp, Brain } from "lucide-react";
 
 export function WidgetsContent() {

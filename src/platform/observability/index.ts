@@ -3,7 +3,7 @@
 // Canonical import: @/platform/observability
 // ═══════════════════════════════════════════════════════════════
 
-export * from "@/hooks/useOrchestrationHealth";
+export * from "@/platform/orchestration/hooks/useOrchestrationHealth";
 
 // Layer 3 truth re-exports
 export * from "@/lib/platform/observability";

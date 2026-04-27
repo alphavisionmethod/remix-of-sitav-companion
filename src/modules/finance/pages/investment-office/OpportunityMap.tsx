@@ -3,8 +3,8 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Map, TrendingUp, Zap, Eye, AlertTriangle, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { INSTRUMENTS } from "@/hooks/useInvestmentOfficeData";
-import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
+import { INSTRUMENTS } from "@/modules/finance/hooks/useInvestmentOfficeData";
+import { useMarketWatchlistItems } from "@/modules/finance/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const THEMES: any[] = [{ name: "—", instruments: [], conviction: 0, thesis: "" }];
 export default function OpportunityMap() {

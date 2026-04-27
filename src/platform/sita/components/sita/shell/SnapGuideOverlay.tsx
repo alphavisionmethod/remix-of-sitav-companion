@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import React from "react";
-import { getSnapGuideStyles } from "@/hooks/useWindowSnap";
+import { getSnapGuideStyles } from "@/platform/sita/hooks/useWindowSnap";
 import { AnimatePresence, motion } from "framer-motion";
 
 interface SnapGuideOverlayProps {

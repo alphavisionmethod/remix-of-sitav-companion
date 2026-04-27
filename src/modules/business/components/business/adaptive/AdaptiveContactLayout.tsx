@@ -3,7 +3,7 @@
 // Reorders contact detail sections based on business archetype
 // ═══════════════════════════════════════════════════════════════
 
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 
 export interface ContactSection {

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useRealityClassifications } from "@/hooks/useRealityClassifications";
+import { useRealityClassifications } from "@/platform/runtime/hooks/useRealityClassifications";
 import { Map, Eye, Cpu, Shield, CheckCircle2 } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

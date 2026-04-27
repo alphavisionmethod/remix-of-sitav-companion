@@ -4,8 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useIntelligenceAssets } from "@/hooks/useIntelligencePersistence";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
+import { useIntelligenceAssets } from "@/platform/personal-brain/hooks/useIntelligencePersistence";
 import { useMemo } from "react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

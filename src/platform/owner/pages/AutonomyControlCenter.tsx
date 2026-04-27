@@ -11,7 +11,7 @@ import { AutonomyApprovalQueue } from "@/platform/trust/components/autonomy/Auto
 import { AutonomyReflectionTimeline } from "@/platform/trust/components/autonomy/AutonomyReflectionTimeline";
 import { AutonomyMissionsPanel } from "@/platform/trust/components/autonomy/AutonomyMissionsPanel";
 import { AutonomyKillSwitch } from "@/platform/trust/components/autonomy/AutonomyKillSwitch";
-import { useAutonomyFleet } from "@/hooks/useAutonomyFleet";
+import { useAutonomyFleet } from "@/platform/orchestration/hooks/useAutonomyFleet";
 
 export default function AutonomyControlCenter() {
   const { totals, loading } = useAutonomyFleet();

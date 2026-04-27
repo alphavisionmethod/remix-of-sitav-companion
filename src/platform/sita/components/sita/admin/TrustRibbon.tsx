@@ -5,7 +5,7 @@
 
 import { cn } from "@/lib/utils";
 import { Shield, CheckCircle, AlertTriangle, XCircle } from "lucide-react";
-import { useTrustSummary, useMissionControlSummary } from "@/hooks/use-mission-control-views";
+import { useTrustSummary, useMissionControlSummary } from "@/platform/mission-control/hooks/use-mission-control-views";
 
 export function TrustRibbon() {
   const trust = useTrustSummary();

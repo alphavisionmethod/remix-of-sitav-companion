@@ -13,7 +13,7 @@ import {
   ArrowDown, ChevronDown, ChevronUp, Globe, HardDrive, Wifi,
   Database, Monitor, Settings, Eye,
 } from "lucide-react";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
 import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { ECOSubNav } from "@/platform/admin/components/admin/ECOSubNav";
 import { getEcosystemOrchestrator } from "@/lib/services/ecosystem-orchestrator";

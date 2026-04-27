@@ -1,7 +1,7 @@
 // truth-allow: ia-config
 import { motion } from "framer-motion";
 import { Gauge, AlertTriangle, Check } from "lucide-react";
-import { usePortfolioPositions } from "@/hooks/use-investment-office";
+import { usePortfolioPositions } from "@/modules/finance/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 export default function ConvictionEngine() {
   const { data: liveData, isLoading } = usePortfolioPositions();

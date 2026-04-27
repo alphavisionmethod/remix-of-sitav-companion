@@ -8,8 +8,8 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { useOnboardingDaemon } from "@/hooks/useOnboardingDaemon";
-import { useUpdateDaemon } from "@/hooks/useUpdateDaemon";
+import { useOnboardingDaemon } from "@/platform/setup/hooks/useOnboardingDaemon";
+import { useUpdateDaemon } from "@/platform/runtime/hooks/useUpdateDaemon";
 import {
   Globe, MapPin, Accessibility, Wifi, WifiOff, User, Lock, Shield, Eye,
   Download, Upload, HardDrive, Battery, Moon, Zap, CheckCircle, ChevronRight,

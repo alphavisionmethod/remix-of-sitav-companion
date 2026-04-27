@@ -5,7 +5,7 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useRealityClassifications } from "@/hooks/useRealityClassifications";
+import { useRealityClassifications } from "@/platform/runtime/hooks/useRealityClassifications";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";

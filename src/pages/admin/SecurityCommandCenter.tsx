@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { useSecurityFabric } from "@/hooks/use-security-fabric";
+import { useSecurityFabric } from "@/platform/security/hooks/use-security-fabric";
 import { Shield, Activity, Eye, Lock, Cpu, Zap, Brain, RefreshCw, AlertTriangle, CheckCircle2, XCircle, Clock, Server, Gauge, Radio, Bug, ChevronRight, ArrowUpRight, Wifi, Layers, FlaskConical, Database } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";

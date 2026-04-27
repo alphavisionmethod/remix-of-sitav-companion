@@ -5,7 +5,7 @@ import {
   Sparkles, DollarSign, ChevronRight, Zap,
   ShoppingCart, RefreshCw
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 
 interface Opportunity {

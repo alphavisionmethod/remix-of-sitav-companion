@@ -23,8 +23,8 @@ import { WarRoomEntryCeremony } from "@/platform/sita/components/sita/WarRoomEnt
 import { WarRoomConfidenceRadar } from "@/platform/sita/components/sita/WarRoomConfidenceRadar";
 import { WarRoomDisagreementTheater } from "@/platform/sita/components/sita/WarRoomDisagreementTheater";
 import { WarRoomPresentation } from "@/platform/sita/components/sita/WarRoomPresentation";
-import { useOSRuntime } from "@/hooks/useOSRuntime";
-import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useOSRuntime } from "@/platform/sita/hooks/useOSRuntime";
+import { useOSOrchestration } from "@/platform/orchestration/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { Progress } from "@/components/ui/progress";
@@ -38,9 +38,9 @@ import {
   Maximize2, Minimize2, ChevronLeft, ChevronRight, Pause, Play, Scale,
   GitCompare, Lock, Target, TrendingUp, MessageSquare, Calendar
 } from "lucide-react";
-import { useBoardroomPacket } from "@/hooks/use-boardroom";
+import { useBoardroomPacket } from "@/platform/boardroom/hooks/use-boardroom";
 import type { BoardroomSession, BoardroomDecision, StrategicInsight } from "@/packages/boardroom-contracts";
-import { advisors, recommendations, synthesis, approvals, proofHistory } from "@/hooks/useAdvisorMissionControl";
+import { advisors, recommendations, synthesis, approvals, proofHistory } from "@/platform/advisors/hooks/useAdvisorMissionControl";
 import type {
   BoardroomType, BoardroomPacket, BoardroomContentSection, MetricCardData,
   TableData, NarrativeData, AlertData, ActionItemData, ChartData, BOARDROOM_META
@@ -53,7 +53,7 @@ import type { Receipt, TrustState, ExecutionEnvelope, BoardroomSection as Contra
 import type { ProofPack } from "@/packages/proof-model";
 import type { AdvisorConfig } from "@/packages/advisor-config";
 import { cn } from "@/lib/utils";
-import { useBoardroomData } from "@/hooks/use-boardroom-data";
+import { useBoardroomData } from "@/platform/boardroom/hooks/use-boardroom-data";
 import { useOpportunitySignals, usePriorityStacks, useDigestCompilations } from "@/hooks/useCAIData";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { BoardroomSeedSampleButton } from "@/platform/sita/components/sita/BoardroomSeedSampleButton";

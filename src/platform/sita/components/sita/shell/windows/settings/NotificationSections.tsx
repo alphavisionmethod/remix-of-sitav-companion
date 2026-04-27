@@ -8,7 +8,7 @@ import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
   NovaToggle, NovaBadge,
 } from "@/platform/nova-sdk/ui/components";
-import { useSettingsValue } from "@/hooks/use-settings-value";
+import { useSettingsValue } from "@/platform/settings/hooks/use-settings-value";
 import { usePushNotifications } from "@/hooks/use-push-notifications";
 import { SettingRow, ResetSectionButton } from "./shared";
 

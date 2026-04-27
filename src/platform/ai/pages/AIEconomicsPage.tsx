@@ -18,7 +18,7 @@ import {
   useAISpendSummary,
   useModelRoutingStats,
   useComputeBudgetStatus,
-} from "@/hooks/use-compute-governance";
+} from "@/platform/governance/hooks/use-compute-governance";
 import { PageShell } from "@/platform/sita/components/sita/PageShell";
 
 // ── Main Page ──────────────────────────────────────────────────

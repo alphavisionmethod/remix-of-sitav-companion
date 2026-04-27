@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Archive, Trash2, ArrowRight, Clock, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useDeprecationRecords } from "@/hooks/use-fip-data";
+import { useDeprecationRecords } from "@/modules/business/hooks/use-fip-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 

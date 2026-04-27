@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
-import { useCreateContact } from "@/hooks/use-crm-data";
+import { useCreateContact } from "@/modules/business/hooks/use-crm-data";
 import { supabase } from "@/integrations/supabase/client";
 import { emitRegisteredTrustAction } from "@/platform/trust";
 

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Brain, Lightbulb, Shield, Zap, Clock, Eye, TrendingUp, ChevronRight, Info, Sparkles } from "lucide-react";
-import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useOSOrchestration } from "@/platform/orchestration/hooks/useOSOrchestration";
 
 export default function IntelligenceDashboard() {
   const os = useOSOrchestration();

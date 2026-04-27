@@ -1,7 +1,7 @@
 import React from "react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import CRMAdvisorBoard from "@/modules/business/components/business/crm/CRMAdvisorBoard";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 
 const CRMAdvisorPage = () => {
   const { primaryMode, adaptations } = useBusinessProfile();

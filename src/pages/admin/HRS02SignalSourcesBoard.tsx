@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Radio, CheckCircle2, Wifi, Smartphone, Loader2 } from "lucide-react";
-import { useWearableProviders } from "@/hooks/use-health-signal-data";
+import { useWearableProviders } from "@/modules/health/hooks/use-health-signal-data";
 import HRSSubNav from "@/platform/admin/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const HRS02SignalSourcesBoard = () => {

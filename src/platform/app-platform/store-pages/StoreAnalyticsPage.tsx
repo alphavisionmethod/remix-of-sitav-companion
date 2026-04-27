@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
-import { useStoreAnalytics } from "@/hooks/use-store-analytics";
+import { useStoreAnalytics } from "@/modules/business/hooks/use-store-analytics";
 
 const StoreAnalyticsPage = () => {
   const [activeTab, setActiveTab] = useState("overview");

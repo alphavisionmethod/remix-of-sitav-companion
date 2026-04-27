@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useCRMContacts, useCRMCommunications, useCRMOpportunities, useCRMTasks } from "@/hooks/use-crm-data";
+import { useCRMContacts, useCRMCommunications, useCRMOpportunities, useCRMTasks } from "@/modules/business/hooks/use-crm-data";
 import {
   Heart, TrendingUp, TrendingDown, AlertTriangle, Users, ShieldAlert, Eye,
   ArrowUpRight, Clock, Phone, Mail, Calendar, ChevronRight, Sparkles,
@@ -15,7 +15,7 @@ import { formatDistanceToNow, differenceInDays } from "date-fns";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { CRMRelationshipIntelligence } from "@/modules/business/components/business/crm/CRMRelationshipIntelligence";
 import { CRMNextBestAction } from "@/modules/business/components/business/crm/CRMNextBestAction";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer, getStatusWord } from "@/domains/engines/business-identity-layers";
 
 const healthLabel = healthBucketFor;

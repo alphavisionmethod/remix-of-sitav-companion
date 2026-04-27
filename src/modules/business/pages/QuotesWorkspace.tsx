@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileText, Plus, DollarSign, CheckCircle, Send, X, Trash2 } from "lucide-react";

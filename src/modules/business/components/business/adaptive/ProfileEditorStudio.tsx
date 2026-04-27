@@ -6,7 +6,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Settings, RotateCcw, Eye, Shield, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { ALL_ARCHETYPES, type ProfileArchetype } from "@/domains/engines/business-profile-engine";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { Slider } from "@/components/ui/slider";

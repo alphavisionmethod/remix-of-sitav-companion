@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Activity, TrendingUp, TrendingDown, Zap, BarChart3 } from "lucide-react";
-import { INSTRUMENTS, PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
+import { INSTRUMENTS, PORTFOLIO } from "@/modules/finance/hooks/useInvestmentOfficeData";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Sector groupings for heatmap

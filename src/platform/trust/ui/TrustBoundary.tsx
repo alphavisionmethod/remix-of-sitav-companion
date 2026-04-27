@@ -6,7 +6,7 @@
 // ════════════════════════════════════════════════════════════
 
 import { useState, type ReactNode } from "react";
-import { useTrustEmit } from "@/hooks/use-trust-emit";
+import { useTrustEmit } from "@/platform/trust/hooks/use-trust-emit";
 import type { RiskTier, TrustPillarId } from "@/platform/trust";
 
 interface TrustBoundaryProps {

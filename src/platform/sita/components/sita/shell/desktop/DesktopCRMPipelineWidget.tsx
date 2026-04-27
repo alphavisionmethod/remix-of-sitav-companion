@@ -1,6 +1,6 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import { Users } from "lucide-react";
-import { useCRMPipelineData } from "@/hooks/useDesktopWidgetsData";
+import { useCRMPipelineData } from "@/platform/sita/hooks/useDesktopWidgetsData";
 
 interface Props { onLaunchApp?: (appId: string) => void; }
 

@@ -11,7 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
-import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useOSOrchestration } from "@/platform/orchestration/hooks/useOSOrchestration";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";

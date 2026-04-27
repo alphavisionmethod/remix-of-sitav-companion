@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FileSearch, Brain, TrendingUp, TrendingDown, AlertTriangle, Calendar, Globe, Shield, Layers } from "lucide-react";
-import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
-import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
+import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/modules/finance/hooks/useInvestmentOfficeData";
+import { useInvestmentThesisEntries } from "@/modules/finance/hooks/use-investment-office";
 import { EXPLAINABILITY_LAYERS, type ExplainabilityDepth } from "@/domains/investment";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

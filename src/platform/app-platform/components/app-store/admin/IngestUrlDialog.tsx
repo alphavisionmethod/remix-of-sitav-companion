@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useIngestWebApp, useIngestPwa, useCaptureScreenshot } from "@/hooks/use-app-ingestion";
+import { useIngestWebApp, useIngestPwa, useCaptureScreenshot } from "@/platform/app-platform/hooks/use-app-ingestion";
 import { ingestionService, type WebIngestResult, type PwaIngestResult } from "@/lib/services/app-ingestion/ingestion.service";
 import { toast } from "sonner";
 

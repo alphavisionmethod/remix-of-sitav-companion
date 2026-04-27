@@ -1,6 +1,6 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import { PieChart } from "lucide-react";
-import { usePortfolioMapData } from "@/hooks/useDesktopWidgetsData";
+import { usePortfolioMapData } from "@/platform/sita/hooks/useDesktopWidgetsData";
 
 interface Props { onLaunchApp?: (appId: string) => void; }
 

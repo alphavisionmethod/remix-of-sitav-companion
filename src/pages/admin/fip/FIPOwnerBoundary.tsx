@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Users, AlertTriangle, CheckCircle2, Shield, GitBranch } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useOwnerDecisions } from "@/hooks/use-fip-data";
+import { useOwnerDecisions } from "@/modules/business/hooks/use-fip-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 

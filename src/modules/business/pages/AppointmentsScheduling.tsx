@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,7 +22,7 @@ import {
   useMarkBookingConfirmed,
   useRecoverNoShow,
   type ScheduledAppointmentVM,
-} from "@/hooks/use-scheduled-appointments";
+} from "@/modules/business/hooks/use-scheduled-appointments";
 import {
   useSyncAppointmentToCalendar,
   useAppointmentSyncStatus,

@@ -1,10 +1,10 @@
-import { usePolicyDecision } from "@/hooks/use-policy-decision";
+import { usePolicyDecision } from "@/platform/trust/hooks/use-policy-decision";
 import { AdminPageHeader } from "@/platform/sita/components/sita/admin/AdminPageHeader";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { FileCheck, AlertTriangle, Shield, Eye, CheckCircle2, XCircle, Code, Palette, Wrench, RotateCcw } from "lucide-react";
-import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
+import { useAIEngDomain } from "@/platform/governance/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const typeIcons: Record<string, typeof Code> = { code: Code, design: Palette, ops: Wrench };

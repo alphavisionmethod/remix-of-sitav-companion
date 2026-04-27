@@ -2,7 +2,7 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, Shield, TrendingUp, Zap, Clock, Send, Brain, ChevronRight } from "lucide-react";
-import { INVESTMENT_ADVISORS, SAMPLE_SCENARIOS, SAMPLE_ORDERS } from "@/hooks/useInvestmentOfficeData";
+import { INVESTMENT_ADVISORS, SAMPLE_SCENARIOS, SAMPLE_ORDERS } from "@/modules/finance/hooks/useInvestmentOfficeData";
 import { useStreamingChat } from "@/hooks/use-streaming-chat";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

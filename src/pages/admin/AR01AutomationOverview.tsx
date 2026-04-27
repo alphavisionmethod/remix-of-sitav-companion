@@ -7,7 +7,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/compone
 import { Badge } from "@/components/ui/badge";
 import { Activity, Zap, AlertTriangle, Shield, Clock, CheckCircle, XCircle, Pause } from "lucide-react";
 import { motion } from "framer-motion";
-import { useKernelQuery } from "@/hooks/use-kernel-query";
+import { useKernelQuery } from "@/platform/sita/hooks/use-kernel-query";
 import ARSubNav from "@/platform/admin/components/admin/ARSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

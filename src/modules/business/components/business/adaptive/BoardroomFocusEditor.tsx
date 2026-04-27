@@ -10,7 +10,7 @@ import {
   AlertTriangle, Zap, Heart, Clock, Package, Globe,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { Checkbox } from "@/components/ui/checkbox";
 

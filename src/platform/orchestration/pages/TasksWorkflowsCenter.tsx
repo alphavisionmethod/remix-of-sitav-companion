@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/contexts/AuthContext";
-import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useOSOrchestration } from "@/platform/orchestration/hooks/useOSOrchestration";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";

@@ -10,9 +10,9 @@ import { ProofReceipt } from "@/platform/sita/components/sita/primitives/ProofRe
 import { ConfidenceBar } from "@/platform/sita/components/sita/primitives/ConfidenceBar";
 import { DomainHeader } from "@/platform/sita/components/sita/primitives/DomainHeader";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
-import { useProofRecords } from "@/hooks/use-sita-data";
-import { useProofTimeline } from "@/hooks/use-proof-timeline";
-import { useProofChain, useProofBundle } from "@/hooks/use-proof-chain";
+import { useProofRecords } from "@/platform/sita/hooks/use-sita-data";
+import { useProofTimeline } from "@/platform/trust/hooks/use-proof-timeline";
+import { useProofChain, useProofBundle } from "@/platform/trust/hooks/use-proof-chain";
 import { useKernelStatus } from "@/platform/sita/contexts/SitaKernelContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";

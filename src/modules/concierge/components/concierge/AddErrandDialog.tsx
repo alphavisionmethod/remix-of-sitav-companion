@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
-import { useCreateErrand } from "@/hooks/use-concierge-data";
+import { useCreateErrand } from "@/modules/concierge/hooks/use-concierge-data";
 import { toast } from "sonner";
 
 export function AddErrandDialog() {

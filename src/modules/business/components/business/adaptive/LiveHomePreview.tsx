@@ -10,7 +10,7 @@ import {
   ShoppingCart, Receipt, Phone, Activity, Target,
   Heart, FileText, Bot,
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer, getTimeAwareGreeting } from "@/domains/engines/business-identity-layers";
 import { getTopWidgets } from "./BusinessHomeWidgetRegistry";
 import { getStatCardsForProfile, getQuickActionsForProfile } from "./AdaptiveCRMConfig";

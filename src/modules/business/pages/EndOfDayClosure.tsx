@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
-import { useEndOfDayClosure } from "@/hooks/use-operational-rituals";
+import { useEndOfDayClosure } from "@/platform/operations/hooks/use-operational-rituals";
 
 const STAT_ICONS: Record<string, typeof CheckCircle> = {
   "tasks-done": CheckCircle,

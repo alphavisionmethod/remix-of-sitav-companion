@@ -4,8 +4,8 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, ArrowRight, Loader2, Database } from "lucide-react";
-import { useSignalSubsystemReadiness } from "@/hooks/use-health-signal-data";
-import { useSeedEcosystemData } from "@/hooks/useEcosystemDevices";
+import { useSignalSubsystemReadiness } from "@/modules/health/hooks/use-health-signal-data";
+import { useSeedEcosystemData } from "@/platform/runtime/hooks/useEcosystemDevices";
 import HRSSubNav from "@/platform/admin/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

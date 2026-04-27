@@ -12,7 +12,7 @@ import {
   Banknote, FolderOpen, CalendarClock
 } from "lucide-react";
 import { formatDistanceToNow, format } from "date-fns";
-import { useCRMContacts, useCRMOpportunities, useCRMCommunications, useCRMNotes, useCRMContactCompanyLinks, useCreateContactCompanyLink, useDeleteContactCompanyLink } from "@/hooks/use-crm-data";
+import { useCRMContacts, useCRMOpportunities, useCRMCommunications, useCRMNotes, useCRMContactCompanyLinks, useCreateContactCompanyLink, useDeleteContactCompanyLink } from "@/modules/business/hooks/use-crm-data";
 import type { CRMCompany } from "@/data/repositories/crm-data-service";
 import { CRMEscalateToBoardroom } from "./CRMEscalateToBoardroom";
 import { InlineAdvisorInsights, generateCompanyInsights } from "./CRMAdvisorInsight";

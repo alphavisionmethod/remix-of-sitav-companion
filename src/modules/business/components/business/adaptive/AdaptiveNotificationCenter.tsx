@@ -13,7 +13,7 @@ import {
   CheckCircle, Star, Bot, Crown, Activity, Clock,
   Heart, Package, RefreshCw, Mail, Shield, Zap,
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import {
   rankNotifications,

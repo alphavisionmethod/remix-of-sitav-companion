@@ -33,7 +33,7 @@ vi.mock("@/platform/app-platform/contexts/AppPlatformContext", () => ({
   AppPlatformProvider: ({ children }: any) => children,
 }));
 
-vi.mock("@/hooks/useOSOrchestration", () => ({
+vi.mock("@/platform/orchestration/hooks/useOSOrchestration", () => ({
   useOSOrchestration: () => new Proxy({}, {
     get: (_target, prop) => {
       const defaults: Record<string, any> = {

@@ -1,7 +1,7 @@
 import React from "react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import CRMDuplicateReview from "@/modules/business/components/business/crm/CRMDuplicateReview";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 
 const CRMDuplicates = () => {
   const { adaptations } = useBusinessProfile();

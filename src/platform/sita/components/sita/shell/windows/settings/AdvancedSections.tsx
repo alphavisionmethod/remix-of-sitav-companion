@@ -14,10 +14,10 @@ import {
   NovaToggle, NovaBadge, NovaAvatar,
 } from "@/platform/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
-import { useUpdateDaemon } from "@/hooks/useUpdateDaemon";
+import { useUpdateDaemon } from "@/platform/runtime/hooks/useUpdateDaemon";
 import { toast } from "sonner";
 import { SettingRow } from "./shared";
-import { useSettingsValue } from "@/hooks/use-settings-value";
+import { useSettingsValue } from "@/platform/settings/hooks/use-settings-value";
 
 function ChoiceRow({ label, options, value, onChange }: {
   label: string; options: { key: string; label: string; desc?: string }[]; value: string; onChange: (v: string) => void;

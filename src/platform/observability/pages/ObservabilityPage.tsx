@@ -12,11 +12,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/platform/sita/components/sita/admin";
-import { useOSRuntime } from "@/hooks/useOSRuntime";
+import { useOSRuntime } from "@/platform/sita/hooks/useOSRuntime";
 import {
   useMissionControlSummary, useFounderCostSummary, useConnectorSummaries,
   useDiagnosticsSummary, useSystemActivity, useTrustSummary,
-} from "@/hooks/use-mission-control-views";
+} from "@/platform/mission-control/hooks/use-mission-control-views";
 import { useCountUpFormatted } from "@/hooks/useCountUp";
 import {
   Activity, Wifi, AlertTriangle, Cpu, Zap, Clock, Eye, BarChart3,

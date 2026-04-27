@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { generateChiefSynthesis } from "@/lib/ai-engineering";
 import { getIntegrationHealthSummary } from "@/lib/ai-engineering/platform-integration";
-import { useAIEngineeringData } from "@/hooks/use-ai-engineering-data";
+import { useAIEngineeringData } from "@/platform/governance/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const MISSIONS: any[] = [];
 const RELEASE_GATES: any[] = [];

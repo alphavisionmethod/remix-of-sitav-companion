@@ -6,5 +6,41 @@
     "expiry": "Every shim entry MUST carry an `expiry` phase tag. Shims with no remaining importers MUST be deleted in the next pass."
   },
   "shims": [],
-  "rationale": []
+  "rationale": [
+    {
+      "kind": "hook",
+      "path": "src/hooks/use-flagship-loop-proof.ts",
+      "heuristicClassification": "platform:trust",
+      "decision": "keep-shared",
+      "reason": "Records receipts for ALL flagship customer journeys (sign-in, files-ai-assist, boardroom, sync, admin-truth). Cross-cutting by definition; only matched 'trust' filename heuristic. No platform/trust import dependency."
+    },
+    {
+      "kind": "hook",
+      "path": "src/hooks/useRealityProvider.ts",
+      "heuristicClassification": "platform:runtime",
+      "decision": "keep-shared",
+      "reason": "Thin neutral wrapper around RealityModeContext exposing { mode, isDemo, isReal, scenarioKey }. Consumed across all modules + platform systems for demo/real switching. Owner-neutral primitive — must remain in src/hooks/."
+    },
+    {
+      "kind": "hook",
+      "path": "src/hooks/use-domain-data.ts",
+      "heuristicClassification": "module:business",
+      "decision": "keep-shared",
+      "reason": "Cross-cutting catalog hook. Aggregates 12 owner scopes (business, finance, files, money, mobile, owner, workspace, mission-control, calendar, activity, admin, revenue, investment, boardroom, experience, notifications, observability, orchestration). 40 distinct importers across modules + 9 platform systems. The 'business-data-service' import that triggered the heuristic is one of 12 imports — not the dominant owner."
+    },
+    {
+      "kind": "hook",
+      "path": "src/hooks/use-cai-data.ts",
+      "heuristicClassification": "module:business",
+      "decision": "keep-shared",
+      "reason": "Continuous Adaptive Intelligence (CAI) is a platform-wide ambient intelligence layer (23 CAI tables: graph, intent, attention, continuity, trust, chief-of-staff, timing, relationships, digest, modes, interface, opportunity, memory, boundary, signature). Imported by platform/ai. The 'cai-data-service' filename heuristic mis-tagged it as business."
+    },
+    {
+      "kind": "hook",
+      "path": "src/hooks/useCAIData.ts",
+      "heuristicClassification": "module:business",
+      "decision": "keep-shared",
+      "reason": "Same CAI cross-cutting rationale as use-cai-data.ts. Consumed by platform/sita, platform/boardroom, and admin pages."
+    }
+  ]
 }

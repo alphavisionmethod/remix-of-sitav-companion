@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import CRMConnectModal from "@/modules/business/components/business/CRMConnectModal";
 import CRMImportWizard from "@/modules/business/components/business/CRMImportWizard";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 
 type Category = "all" | "crm" | "marketing" | "dev" | "communication" | "spreadsheets" | "social";
 

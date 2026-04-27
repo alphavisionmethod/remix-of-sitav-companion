@@ -14,7 +14,7 @@ vi.mock("@/integrations/supabase/client", () => ({
   supabase: { from: () => ({}) },
 }));
 
-import { deriveConciergeEntityRef } from "@/hooks/use-concierge-data";
+import { deriveConciergeEntityRef } from "@/modules/concierge/hooks/use-concierge-data";
 
 describe("deriveConciergeEntityRef (Phase 7.4)", () => {
   it("returns null for an unknown action key", () => {

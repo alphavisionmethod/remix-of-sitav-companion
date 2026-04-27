@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useCapabilities, useCreateCapability } from "@/hooks/use-fip-data";
+import { useCapabilities, useCreateCapability } from "@/modules/business/hooks/use-fip-data";
 import { CAPABILITY_CLASSES } from "@/lib/fip/types";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

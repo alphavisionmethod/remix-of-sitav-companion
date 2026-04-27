@@ -22,7 +22,7 @@ import { AppStateWrapper } from "@/platform/sita/components/sita/shell/AppStateW
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
-import { useOSSecurity } from "@/hooks/useOSSecurity";
+import { useOSSecurity } from "@/platform/sita/hooks/useOSSecurity";
 import {
   DEVICE_MODES, type DeviceMode, type DeviceModeDefinition,
   getPolicyBundleManager,

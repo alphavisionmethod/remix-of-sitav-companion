@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { useBookings } from "@/hooks/use-revenue-office";
+import { useBookings } from "@/modules/business/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

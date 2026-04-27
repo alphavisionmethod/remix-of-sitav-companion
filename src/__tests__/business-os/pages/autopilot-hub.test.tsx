@@ -29,7 +29,7 @@ const hookState: {
   mode: "demo",
 };
 
-vi.mock("@/hooks/use-autopilot-config", () => ({
+vi.mock("@/platform/orchestration/hooks/use-autopilot-config", () => ({
   useAutopilotConfig: () => ({
     ...hookState,
     isLoading: hookState.state === "loading",

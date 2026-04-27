@@ -14,7 +14,7 @@ import {
   Search, Beaker, Eye, Brain, Shield, Send, Settings, Users,
   BarChart3, FileText, Zap, Lock, AlertTriangle, Sparkles,
 } from "lucide-react";
-import { usePermissionGate, type PermissionScope } from "@/hooks/usePermissionGate";
+import { usePermissionGate, type PermissionScope } from "@/platform/auth/hooks/usePermissionGate";
 import { cn } from "@/lib/utils";
 
 // ── Command Registry ───────────────────────────────────────────

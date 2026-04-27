@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { lazy, Suspense, useState, useCallback, useEffect } from "react";
-import { useWindowManager } from "@/hooks/useWindowManager";
+import { useWindowManager } from "@/platform/sita/hooks/useWindowManager";
 type WindowManager = ReturnType<typeof useWindowManager>;
 import { useFocusMode } from "@/hooks/use-focus-mode";
 import { useSitaAmbientMood } from "./sita-hud";

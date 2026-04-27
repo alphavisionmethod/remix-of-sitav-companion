@@ -1,5 +1,5 @@
 import { AdvisorCouncilShell, type AdvisorConfig } from "@/platform/advisors/components/advisors/AdvisorCouncilShell";
-import { INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
+import { INVESTMENT_ADVISORS } from "@/modules/finance/hooks/useInvestmentOfficeData";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Map investment advisors to AdvisorConfig format for the shared shell

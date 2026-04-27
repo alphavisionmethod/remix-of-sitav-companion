@@ -5,9 +5,9 @@ import { hapticTap, hapticHeavy } from "@/lib/utils/haptics";
 import { useOSWindowContext, type OSWindow } from "./WindowContext";
 import { SurfaceContextMenu } from "@/platform/sita/components/sita/shell/SurfaceContextMenu";
 import { SnapGuideOverlay } from "@/platform/sita/components/sita/shell/SnapGuideOverlay";
-import { useWindowSnap } from "@/hooks/useWindowSnap";
-import { useWindowScrollSync } from "@/hooks/useWindowScrollSync";
-import { useWindowKeyboardScroll } from "@/hooks/useWindowKeyboardScroll";
+import { useWindowSnap } from "@/platform/sita/hooks/useWindowSnap";
+import { useWindowScrollSync } from "@/platform/sita/hooks/useWindowScrollSync";
+import { useWindowKeyboardScroll } from "@/platform/sita/hooks/useWindowKeyboardScroll";
 
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — App Window (Advanced)

@@ -1,6 +1,6 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import { TrendingUp, TrendingDown, Wallet } from "lucide-react";
-import { useFinanceSnapshotData } from "@/hooks/useDesktopWidgetsData";
+import { useFinanceSnapshotData } from "@/platform/sita/hooks/useDesktopWidgetsData";
 
 interface Props { onLaunchApp?: (appId: string) => void; }
 

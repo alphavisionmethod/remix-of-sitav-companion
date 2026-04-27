@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 
 describe("Data Hook Exports", () => {
   it("use-sita-data exports all required hooks", async () => {
-    const mod = await import("@/hooks/use-sita-data");
+    const mod = await import("@/platform/sita/hooks/use-sita-data");
     const requiredHooks = [
       "useLeads", "useCustomers", "useOpportunities", "useQuotes", "useInvoices",
       "useCommunications", "useBills", "useSubscriptions", "useReserves", "useDeals",
@@ -21,7 +21,7 @@ describe("Data Hook Exports", () => {
   });
 
   it("exports 31 hooks total", async () => {
-    const mod = await import("@/hooks/use-sita-data");
+    const mod = await import("@/platform/sita/hooks/use-sita-data");
     const exportedFunctions = Object.keys(mod).filter(k => typeof (mod as never)[k] === "function");
     expect(exportedFunctions.length).toBeGreaterThanOrEqual(31);
   });

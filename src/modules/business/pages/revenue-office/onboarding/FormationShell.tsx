@@ -16,7 +16,7 @@ import { chapterColor } from "./primitives";
 
 import { STAGES, CHAPTERS, defaultOnboardingState, type OnboardingState, type StageId } from "./types";
 import LiveOfficeSidebar from "./LiveOfficeSidebar";
-import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
+import { useBusinessOnboarding } from "@/modules/business/hooks/useBusinessOnboarding";
 
 import CeremonyScreen from "./screens/CeremonyScreen";
 import IdentityScreen from "./screens/IdentityScreen";

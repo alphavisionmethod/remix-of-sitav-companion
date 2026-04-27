@@ -3,9 +3,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, Plus, Bell, Brain, TrendingUp, TrendingDown, ChevronRight, Star, Zap, Shield } from "lucide-react";
 import { SparklineChart } from "@/platform/sita/components/sita/SparklineChart";
-import { INSTRUMENTS, PORTFOLIO, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
+import { INSTRUMENTS, PORTFOLIO, WATCHLISTS } from "@/modules/finance/hooks/useInvestmentOfficeData";
 import { SPARKLINE_DATA } from "@/domains/investment";
-import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
+import { useMarketWatchlistItems } from "@/modules/finance/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function WatchlistsSignals() {

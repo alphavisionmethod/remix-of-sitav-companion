@@ -1,7 +1,7 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import { cn } from "@/lib/utils";
 import { Activity } from "lucide-react";
-import { useBusinessPulseData } from "@/hooks/useDesktopWidgetsData";
+import { useBusinessPulseData } from "@/platform/sita/hooks/useDesktopWidgetsData";
 
 export function DesktopNotificationsWidget() {
   const { data, isLoading, isEmpty } = useBusinessPulseData();

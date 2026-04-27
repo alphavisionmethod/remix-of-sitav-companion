@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from "react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { useCRMCommunications, useCRMContacts, useCRMCompanies, useCreateCommunication } from "@/hooks/use-crm-data";
+import { useCRMCommunications, useCRMContacts, useCRMCompanies, useCreateCommunication } from "@/modules/business/hooks/use-crm-data";
 import {
   Mail, Phone, MessageSquare, Calendar, Plus, Clock, Video, FileText,
   ChevronDown, ChevronUp, Search, ArrowUpRight, ArrowDownLeft,

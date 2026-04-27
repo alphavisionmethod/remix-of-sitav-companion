@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { Network, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
+import { useMarketWatchlistItems } from "@/modules/finance/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 export default function CrossAssetStoryEngine() {
   const { data: liveData, isLoading } = useMarketWatchlistItems();

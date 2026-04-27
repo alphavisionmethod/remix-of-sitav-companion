@@ -15,7 +15,7 @@ import { SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { SectionSkeleton, KPISkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { useState, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { useAction } from "@/hooks/useAction";
 import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import {

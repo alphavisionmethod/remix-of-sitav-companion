@@ -16,7 +16,7 @@ import {
   CalendarDays, Clock, Plus, AlertTriangle, CheckCircle2,
   XCircle, RefreshCw, ArrowRight,
 } from "lucide-react";
-import { useScheduledAppointments } from "@/hooks/use-scheduled-appointments";
+import { useScheduledAppointments } from "@/modules/business/hooks/use-scheduled-appointments";
 import { setLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
 import type { ScheduledAppointmentVM } from "@/modules/business/domain/scheduling/types";
 

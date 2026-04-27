@@ -3,8 +3,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layers, Shield, TrendingUp, Zap, DollarSign, Target, AlertTriangle, ChevronRight } from "lucide-react";
-import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
-import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
+import { PORTFOLIO } from "@/modules/finance/hooks/useInvestmentOfficeData";
+import { useCapitalPurposeBuckets } from "@/modules/finance/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed

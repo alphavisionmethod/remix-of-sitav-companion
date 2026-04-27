@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DEPTH_LAYERS } from "@/platform/design-system/nova-os";
-import { useSettingsValue } from "@/hooks/use-settings-value";
+import { useSettingsValue } from "@/platform/settings/hooks/use-settings-value";
 import { Slider } from "@/components/ui/slider";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { SitaVoiceControlRow } from "./sita-voice/SitaVoiceControlRow";

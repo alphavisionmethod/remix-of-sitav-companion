@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Monitor, Smartphone, Tablet, Laptop, Wifi, WifiOff, Shield, ArrowRight, RefreshCw } from "lucide-react";
-import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useOSOrchestration } from "@/platform/orchestration/hooks/useOSOrchestration";
 import type { MeshPeer, DeviceRole } from "@/lib/services/device-mesh/index";
 
 const DEVICE_ICONS: Record<string, typeof Monitor> = {

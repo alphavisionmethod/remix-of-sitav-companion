@@ -5,9 +5,9 @@ import {
   Target, AlertTriangle, ChevronRight, Calendar, Eye, Plus, Info, Activity, Link2
 } from "lucide-react";
 import LightweightChart from "@/modules/finance/components/investment/LightweightChart";
-import { INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_THESES, PLATFORM_CONNECTIONS, getInstrument } from "@/hooks/useInvestmentOfficeData";
+import { INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_THESES, PLATFORM_CONNECTIONS, getInstrument } from "@/modules/finance/hooks/useInvestmentOfficeData";
 import { SAMPLE_SCENARIOS } from "@/domains/investment";
-import { usePortfolioPositions } from "@/hooks/use-investment-office";
+import { usePortfolioPositions } from "@/modules/finance/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;

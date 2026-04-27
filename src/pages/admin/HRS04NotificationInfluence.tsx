@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bell, BellOff, Clock, AlertTriangle, Shield } from "lucide-react";
-import { useInterruptionPosture } from "@/hooks/use-health-signal-data";
+import { useInterruptionPosture } from "@/modules/health/hooks/use-health-signal-data";
 import HRSSubNav from "@/platform/admin/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const HRS04NotificationInfluence = () => {

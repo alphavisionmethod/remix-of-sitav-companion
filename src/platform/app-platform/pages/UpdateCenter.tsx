@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { useUpdateDaemon } from "@/hooks/useUpdateDaemon";
+import { useUpdateDaemon } from "@/platform/runtime/hooks/useUpdateDaemon";
 import { UpdateSlotVisualization } from "@/platform/sita/components/sita/os/UpdateSlotVisualization";
 import { UpdateProgressOverlay } from "@/platform/sita/components/sita/os/UpdateProgressOverlay";
 import type { CatalogEntry, UpdateChannel } from "@/lib/services/update-daemon";

@@ -20,7 +20,7 @@ import { CG04MarginProtectionTab } from "@/platform/admin/components/admin/compu
 import { CG06MissionCostTab } from "@/platform/admin/components/admin/compute-governance/CG06MissionCostTab";
 import { CG10PricingSimulatorTab } from "@/platform/admin/components/admin/compute-governance/CG10PricingSimulatorTab";
 import { classColors, tierColors, budgetStatusColors, fmt } from "@/platform/admin/components/admin/compute-governance/shared";
-import { useComputeBudgetStatus, useAISpendSummary, useModelRoutingStats, useMarginSnapshot } from "@/hooks/use-compute-governance";
+import { useComputeBudgetStatus, useAISpendSummary, useModelRoutingStats, useMarginSnapshot } from "@/platform/governance/hooks/use-compute-governance";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 // ── Mock Data ───────────────────────────────────────────────
 

@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { getDefaultAdvisorAvatar } from "@/lib/advisors/advisor-avatar-assets";
-import { getCachedPortraitUrl } from "@/hooks/use-advisor-portraits";
+import { getCachedPortraitUrl } from "@/platform/advisors/hooks/use-advisor-portraits";
 import { getPortraitSrcSet } from "@/lib/advisors/advisor-responsive-assets";
 import { sanitizeAvatarUrl } from "@/lib/advisors/avatar-url-validation";
 import { logPortraitFailure } from "@/lib/advisors/portrait-failure-logger";
