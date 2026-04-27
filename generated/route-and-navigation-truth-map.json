@@ -1,0 +1,2424 @@
+{
+  "generatedAt": "2026-04-27T17:28:58.582Z",
+  "totals": {
+    "descriptors": 118,
+    "familyRoutes": 713,
+    "uniqueFamilyRoutePaths": 710,
+    "redirects": 56,
+    "orphanedRoutes": 0
+  },
+  "pillars": {
+    "business": {
+      "counts": {
+        "total": 60,
+        "internal": 11,
+        "boardroom": 2,
+        "workspace": 36,
+        "settings": 1,
+        "proof": 2,
+        "overview": 3,
+        "room": 2,
+        "engine": 2,
+        "control-plane": 1
+      },
+      "pages": [
+        {
+          "id": "adaptive-home",
+          "role": "internal",
+          "label": "Adaptive Home",
+          "component": "AdaptiveBusinessHome",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "advisor-board",
+          "role": "boardroom",
+          "label": "Advisor Board",
+          "component": "BusinessAdvisorBoardPage",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "In-shell only today; Phase 2 evaluates promoting to /business/advisor-board.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "appointments",
+          "role": "workspace",
+          "label": "Appointments",
+          "component": "AppointmentsScheduling",
+          "route": "/business/appointments",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "autopilot-hub",
+          "role": "internal",
+          "label": "Autopilot Hub (legacy)",
+          "component": "RevenueAutopilotConsole",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "legacy",
+          "replacedBy": "revenue-autopilot-console",
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Legacy slug — sidebar entry removed in Phase 2; in-shell only via PAGE map for backwards-compat deep-links; URL redirected by user-redirect-map. Reclassified as 'internal' under Phase 5 boundary rule (no public route shim allowed). Will be removed in Phase 8 once telemetry shows zero hits.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "background-tasks",
+          "role": "internal",
+          "label": "Tasks & Syncs",
+          "component": "BackgroundTasks",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (BackgroundTaskCenter → BackgroundTasks). Old class re-exported for backwards compat.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "boardroom",
+          "role": "boardroom",
+          "label": "Boardroom",
+          "component": "BusinessBoardroom",
+          "route": "/business/boardroom",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "boardroom-agenda",
+          "role": "internal",
+          "label": "Boardroom Agenda",
+          "component": "AdaptiveBoardroomAgenda",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "business-profile",
+          "role": "internal",
+          "label": "Business Profile",
+          "component": "BusinessProfileEditor",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "business-settings",
+          "role": "settings",
+          "label": "Settings",
+          "component": "BusinessSettingsPage",
+          "route": "/business/settings",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "collections",
+          "role": "workspace",
+          "label": "Collections",
+          "component": "CollectionsWorkspace",
+          "route": "/business/collections",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (CollectionsCommandCenter → CollectionsWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "communications",
+          "role": "workspace",
+          "label": "Comms",
+          "component": "CommunicationsWorkspace",
+          "route": "/business/communications",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (CommunicationsCenter → CommunicationsWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "continuity-report",
+          "role": "proof",
+          "label": "Continuity Report",
+          "component": "ContinuityReport",
+          "route": "/business/continuity-report",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-advisor",
+          "role": "workspace",
+          "label": "Advisor",
+          "component": "CRMAdvisorPage",
+          "route": "/business/crm-advisor",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-automations",
+          "role": "workspace",
+          "label": "Automations",
+          "component": "CRMAutomations",
+          "route": "/business/crm-automations",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-communications",
+          "role": "workspace",
+          "label": "Comms Queue",
+          "component": "CRMCommunications",
+          "route": "/business/crm-communications",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-companies",
+          "role": "workspace",
+          "label": "Companies",
+          "component": "CRMCompanies",
+          "route": "/business/crm-companies",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-contacts",
+          "role": "workspace",
+          "label": "Contacts",
+          "component": "CRMContacts",
+          "route": "/business/crm-contacts",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-duplicates",
+          "role": "workspace",
+          "label": "Duplicates",
+          "component": "CRMDuplicates",
+          "route": "/business/crm-duplicates",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-fields",
+          "role": "workspace",
+          "label": "Fields",
+          "component": "CRMCustomFieldsPage",
+          "route": "/business/crm-fields",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-health",
+          "role": "workspace",
+          "label": "Health",
+          "component": "CRMHealth",
+          "route": "/business/crm-health",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-home",
+          "role": "overview",
+          "label": "CRM Home",
+          "component": "CRMHome",
+          "route": "/business/crm-home",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-import",
+          "role": "workspace",
+          "label": "Import",
+          "component": "CRMImport",
+          "route": "/business/crm-import",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (CRMImportCenter → CRMImport). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-notes",
+          "role": "workspace",
+          "label": "Notes",
+          "component": "CRMNotes",
+          "route": "/business/crm-notes",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-pipeline",
+          "role": "workspace",
+          "label": "Pipeline",
+          "component": "CRMPipeline",
+          "route": "/business/crm-pipeline",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-segments",
+          "role": "workspace",
+          "label": "Segments",
+          "component": "CRMSegments",
+          "route": "/business/crm-segments",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-tasks",
+          "role": "workspace",
+          "label": "Tasks",
+          "component": "CRMTasks",
+          "route": "/business/crm-tasks",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-timeline",
+          "role": "workspace",
+          "label": "Timeline",
+          "component": "CRMTimeline",
+          "route": "/business/crm-timeline",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "customer-health",
+          "role": "workspace",
+          "label": "Customer Health",
+          "component": "CustomerHealthPage",
+          "route": "/business/customer-health",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "customers",
+          "role": "workspace",
+          "label": "Customers",
+          "component": "CustomersPage",
+          "route": "/business/customers",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "deal-room",
+          "role": "room",
+          "label": "Deal Room",
+          "component": "DealRoom",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Entity-scoped room — opened from a Deal context inside the shell, not deep-linked from the URL bar. Phase 2 evaluates promoting to /business/deal-room/:dealId.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "documents",
+          "role": "workspace",
+          "label": "Documents",
+          "component": "BusinessDocuments",
+          "route": "/business/documents",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "ecommerce",
+          "role": "workspace",
+          "label": "E-Commerce",
+          "component": "EcommerceManager",
+          "route": "/business/ecommerce",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "end-of-day",
+          "role": "workspace",
+          "label": "End of Day",
+          "component": "EndOfDayClosure",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "In-shell daily-close ritual; no public deep-link by design.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "follow-through",
+          "role": "workspace",
+          "label": "Follow-Through",
+          "component": "FollowThroughWorkspace",
+          "route": "/business/follow-through",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (FollowThroughCenter → FollowThroughWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "integrations",
+          "role": "workspace",
+          "label": "Integrations",
+          "component": "CRMIntegrations",
+          "route": "/business/integrations",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (CRMIntegrationHub → CRMIntegrations). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "invoices",
+          "role": "workspace",
+          "label": "Invoices",
+          "component": "InvoicesCollections",
+          "route": "/business/invoices",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "kpi-dashboard",
+          "role": "internal",
+          "label": "KPI Dashboard",
+          "component": "AdaptiveKPIDashboard",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "lead-recovery",
+          "role": "engine",
+          "label": "Lead Recovery",
+          "component": "LeadRecovery",
+          "route": "/business/lead-recovery",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "leads",
+          "role": "workspace",
+          "label": "Leads",
+          "component": "LeadsInbox",
+          "route": "/business/leads",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "morning-briefing",
+          "role": "workspace",
+          "label": "Morning Brief",
+          "component": "MorningBriefing",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Sub-tab of overview today; shim added in Phase 2 if promoted.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "operations",
+          "role": "workspace",
+          "label": "Operations",
+          "component": "BusinessOperations",
+          "route": "/business/operations",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "opportunities",
+          "role": "workspace",
+          "label": "Opportunities",
+          "component": "OpportunitiesWorkspace",
+          "route": "/business/opportunities",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (OpportunitiesCenter → OpportunitiesWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "overview",
+          "role": "overview",
+          "label": "Overview",
+          "component": "BusinessOverview",
+          "route": "/business/overview",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "playbook-builder",
+          "role": "workspace",
+          "label": "Builder",
+          "component": "PlaybookBuilder",
+          "route": "/business/playbook-builder",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "profile-evolution",
+          "role": "internal",
+          "label": "Profile Evolution",
+          "component": "ProfileEvolutionPanel",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "profile-studio",
+          "role": "internal",
+          "label": "Profile Studio",
+          "component": "ProfileStudio",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "proof",
+          "role": "proof",
+          "label": "Proof",
+          "component": "BusinessProof",
+          "route": "/business/proof",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "proposals",
+          "role": "workspace",
+          "label": "Proposals",
+          "component": "ProposalsContracts",
+          "route": "/business/proposals",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "quotes",
+          "role": "workspace",
+          "label": "Quotes",
+          "component": "QuotesWorkspace",
+          "route": "/business/quotes",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "relationship-dossier",
+          "role": "internal",
+          "label": "Dossier",
+          "component": "RelationshipDossier",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "revenue-autopilot",
+          "role": "engine",
+          "label": "Revenue Autopilot",
+          "component": "RevenueAutopilot",
+          "route": "/business/revenue-autopilot",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Engine surface — live runs/status. Configured by revenue-autopilot-console (control-plane).",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "revenue-autopilot-console",
+          "role": "control-plane",
+          "label": "Autopilot Console",
+          "component": "RevenueAutopilotConsole",
+          "route": "/business/revenue-autopilot-console",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 canonical control-plane for the Revenue Autopilot engine. Replaces autopilot-hub.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": [
+            "/business/autopilot-hub"
+          ]
+        },
+        {
+          "id": "revenue-forecast",
+          "role": "workspace",
+          "label": "Forecast",
+          "component": "RevenueForecast",
+          "route": "/business/revenue-forecast",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "revenue-home",
+          "role": "overview",
+          "label": "Revenue Home",
+          "component": "RevenueOpsHome",
+          "route": "/business/revenue",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Sub-overview for Revenue Ops.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "revenue-impact",
+          "role": "internal",
+          "label": "Revenue Impact",
+          "component": "RevenueImpactDashboard",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "legacy",
+          "replacedBy": "revenue-home",
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Phase 2 demoted: removed from sidebar and page map; the legacy /business/revenue-impact URL is redirected to /business/revenue (Revenue Home). Phase 3 will surface this as a tab inside RevenueOpsHome.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "social",
+          "role": "workspace",
+          "label": "Social",
+          "component": "SocialCommand",
+          "route": "/business/social",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "strategic-accounts",
+          "role": "room",
+          "label": "Strategic Accounts",
+          "component": "StrategicAccountRoom",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Entity-scoped room — opened from a Customer/Account context inside the shell, not deep-linked from the URL bar. Phase 2 evaluates promoting to /business/strategic-accounts/:accountId.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "support",
+          "role": "workspace",
+          "label": "Support",
+          "component": "SupportWorkspace",
+          "route": "/business/support",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (CustomerSupportCenter → SupportWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "website-builder",
+          "role": "workspace",
+          "label": "Website",
+          "component": "WebsiteBuilder",
+          "route": "/business/website-builder",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "workflow-templates",
+          "role": "internal",
+          "label": "Workflow Templates",
+          "component": "AdaptiveWorkflowTemplates",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        }
+      ]
+    },
+    "concierge": {
+      "counts": {
+        "total": 22,
+        "workspace": 15,
+        "boardroom": 1,
+        "archived": 6,
+        "overview": 1,
+        "proof": 1,
+        "settings": 1
+      },
+      "pages": [
+        {
+          "id": "appointments",
+          "role": "workspace",
+          "label": "Appointments",
+          "component": "AppointmentsPrep",
+          "route": "/concierge/appointments",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "boardroom",
+          "role": "boardroom",
+          "label": "Boardroom",
+          "component": "FamilyBoardroom",
+          "route": "/concierge/boardroom",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 3 confirmed: canonical = FamilyBoardroom. Sibling ConciergeBoardroom alias archived (see concierge/boardroom-legacy descriptor).",
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "boardroom-legacy",
+          "role": "archived",
+          "label": "Concierge Boardroom (legacy)",
+          "component": "ConciergeBoardroom",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "archived",
+          "replacedBy": "boardroom",
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Unused alias of FamilyBoardroom. File retained for diff history; no shell mount, no route, no sidebar entry. Tests treat it as a covered alias.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "calendar",
+          "role": "workspace",
+          "label": "Calendar",
+          "component": "MonthGridCalendar",
+          "route": "/concierge/calendar",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "errands",
+          "role": "workspace",
+          "label": "Errands",
+          "component": "ErrandsLogistics",
+          "route": "/concierge/errands",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "events",
+          "role": "workspace",
+          "label": "Events & Gifts",
+          "component": "EventsGifts",
+          "route": "/concierge/events",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "files",
+          "role": "workspace",
+          "label": "Files",
+          "component": "ConciergeFiles",
+          "route": "/concierge/files",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "grocery",
+          "role": "workspace",
+          "label": "Grocery",
+          "component": "GroceryPlanning",
+          "route": "/concierge/grocery",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "household",
+          "role": "workspace",
+          "label": "Household",
+          "component": "HouseholdWorkspace",
+          "route": "/concierge/household",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 3 rename complete (HouseholdCommandCenter → HouseholdWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "life-admin",
+          "role": "workspace",
+          "label": "Life Admin",
+          "component": "LifeAdminWorkspace",
+          "route": "/concierge/life-admin",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 3 rename complete (LifeAdminCenter → LifeAdminWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "life-dashboard",
+          "role": "archived",
+          "label": "Life Dashboard (legacy)",
+          "component": "LifeDashboard",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "archived",
+          "replacedBy": "overview",
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Orphan root-level /life surface. Phase 3 unmounts the route and redirects /life → /concierge/overview via user-redirect-map. File retained for diff history.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "overview",
+          "role": "overview",
+          "label": "Overview",
+          "component": "ConciergeOverview",
+          "route": "/concierge/overview",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "personal-life-workspace",
+          "role": "archived",
+          "label": "Personal Life Workspace (legacy)",
+          "component": "PersonalLifeWorkspace",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "archived",
+          "replacedBy": "overview",
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Orphan root-level /personal-life surface. Phase 3 unmounts the route and redirects /personal-life → /concierge/overview via user-redirect-map. File retained for diff history.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "proof",
+          "role": "proof",
+          "label": "Proof",
+          "component": "ConciergeProof",
+          "route": "/concierge/proof",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "providers",
+          "role": "workspace",
+          "label": "Providers",
+          "component": "ServiceProviders",
+          "route": "/concierge/providers",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "recurring",
+          "role": "workspace",
+          "label": "Recurring",
+          "component": "RecurringObligations",
+          "route": "/concierge/recurring",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "school",
+          "role": "workspace",
+          "label": "School",
+          "component": "SchoolActivities",
+          "route": "/concierge/school",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "settings",
+          "role": "settings",
+          "label": "Settings",
+          "component": "ConciergeSettings",
+          "route": "/concierge/settings",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "tasks",
+          "role": "workspace",
+          "label": "Tasks",
+          "component": "HouseholdTasks",
+          "route": "/concierge/tasks",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "travel",
+          "role": "workspace",
+          "label": "Travel",
+          "component": "TravelPlanning",
+          "route": "/concierge/travel",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "upcoming",
+          "role": "workspace",
+          "label": "Upcoming",
+          "component": "UpcomingNeeds",
+          "route": "/concierge/upcoming",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "workflows",
+          "role": "workspace",
+          "label": "Automations",
+          "component": "ConciergeWorkflows",
+          "route": "/concierge/workflows",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        }
+      ]
+    },
+    "finance": {
+      "counts": {
+        "total": 36,
+        "boardroom": 2,
+        "workspace": 29,
+        "engine": 1,
+        "overview": 1,
+        "proof": 1,
+        "settings": 1,
+        "archived": 2
+      },
+      "pages": [
+        {
+          "id": "advisors",
+          "role": "boardroom",
+          "label": "Advisors",
+          "component": "MoneyAdvisorBoard",
+          "route": "/money/advisors",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "allocator",
+          "role": "workspace",
+          "label": "Allocator",
+          "component": "CashAllocator",
+          "route": "/money/allocator",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "approvals",
+          "role": "workspace",
+          "label": "Approvals",
+          "component": "MoneyApprovals",
+          "route": "/money/approvals",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "automations",
+          "role": "workspace",
+          "label": "Automations",
+          "component": "FinanceAutomations",
+          "route": "/money/automations",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "bills",
+          "role": "workspace",
+          "label": "Bills",
+          "component": "BillsWorkspace",
+          "route": "/money/bills",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "boardroom",
+          "role": "boardroom",
+          "label": "Boardroom",
+          "component": "MoneyBoardroom",
+          "route": "/money/boardroom",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "boundaries",
+          "role": "workspace",
+          "label": "Boundaries",
+          "component": "FinancialBoundaryMonitor",
+          "route": "/money/boundaries",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "budgets",
+          "role": "workspace",
+          "label": "Budgets",
+          "component": "BudgetEnvelopeOffice",
+          "route": "/money/budgets",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Office suffix kept — wealth-management term.",
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "capital-allocation",
+          "role": "workspace",
+          "label": "Capital Allocation",
+          "component": "CapitalAllocationPage",
+          "route": "/capital-allocation",
+          "sidebarVisible": false,
+          "status": "legacy",
+          "replacedBy": "allocator",
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Phase 4: legacy root-level slug retained — referenced by capital-allocation service. Hidden from Money sidebar; will be folded into Money Allocator in a follow-up.",
+          "routeFamilies": [
+            "os-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "cash-timing",
+          "role": "workspace",
+          "label": "Cash Timing",
+          "component": "CashTiming",
+          "route": "/money/cash-timing",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "debt-credit",
+          "role": "workspace",
+          "label": "Debt & Credit",
+          "component": "DebtCreditOffice",
+          "route": "/money/debt-credit",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Office suffix kept — wealth-management industry term.",
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "files",
+          "role": "workspace",
+          "label": "Documents",
+          "component": "MoneyDocuments",
+          "route": "/money/files",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "health",
+          "role": "workspace",
+          "label": "Health Pulse",
+          "component": "FinancialHealthPulse",
+          "route": "/money/health",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "household",
+          "role": "workspace",
+          "label": "Household",
+          "component": "HouseholdMoneyOffice",
+          "route": "/money/household",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Office suffix kept — wealth-management industry term (HouseholdMoneyOffice).",
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "investment-office",
+          "role": "workspace",
+          "label": "Investments",
+          "component": "InvestmentOffice",
+          "route": "/money/investment-office",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "InvestmentOffice (industry term). Distinct from /investment/* canonical app.",
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "life-impact",
+          "role": "engine",
+          "label": "Life Impact",
+          "component": "LifeMoneyEngine",
+          "route": "/money/life-impact",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "modes",
+          "role": "workspace",
+          "label": "Modes",
+          "component": "MoneyModes",
+          "route": "/money/modes",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "money-onboarding",
+          "role": "workspace",
+          "label": "Money Onboarding",
+          "component": "MoneyOnboarding",
+          "route": "/money/onboarding",
+          "sidebarVisible": false,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 4: first-use only — reachable via /money/onboarding flow, intentionally not in the Money sidebar.",
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "net-worth",
+          "role": "workspace",
+          "label": "Net Worth",
+          "component": "NetWorthOffice",
+          "route": "/money/net-worth",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Office suffix kept — wealth-management term.",
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "opportunity-cost",
+          "role": "workspace",
+          "label": "Opportunity Cost",
+          "component": "OpportunityCost",
+          "route": "/money/opportunity-cost",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "overview",
+          "role": "overview",
+          "label": "Overview",
+          "component": "MoneyOverview",
+          "route": "/money/overview",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "peace-score",
+          "role": "workspace",
+          "label": "Peace Score",
+          "component": "PeaceScore",
+          "route": "/money/peace-score",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "proof",
+          "role": "proof",
+          "label": "Proof",
+          "component": "MoneyProof",
+          "route": "/money/proof",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "receivables",
+          "role": "workspace",
+          "label": "Receivables",
+          "component": "ReceivablesObligations",
+          "route": "/money/receivables",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "reconciliation",
+          "role": "workspace",
+          "label": "Reconciliation",
+          "component": "ReconciliationReview",
+          "route": "/money/reconciliation",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "reserves",
+          "role": "workspace",
+          "label": "Reserves",
+          "component": "ReservesSavings",
+          "route": "/money/reserves",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "rituals",
+          "role": "workspace",
+          "label": "Rituals",
+          "component": "MoneyRituals",
+          "route": "/money/rituals",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "scenarios",
+          "role": "workspace",
+          "label": "Scenarios",
+          "component": "ScenarioPlanner",
+          "route": "/money/scenarios",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "settings",
+          "role": "settings",
+          "label": "Settings",
+          "component": "MoneySettings",
+          "route": "/money/settings",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "spending-pulse",
+          "role": "workspace",
+          "label": "Spending Pulse",
+          "component": "SpendingPulse",
+          "route": "/money/spending-pulse",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "stress-radar",
+          "role": "workspace",
+          "label": "Stress Radar",
+          "component": "StressRadar",
+          "route": "/money/stress-radar",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "subscriptions",
+          "role": "workspace",
+          "label": "Subscriptions",
+          "component": "SubscriptionsWaste",
+          "route": "/money/subscriptions",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "tax",
+          "role": "workspace",
+          "label": "Tax",
+          "component": "TaxEstimator",
+          "route": "/money/tax",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "transactions",
+          "role": "workspace",
+          "label": "Transactions",
+          "component": "TransactionIntelligence",
+          "route": "/money/transactions",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "trust-graph",
+          "role": "workspace",
+          "label": "Trust Graph",
+          "component": "TrustGraph",
+          "route": "/money/trust-graph",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "wealth-command",
+          "role": "archived",
+          "label": "Wealth Command (legacy)",
+          "component": "WealthCommandCenter",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "archived",
+          "replacedBy": "overview",
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Phase 4: archived — orphan root-level cinematic dashboard duplicating MoneyOverview. Route /wealth-command removed. File kept on disk for diff history; no shell mount, no sidebar, no public route.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        }
+      ]
+    }
+  },
+  "redirects": [
+    {
+      "from": "/board",
+      "to": "/boardroom",
+      "reason": "legacy-path"
+    },
+    {
+      "from": "/business/autopilot-hub",
+      "to": "/business/revenue-autopilot-console",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/business/files",
+      "to": "/business/documents",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/business/revenue-home",
+      "to": "/business/revenue",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/business/revenue-impact",
+      "to": "/business/revenue",
+      "reason": "shell-consolidation"
+    },
+    {
+      "from": "/file",
+      "to": "/files",
+      "reason": "legacy-path"
+    },
+    {
+      "from": "/finance",
+      "to": "/money",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/finance/bills",
+      "to": "/money/bills",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/finance/overview",
+      "to": "/money/overview",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments",
+      "to": "/investment",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/advanced",
+      "to": "/investment/advanced",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/advisors",
+      "to": "/investment/advisors",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/beginner",
+      "to": "/investment/beginner",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/behavioral",
+      "to": "/investment/behavioral",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/boardroom",
+      "to": "/investment/boardroom",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/capital-purpose",
+      "to": "/investment/capital-purpose",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/capital-twin",
+      "to": "/investment/capital-twin",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/catalysts",
+      "to": "/investment/catalysts",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/constitution",
+      "to": "/investment/constitution",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/conviction",
+      "to": "/investment/conviction",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/cross-asset",
+      "to": "/investment/cross-asset",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/decision-theater",
+      "to": "/investment/decision-theater",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/disagreements",
+      "to": "/investment/disagreements",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/dossier",
+      "to": "/investment/dossier",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/events",
+      "to": "/investment/events",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/execute",
+      "to": "/investment/execute",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/family-office",
+      "to": "/investment/family-office",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/instrument/:instrumentId",
+      "to": "/investment/instrument/:instrumentId",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/journal",
+      "to": "/investment/journal",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/knowledge-graph",
+      "to": "/investment/knowledge-graph",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/markets",
+      "to": "/investment/markets",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/memory",
+      "to": "/investment/memory",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/modes",
+      "to": "/investment/modes",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/opportunity-map",
+      "to": "/investment/opportunity-map",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/platforms",
+      "to": "/investment/platforms",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/portfolio",
+      "to": "/investment/portfolio",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/post-trade",
+      "to": "/investment/post-trade",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/probability-lab",
+      "to": "/investment/probability-lab",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/readiness",
+      "to": "/investment/readiness",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/receipts",
+      "to": "/investment/receipts",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/research",
+      "to": "/investment/research",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/risk",
+      "to": "/investment/risk",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/sizing",
+      "to": "/investment/sizing",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/strategy",
+      "to": "/investment/strategy",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/strategy-dna",
+      "to": "/investment/strategy-dna",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/time-machine",
+      "to": "/investment/time-machine",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/trading-floor",
+      "to": "/investment/trading-floor",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/war-room",
+      "to": "/investment/war-room",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/watchlists",
+      "to": "/investment/watchlists",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/what-would-break",
+      "to": "/investment/what-would-break",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/life",
+      "to": "/concierge/overview",
+      "reason": "shell-consolidation"
+    },
+    {
+      "from": "/money/documents",
+      "to": "/money/files",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/money/family-office",
+      "to": "/money/investment-office",
+      "reason": "shell-consolidation"
+    },
+    {
+      "from": "/money/investments",
+      "to": "/investment",
+      "reason": "shell-consolidation"
+    },
+    {
+      "from": "/personal-life",
+      "to": "/concierge/overview",
+      "reason": "shell-consolidation"
+    },
+    {
+      "from": "/wealth-command",
+      "to": "/money/overview",
+      "reason": "shell-consolidation"
+    }
+  ],
+  "orphanedRoutes": []
+}

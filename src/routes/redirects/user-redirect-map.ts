@@ -92,6 +92,20 @@ export const USER_REDIRECTS: UserRedirect[] = [
   // disk for diff history but are no longer mounted by any route.
   { from: "/life", to: "/concierge/overview", reason: "shell-consolidation" },
   { from: "/personal-life", to: "/concierge/overview", reason: "shell-consolidation" },
+
+  // ── Finance IA Phase 4 cleanup ──────────────────────────────────
+  // WealthCommandCenter archived (orphan root-level cinematic dashboard
+  // duplicating MoneyOverview). Legacy URL funnels into Money Overview.
+  { from: "/wealth-command", to: "/money/overview", reason: "shell-consolidation" },
+
+  // ── Phase 8 truth-map orphan resolution ─────────────────────────
+  // Stale shim routes whose slug never matched a manifest descriptor.
+  // Funnel each to its canonical IA destination instead of leaving the
+  // shell to render a generic fallback.
+  { from: "/business/revenue-home", to: "/business/revenue", reason: "domain-rename" },
+  { from: "/business/files", to: "/business/documents", reason: "domain-rename" },
+  { from: "/money/documents", to: "/money/files", reason: "domain-rename" },
+  { from: "/money/family-office", to: "/money/investment-office", reason: "shell-consolidation" },
 ];
 
 export type { UserRedirect as UserRedirectEntry };
