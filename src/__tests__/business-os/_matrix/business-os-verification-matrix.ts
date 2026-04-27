@@ -70,6 +70,7 @@ export const SERVICE_SURFACES: SurfaceEntry[] = [
   { id: "svc.callback-queue", kind: "service", ref: "src/lib/services/business-os/callback-queue.service.ts", tests: ["src/__tests__/business-os/services/callback-queue.service.test.ts"], status: "behavioral", priority: "P1" },
   { id: "svc.customer-health", kind: "service", ref: "src/lib/services/business-os/customer-health.service.ts", tests: ["src/__tests__/business-os/services/customer-health.service.test.ts"], status: "behavioral", priority: "P1" },
   { id: "svc.continuity-verification", kind: "service", ref: "src/lib/services/business-os/continuity-verification.service.ts", tests: ["src/__tests__/business-os/services/continuity-verification.service.test.ts", "src/__tests__/business-os/trust/continuity-verification.test.ts"], status: "behavioral", priority: "P0" },
+  { id: "svc.support-health-loop", kind: "service", ref: "src/lib/services/business-os/support-health-loop.service.ts", tests: ["src/__tests__/business-os/integration/support-health-loop.test.ts"], status: "behavioral", priority: "P1", notes: "Phase 8 — drift fix; existing test was orphaned from matrix" },
 ];
 
 /** Services intentionally excluded from dedicated behavioral tests, with stable reason. */
@@ -99,6 +100,7 @@ export const TRUST_SURFACES: SurfaceEntry[] = [
   { id: "trust.receipt-emission", kind: "trust", ref: "src/hooks/use-phase10-actions.ts", tests: ["src/__tests__/business-os/trust/receipt-emission.test.tsx"], status: "behavioral", priority: "P0" },
   { id: "trust.approval-routing", kind: "trust", ref: "src/lib/policy/", tests: ["src/__tests__/business-os/trust/approval-routing.test.ts"], status: "behavioral", priority: "P0" },
   { id: "trust.proof-lineage", kind: "trust", ref: "src/lib/services/business-os/continuity-verification.service.ts", tests: ["src/__tests__/business-os/trust/proof-lineage.test.ts"], status: "behavioral", priority: "P1" },
+  { id: "trust.edge-receipt-binding", kind: "trust", ref: "supabase/functions/_shared/receipt-emitter.ts", tests: ["src/__tests__/business-os/trust/edge-receipt-binding.test.ts"], status: "behavioral", priority: "P0", notes: "Phase 8 — drift gate proving every edge writer to ai_action_receipts carries canonical lineage columns" },
 ];
 
 // ── Cross-module integration ──────────────────────────────────
@@ -107,6 +109,7 @@ export const INTEGRATION_SURFACES: SurfaceEntry[] = [
   { id: "int.crm-files-linkage", kind: "integration", ref: "src/lib/services/business-os/", tests: ["src/__tests__/business-os/integration/crm-files-linkage.test.ts"], status: "behavioral", priority: "P1" },
   { id: "int.advisor-business-action", kind: "integration", ref: "src/lib/kernel-handlers", tests: ["src/__tests__/business-os/integration/advisor-business-action.test.ts"], status: "behavioral", priority: "P0" },
   { id: "int.background-task-source", kind: "integration", ref: "src/modules/business/pages/BackgroundTaskCenter.tsx", tests: ["src/__tests__/business-os/integration/background-task-source.test.ts"], status: "behavioral", priority: "P2" },
+  { id: "int.concierge-business-linkage", kind: "integration", ref: "src/domains/engines/cross-os-integration.ts", tests: ["src/__tests__/business-os/integration/concierge-business-linkage.test.ts", "src/__tests__/business-os/integration/crm-concierge-linkage-live.test.tsx"], status: "behavioral", priority: "P0", notes: "Phase 8 — archetype-filtered Business↔Concierge cross-OS seams + live CRM→Concierge query" },
 ];
 
 // ── Adaptive profile persistence ──────────────────────────────
