@@ -198,21 +198,28 @@ export function useCreateErrand() {
   const uid = useUserId();
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (errand: {
-      title: string;
-      location?: string;
-      priority?: string;
-      estimated_minutes?: number;
-      combinable?: boolean;
-      due_date?: string;
-      bundle_id?: string;
-      notes?: string;
-      status?: string;
-    }) => {
-      const { data, error } = await fromTable("errands").insert({ ...errand, user_id: uid! }).select().single();
-      if (error) throw error;
-      return data;
-    },
+    mutationFn: withTrust(
+      "concierge.errand.create",
+      async (errand: {
+        title: string;
+        location?: string;
+        priority?: string;
+        estimated_minutes?: number;
+        combinable?: boolean;
+        due_date?: string;
+        bundle_id?: string;
+        notes?: string;
+        status?: string;
+      }) => {
+        const { data, error } = await fromTable("errands")
+          .insert({ ...errand, user_id: uid! })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (e) => `Create errand: ${e.title}`,
+    ),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["errands"] }),
   });
 }
@@ -220,11 +227,19 @@ export function useCreateErrand() {
 export function useUpdateErrand() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, ...updates }: { id: string; [key: string]: any }) => {
-      const { data, error } = await fromTable("errands").update(updates).eq("id", id).select().single();
-      if (error) throw error;
-      return data;
-    },
+    mutationFn: withTrust(
+      "concierge.errand.update",
+      async ({ id, ...updates }: { id: string; [key: string]: any }) => {
+        const { data, error } = await fromTable("errands")
+          .update(updates)
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (a) => `Update errand ${a.id}`,
+    ),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["errands"] }),
   });
 }
@@ -232,9 +247,90 @@ export function useUpdateErrand() {
 export function useDeleteErrand() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("errands").delete().eq("id", id);
-      if (error) throw error;
+    mutationFn: withTrust(
+      "concierge.errand.delete",
+      async (id: string) => {
+        const { error } = await fromTable("errands").delete().eq("id", id);
+        if (error) throw error;
+      },
+      (id) => `Delete errand ${id}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["errands"] }),
+  });
+}
+
+// ─── Bulk errand delete (Phase 7.4) ─────────────────────────
+// High blast radius — many household tasks could disappear at once.
+// Routed through the canonical approval queue. On approval the queued
+// item is executed via the canonical approve→bindExecution chain; this
+// hook is the *request* surface only and does not execute inline at
+// or above the gate threshold.
+export interface BulkDeleteErrandsInput {
+  ids: string[];
+  reason?: string;
+  /** Demo bypass — when true the gate is skipped and the deletes run inline. */
+  skip?: boolean;
+}
+
+export function useBulkDeleteErrands() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (
+      input: BulkDeleteErrandsInput,
+    ): Promise<ApprovalGateResult<{ deleted: number }>> => {
+      const { ids, reason, skip } = input;
+      if (!ids.length) return { gated: false, result: { deleted: 0 } };
+
+      // Risk scales with batch size.
+      const riskTier = ids.length >= 25 ? "critical" : "high";
+
+      const gated = await withApprovalGate(
+        async () => {
+          // Inline execution path (only reached when skip=true or queue
+          // unavailable). Emit one canonical receipt per row so the
+          // proof trail stays complete.
+          let deleted = 0;
+          for (const id of ids) {
+            try {
+              const { error } = await fromTable("errands").delete().eq("id", id);
+              if (error) throw error;
+              await emitClientReceipt({
+                actionType: "concierge.errand.bulk_delete",
+                summary: `Bulk delete errand ${id}`,
+                payload: {
+                  id,
+                  entity_ref: { entity_type: "errand", entity_id: id },
+                },
+                riskTier: "high",
+                status: "executed",
+              });
+              deleted += 1;
+            } catch (err) {
+              await emitClientReceipt({
+                actionType: "concierge.errand.bulk_delete",
+                summary: `Bulk delete errand ${id} (failed)`,
+                payload: { id },
+                riskTier: "high",
+                status: "failed",
+                metadata: { error: err instanceof Error ? err.message : String(err) },
+              });
+            }
+          }
+          return { deleted };
+        },
+        {
+          actionType: "concierge.errand.bulk_delete",
+          title: `Bulk delete ${ids.length} errand${ids.length === 1 ? "" : "s"}`,
+          justification:
+            reason ??
+            `Operator requested bulk deletion of ${ids.length} errands. Action is irreversible.`,
+          riskTier,
+          payload: { ids, count: ids.length },
+          launchImplications: `Removes ${ids.length} errand records from the household queue.`,
+          skip,
+        },
+      );
+      return gated;
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["errands"] }),
   });
