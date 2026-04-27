@@ -1,0 +1,496 @@
+{
+  "generatedAt": "2026-04-27T03:00:22.992Z",
+  "scannedFileCount": 5983,
+  "setLinkedContextSites": [
+    {
+      "file": "src/modules/business/components/business/crm/CRMFinanceLinkage.tsx",
+      "line": 160,
+      "entityType": "contact",
+      "targetRoute": "/business/quotes",
+      "snippet": "setLinkedContext({"
+    },
+    {
+      "file": "src/modules/business/components/business/crm/CRMFinanceLinkage.tsx",
+      "line": 310,
+      "entityType": "invoice",
+      "targetRoute": "/business/invoices",
+      "snippet": "setLinkedContext({ entityType: \"invoice\", entityId: inv.id, entityLabel: inv.invoice_number ?? \"Invoice\" });"
+    },
+    {
+      "file": "src/modules/business/components/business/crm/CRMFinanceLinkage.tsx",
+      "line": 363,
+      "entityType": "quote",
+      "targetRoute": "/business/quotes",
+      "snippet": "setLinkedContext({ entityType: \"quote\", entityId: q.id, entityLabel: q.title ?? \"Quote\" });"
+    },
+    {
+      "file": "src/modules/business/components/business/shared/AppointmentLineagePanel.tsx",
+      "line": 87,
+      "entityType": "appointment",
+      "targetRoute": "/business/appointments",
+      "snippet": "setLinkedContext({"
+    },
+    {
+      "file": "src/modules/business/pages/OpportunitiesCenter.tsx",
+      "line": 103,
+      "entityType": "quote",
+      "targetRoute": "/business/quotes",
+      "snippet": "setLinkedContext({"
+    },
+    {
+      "file": "src/modules/business/pages/ProposalsContracts.tsx",
+      "line": 128,
+      "entityType": "invoice",
+      "targetRoute": "/business/invoices",
+      "snippet": "setLinkedContext({ entityType: \"invoice\", entityId: newId, entityLabel: \"Drafted from proposal\" });"
+    },
+    {
+      "file": "src/modules/business/pages/ProposalsContracts.tsx",
+      "line": 303,
+      "entityType": "quote",
+      "targetRoute": "/business/quotes",
+      "snippet": "onClick={() => { setLinkedContext({ entityType: \"quote\", entityId: p.quote_id, entityLabel: p.source_quote_title }); navigate(\"/business/quotes\"); }}"
+    },
+    {
+      "file": "src/modules/business/pages/ProposalsContracts.tsx",
+      "line": 311,
+      "entityType": "invoice",
+      "targetRoute": "/business/invoices",
+      "snippet": "onClick={() => { setLinkedContext({ entityType: \"invoice\", entityId: p.converted_invoice_id, entityLabel: \"From proposal\" }); navigate(\"/business/invoices\"); }}"
+    },
+    {
+      "file": "src/modules/business/pages/QuotesWorkspace.tsx",
+      "line": 94,
+      "entityType": "proposal",
+      "targetRoute": "/business/proposals",
+      "snippet": "setLinkedContext({ entityType: \"proposal\", entityId: newId, entityLabel: \"Drafted from quote\" });"
+    },
+    {
+      "file": "src/modules/business/pages/QuotesWorkspace.tsx",
+      "line": 104,
+      "entityType": "invoice",
+      "targetRoute": "/business/invoices",
+      "snippet": "setLinkedContext({ entityType: \"invoice\", entityId: newId, entityLabel: \"Drafted from quote\" });"
+    },
+    {
+      "file": "src/modules/business/pages/QuotesWorkspace.tsx",
+      "line": 265,
+      "entityType": "opportunity",
+      "targetRoute": "/business/opportunities",
+      "snippet": "onClick={() => { setLinkedContext({ entityType: \"opportunity\", entityId: selected.opportunity_id, entityLabel: selected.opportunity_title }); navigate(\"/busines"
+    },
+    {
+      "file": "src/modules/business/pages/QuotesWorkspace.tsx",
+      "line": 273,
+      "entityType": "proposal",
+      "targetRoute": "/business/proposals",
+      "snippet": "onClick={() => { setLinkedContext({ entityType: \"proposal\", entityId: selected.converted_proposal_id, entityLabel: \"From quote\" }); navigate(\"/business/proposal"
+    },
+    {
+      "file": "src/modules/business/pages/QuotesWorkspace.tsx",
+      "line": 281,
+      "entityType": "invoice",
+      "targetRoute": "/business/invoices",
+      "snippet": "onClick={() => { setLinkedContext({ entityType: \"invoice\", entityId: selected.converted_invoice_id, entityLabel: \"From quote\" }); navigate(\"/business/invoices\")"
+    }
+  ],
+  "consumeLinkedContextSites": [
+    {
+      "file": "src/hooks/useLinkedContext.ts",
+      "line": 34,
+      "acceptedEntityTypes": []
+    },
+    {
+      "file": "src/modules/business/pages/AppointmentsScheduling.tsx",
+      "line": 232,
+      "acceptedEntityTypes": []
+    },
+    {
+      "file": "src/modules/business/pages/InvoicesCollections.tsx",
+      "line": 90,
+      "acceptedEntityTypes": [
+        "invoice"
+      ]
+    },
+    {
+      "file": "src/modules/business/pages/ProposalsContracts.tsx",
+      "line": 135,
+      "acceptedEntityTypes": [
+        "proposal"
+      ]
+    },
+    {
+      "file": "src/modules/business/pages/QuotesWorkspace.tsx",
+      "line": 111,
+      "acceptedEntityTypes": [
+        "quote",
+        "contact"
+      ]
+    },
+    {
+      "file": "src/platform/sita/components/sita/CrossAppAction.tsx",
+      "line": 57,
+      "acceptedEntityTypes": []
+    }
+  ],
+  "convertActionSites": [
+    {
+      "file": "src/modules/business/pages/OpportunitiesCenter.tsx",
+      "line": 97,
+      "domain": "business",
+      "verb": "opportunity.convert-to-quote"
+    },
+    {
+      "file": "src/modules/business/pages/ProposalsContracts.tsx",
+      "line": 122,
+      "domain": "business",
+      "verb": "proposal.convert-to-invoice"
+    },
+    {
+      "file": "src/modules/business/pages/QuotesWorkspace.tsx",
+      "line": 88,
+      "domain": "business",
+      "verb": "quote.convert-to-proposal"
+    },
+    {
+      "file": "src/modules/business/pages/QuotesWorkspace.tsx",
+      "line": 98,
+      "domain": "business",
+      "verb": "quote.convert-to-invoice"
+    }
+  ],
+  "crossAppTargets": [
+    {
+      "file": "src/modules/business/pages/CollectionsCommandCenter.tsx",
+      "line": 265,
+      "to": "/money/receivables",
+      "label": "View in Finance"
+    },
+    {
+      "file": "src/modules/business/pages/CollectionsCommandCenter.tsx",
+      "line": 266,
+      "to": "/business/invoices",
+      "label": "View Invoice"
+    },
+    {
+      "file": "src/modules/business/pages/CollectionsCommandCenter.tsx",
+      "line": 267,
+      "to": "/files/search",
+      "label": "Related Files"
+    },
+    {
+      "file": "src/modules/business/pages/CustomersPage.tsx",
+      "line": 142,
+      "to": "/concierge/appointments",
+      "label": "Appointments"
+    },
+    {
+      "file": "src/modules/business/pages/CustomersPage.tsx",
+      "line": 143,
+      "to": "/business/quotes",
+      "label": "Quotes"
+    },
+    {
+      "file": "src/modules/business/pages/InvoicesCollections.tsx",
+      "line": 142,
+      "to": "/money/receivables",
+      "label": "View in Finance"
+    },
+    {
+      "file": "src/modules/business/pages/InvoicesCollections.tsx",
+      "line": 143,
+      "to": "/business/collections",
+      "label": "Collections Center"
+    },
+    {
+      "file": "src/modules/concierge/pages/TravelPlanning.tsx",
+      "line": 79,
+      "to": "/files/search",
+      "label": "Travel Documents"
+    },
+    {
+      "file": "src/modules/finance/pages/money/BillsWorkspace.tsx",
+      "line": 145,
+      "to": "/money/approvals",
+      "label": "Approvals"
+    },
+    {
+      "file": "src/modules/finance/pages/money/ReceivablesObligations.tsx",
+      "line": 100,
+      "to": "/business/invoices",
+      "label": "Invoices Hub"
+    },
+    {
+      "file": "src/modules/finance/pages/money/ReceivablesObligations.tsx",
+      "line": 101,
+      "to": "/business/collections",
+      "label": "Collections"
+    }
+  ],
+  "fixtureLeaks": [
+    {
+      "file": "src/data/repositories/business-background-tasks-service.ts",
+      "line": 32,
+      "fixtureModule": "@/data/fixtures/mock-data/business-background-tasks",
+      "guarded": false
+    },
+    {
+      "file": "src/data/repositories/business-data-service.ts",
+      "line": 8,
+      "fixtureModule": "@/data/fixtures/mock-data/collections",
+      "guarded": false
+    },
+    {
+      "file": "src/data/repositories/business-data-service.ts",
+      "line": 9,
+      "fixtureModule": "@/data/fixtures/mock-data/collections",
+      "guarded": false
+    },
+    {
+      "file": "src/data/repositories/business-scheduling-service.ts",
+      "line": 14,
+      "fixtureModule": "@/data/fixtures/mock-data/business-scheduling",
+      "guarded": false
+    },
+    {
+      "file": "src/data/repositories/owner-data-service.ts",
+      "line": 8,
+      "fixtureModule": "@/data/fixtures/mock-data/owner",
+      "guarded": false
+    },
+    {
+      "file": "src/data/repositories/owner-data-service.ts",
+      "line": 9,
+      "fixtureModule": "@/data/fixtures/mock-data/owner",
+      "guarded": false
+    },
+    {
+      "file": "src/data/repositories/workspace-data-service.ts",
+      "line": 11,
+      "fixtureModule": "@/data/fixtures/mock-data/workspace",
+      "guarded": false
+    },
+    {
+      "file": "src/data/repositories/workspace-data-service.ts",
+      "line": 12,
+      "fixtureModule": "@/data/fixtures/mock-data/workspace",
+      "guarded": false
+    },
+    {
+      "file": "src/domains/engines/index.ts",
+      "line": 52,
+      "fixtureModule": "@/data/fixtures/mock-data/recovery-candidates",
+      "guarded": false
+    },
+    {
+      "file": "src/hooks/use-admin-data.ts",
+      "line": 28,
+      "fixtureModule": "@/data/fixtures/mock-data/admin-ops",
+      "guarded": true
+    },
+    {
+      "file": "src/lib/boardroom/data-service.ts",
+      "line": 9,
+      "fixtureModule": "@/data/fixtures/mock-data/legacy-display-mocks",
+      "guarded": false
+    },
+    {
+      "file": "src/lib/types/domain-types.ts",
+      "line": 7,
+      "fixtureModule": "@/data/fixtures/mock-data/collections",
+      "guarded": false
+    },
+    {
+      "file": "src/lib/types/domain-types.ts",
+      "line": 8,
+      "fixtureModule": "@/data/fixtures/mock-data/owner",
+      "guarded": false
+    },
+    {
+      "file": "src/lib/types/domain-types.ts",
+      "line": 9,
+      "fixtureModule": "@/data/fixtures/mock-data/workspace",
+      "guarded": false
+    },
+    {
+      "file": "src/lib/types/domain-types.ts",
+      "line": 10,
+      "fixtureModule": "@/data/fixtures/mock-data/revenue-calling",
+      "guarded": false
+    },
+    {
+      "file": "src/modules/business/hooks/use-lead-recovery-candidates.ts",
+      "line": 24,
+      "fixtureModule": "@/data/fixtures/mock-data/recovery-candidates",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/business/pages/CollectionsCommandCenter.tsx",
+      "line": 17,
+      "fixtureModule": "@/data/fixtures/mock-data/collections",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/business/pages/EcommerceManager.tsx",
+      "line": 35,
+      "fixtureModule": "@/data/fixtures/mock-data/ecommerce-manager-demo",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/business/pages/LeadRecovery.tsx",
+      "line": 22,
+      "fixtureModule": "@/data/fixtures/mock-data/lead-recovery-campaigns",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/business/pages/RevenueCallingPage.tsx",
+      "line": 26,
+      "fixtureModule": "@/data/fixtures/mock-data/revenue-calling",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/business/pages/RevenueImpactDashboard.tsx",
+      "line": 39,
+      "fixtureModule": "@/data/fixtures/mock-data/revenue-impact-playbooks",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/business/pages/SocialCommand.tsx",
+      "line": 29,
+      "fixtureModule": "@/data/fixtures/mock-data/social-command-demo",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/business/pages/WebsiteBuilder.tsx",
+      "line": 29,
+      "fixtureModule": "@/data/fixtures/mock-data/website-builder-demo",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/concierge/pages/ConciergeSettings.tsx",
+      "line": 5,
+      "fixtureModule": "@/data/fixtures/mock-data/concierge-settings-demo",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/concierge/pages/EventsGifts.tsx",
+      "line": 26,
+      "fixtureModule": "@/data/fixtures/mock-data/concierge-events-gifts-demo",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/concierge/pages/LifeAdminCenter.tsx",
+      "line": 10,
+      "fixtureModule": "@/data/fixtures/mock-data/concierge-life-admin-demo",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/concierge/pages/PersonalLifeWorkspace.tsx",
+      "line": 20,
+      "fixtureModule": "@/data/fixtures/mock-data/concierge-personal-life-demo",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/concierge/pages/RecurringObligations.tsx",
+      "line": 12,
+      "fixtureModule": "@/data/fixtures/mock-data/concierge-recurring-obligations-demo",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/concierge/pages/TravelPlanning.tsx",
+      "line": 31,
+      "fixtureModule": "@/data/fixtures/mock-data/concierge-travel-planning-demo",
+      "guarded": true
+    },
+    {
+      "file": "src/modules/concierge/pages/UpcomingNeeds.tsx",
+      "line": 23,
+      "fixtureModule": "@/data/fixtures/mock-data/concierge-upcoming-needs-demo",
+      "guarded": true
+    },
+    {
+      "file": "src/platform/advisors/hooks/useAdvisorMissionControl.ts",
+      "line": 7,
+      "fixtureModule": "@/data/fixtures/mock-data/advisor-mission-control",
+      "guarded": true
+    },
+    {
+      "file": "src/platform/advisors/hooks/useAdvisorMissionControl.ts",
+      "line": 9,
+      "fixtureModule": "@/data/fixtures/mock-data/advisor-mission-control",
+      "guarded": true
+    },
+    {
+      "file": "src/platform/experience/pages/mobile/MobileBoardroom.tsx",
+      "line": 12,
+      "fixtureModule": "@/data/fixtures/mock-data/mobile-shells",
+      "guarded": true
+    },
+    {
+      "file": "src/platform/experience/pages/mobile/MobileDeviceTrust.tsx",
+      "line": 13,
+      "fixtureModule": "@/data/fixtures/mock-data/mobile-shells",
+      "guarded": true
+    },
+    {
+      "file": "src/platform/experience/pages/mobile/MobileQuickCapture.tsx",
+      "line": 17,
+      "fixtureModule": "@/data/fixtures/mock-data/mobile-shells",
+      "guarded": true
+    },
+    {
+      "file": "src/platform/owner/pages/OwnerApprovalsPage.tsx",
+      "line": 18,
+      "fixtureModule": "@/data/fixtures/mock-data/owner",
+      "guarded": false
+    },
+    {
+      "file": "src/platform/owner/pages/PricingEditor.tsx",
+      "line": 18,
+      "fixtureModule": "@/data/fixtures/mock-data/owner",
+      "guarded": false
+    },
+    {
+      "file": "src/platform/sita/components/sita/AdvisorComponents.tsx",
+      "line": 20,
+      "fixtureModule": "@/data/fixtures/mock-data/advisor-mission-control",
+      "guarded": false
+    },
+    {
+      "file": "src/platform/sita/components/sita/MissionControlComponents.tsx",
+      "line": 20,
+      "fixtureModule": "@/data/fixtures/mock-data/advisor-mission-control",
+      "guarded": false
+    },
+    {
+      "file": "src/platform/workspace/pages/DocsWorkspace.tsx",
+      "line": 13,
+      "fixtureModule": "@/data/fixtures/mock-data/workspace",
+      "guarded": false
+    },
+    {
+      "file": "src/platform/workspace/pages/SheetsWorkspace.tsx",
+      "line": 18,
+      "fixtureModule": "@/data/fixtures/mock-data/workspace",
+      "guarded": false
+    },
+    {
+      "file": "src/platform/workspace/pages/SlidesWorkspace.tsx",
+      "line": 9,
+      "fixtureModule": "@/data/fixtures/mock-data/workspace",
+      "guarded": false
+    }
+  ],
+  "summary": {
+    "setLinkedTotal": 13,
+    "consumeLinkedTotal": 6,
+    "convertActionTotal": 4,
+    "crossAppTargetTotal": 11,
+    "fixtureLeakTotal": 42,
+    "fixtureLeakUnguarded": 21,
+    "orphanEntityTypes": [
+      "appointment",
+      "opportunity"
+    ]
+  }
+}
