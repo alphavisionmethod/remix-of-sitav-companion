@@ -636,6 +636,52 @@ export const TRUST_ACTION_REGISTRY = {
     riskTier: "medium", requireApproval: false, reversible: true,
     defaultAuthorityLevel: "ask",
   },
+
+  // ── Phase 7.3: Autopilot + outreach trust coverage ──────────
+  // These keys are referenced by `useAutopilot*` hooks and the
+  // scheduling outreach hooks. They flow through the same canonical
+  // trust + approval pipeline as the CRM keys above.
+  "autopilot.playbook.activate": {
+    key: "autopilot.playbook.activate", pillar: "business",
+    label: "Activate Autopilot playbook",
+    description:
+      "Turns on a revenue/recovery/outreach playbook that may send messages, " +
+      "create tasks, or trigger appointments on the operator's behalf.",
+    riskTier: "high", requireApproval: true, reversible: true,
+    defaultAuthorityLevel: "ask",
+  },
+  "autopilot.playbook.pause": {
+    key: "autopilot.playbook.pause", pillar: "business",
+    label: "Pause Autopilot playbook",
+    description: "Disables an active playbook. Reversible — no external impact.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "appointment.reminder.send": {
+    key: "appointment.reminder.send", pillar: "business",
+    label: "Send appointment reminder",
+    description:
+      "Sends a reminder message (sms/email/phone) to a booking customer.",
+    riskTier: "medium", requireApproval: false, reversible: false,
+    defaultAuthorityLevel: "ask",
+  },
+  "appointment.confirm": {
+    key: "appointment.confirm", pillar: "business",
+    label: "Confirm appointment",
+    description:
+      "Marks a booking as customer-confirmed and mirrors it to linked calendars.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "appointment.recovery.send": {
+    key: "appointment.recovery.send", pillar: "business",
+    label: "Send no-show recovery outreach",
+    description:
+      "Records a no-show recovery attempt and prepares an outreach message " +
+      "to a third party. Treated as risky external outreach.",
+    riskTier: "high", requireApproval: true, reversible: false,
+    defaultAuthorityLevel: "ask",
+  },
 } as const satisfies Record<string, TrustActionPreset>;
 
 export type TrustActionKey = keyof typeof TRUST_ACTION_REGISTRY;
