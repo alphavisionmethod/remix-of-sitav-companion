@@ -2,7 +2,7 @@
 // Lead Recovery — Premium Revenue Rescue Workspace
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { RotateCcw, Target, BarChart3, Megaphone, ChevronUp, ChevronDown, Search, ArrowUpDown, DollarSign, Play, Pause, LogIn, Inbox } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,7 @@ import { useLeadRecoveryCandidates } from "@/modules/business/hooks/use-lead-rec
 import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { LEAD_RECOVERY_CAMPAIGNS } from "@/data/fixtures/mock-data/lead-recovery-campaigns";
+import { useLinkedContext } from "@/hooks/useLinkedContext";
 type MainTab = "overview" | "queues" | "campaigns" | "analytics";
 type SortMode = "score" | "value" | "urgency" | "recency";
 
@@ -37,6 +38,28 @@ const LeadRecovery = () => {
   const [sortMode, setSortMode] = useState<SortMode>("score");
 
   const { candidates, isDemo, isUnauthenticated } = useLeadRecoveryCandidates();
+  const linked = useLinkedContext();
+  // Phase 4: when arriving from LeadsInbox / BackgroundTaskCenter with a
+  // recovery candidate context, auto-select it so the operator drops directly
+  // into the rescue briefing without re-navigation.
+  useEffect(() => {
+    if (!linked) return;
+    if (linked.entityType === "recovery_candidate") {
+      const match = candidates.find(c => c.id === linked.entityId);
+      if (match) {
+        setSelectedId(match.id);
+        setActiveTab("queues");
+      }
+    } else if (linked.entityType === "lead_inbox_item" && linked.entityLabel) {
+      // Best-effort: try to find a candidate whose name matches the inbox label.
+      const label = linked.entityLabel.toLowerCase();
+      const match = candidates.find(c => c.name.toLowerCase() === label);
+      if (match) {
+        setSelectedId(match.id);
+        setActiveTab("queues");
+      }
+    }
+  }, [linked, candidates]);
   const filtered = useMemo(() => {
     let list = filterByQueue(candidates, activeQueue);
     if (search) {

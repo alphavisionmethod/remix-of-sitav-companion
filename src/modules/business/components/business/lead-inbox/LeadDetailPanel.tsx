@@ -16,8 +16,9 @@ import type { LeadScoreResult } from "@/domains/business";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Mail, Phone, Building2, Clock, Sparkles, AlertTriangle,
-  Check, ArrowRight, Ban, Star, Calendar, FileText, Copy, X, Zap, Brain
+  Check, ArrowRight, Ban, Star, Calendar, FileText, Copy, X, Zap, Brain, RotateCcw
 } from "lucide-react";
+import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
 
 const timeAgo = (dt: string) => {
   const d = Date.now() - new Date(dt).getTime();
@@ -275,6 +276,29 @@ export const LeadDetailPanel = ({ item, score, onClose, onAccept, onRoute, onRej
             <Ban className="h-3.5 w-3.5" /> Reject / Archive
           </SitaButton>
         </div>
+
+        {/* ── Phase 4: Stale / at-risk hand-off → Lead Recovery ─────── */}
+        {score && (score.staleRisk > 50 || score.recoveryPotential > 50) && (
+          <div className="rounded-xl border border-[hsl(265_55%_58%/0.18)] bg-[hsl(265_55%_58%/0.05)] p-3 flex items-center gap-2 justify-between">
+            <div className="flex items-center gap-2 min-w-0">
+              <RotateCcw className="h-3.5 w-3.5 text-[hsl(265_55%_70%)] shrink-0" />
+              <span className="text-[11px] text-[hsl(0_0%_70%)] truncate">
+                Stale risk {score.staleRisk}% — open in Recovery to re-engage.
+              </span>
+            </div>
+            <CrossAppAction
+              to="/business/lead-recovery"
+              label="Open in Recovery"
+              variant="button"
+              icon={RotateCcw}
+              context={{
+                entityType: "lead_inbox_item",
+                entityId: item.id,
+                entityLabel: item.contact_name,
+              }}
+            />
+          </div>
+        )}
       </motion.div>
     </AnimatePresence>
   );

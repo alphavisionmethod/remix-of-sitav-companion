@@ -10359,6 +10359,7 @@ export type Database = {
           owner: string | null
           phone: string | null
           source: string | null
+          source_lead_inbox_item_id: string | null
           state: string | null
           status: string
           tags: string[] | null
@@ -10387,6 +10388,7 @@ export type Database = {
           owner?: string | null
           phone?: string | null
           source?: string | null
+          source_lead_inbox_item_id?: string | null
           state?: string | null
           status?: string
           tags?: string[] | null
@@ -10415,6 +10417,7 @@ export type Database = {
           owner?: string | null
           phone?: string | null
           source?: string | null
+          source_lead_inbox_item_id?: string | null
           state?: string | null
           status?: string
           tags?: string[] | null
@@ -10423,7 +10426,15 @@ export type Database = {
           user_id?: string
           website?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "crm_contacts_source_lead_inbox_item_id_fkey"
+            columns: ["source_lead_inbox_item_id"]
+            isOneToOne: false
+            referencedRelation: "lead_inbox_items"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       crm_customer_link: {
         Row: {
@@ -16374,6 +16385,8 @@ export type Database = {
           id: string
           inquiry_text: string | null
           missing_fields: string[] | null
+          produced_contact_id: string | null
+          produced_lead_id: string | null
           quality_hints: Json | null
           quality_score: number | null
           routed_to: string | null
@@ -16400,6 +16413,8 @@ export type Database = {
           id?: string
           inquiry_text?: string | null
           missing_fields?: string[] | null
+          produced_contact_id?: string | null
+          produced_lead_id?: string | null
           quality_hints?: Json | null
           quality_score?: number | null
           routed_to?: string | null
@@ -16426,6 +16441,8 @@ export type Database = {
           id?: string
           inquiry_text?: string | null
           missing_fields?: string[] | null
+          produced_contact_id?: string | null
+          produced_lead_id?: string | null
           quality_hints?: Json | null
           quality_score?: number | null
           routed_to?: string | null
@@ -16437,7 +16454,22 @@ export type Database = {
           urgency?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "lead_inbox_items_produced_contact_id_fkey"
+            columns: ["produced_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_inbox_items_produced_lead_id_fkey"
+            columns: ["produced_lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       leads: {
         Row: {
@@ -20901,13 +20933,17 @@ export type Database = {
           appointment_id: string | null
           completed_at: string | null
           created_at: string
+          crm_contact_id: string | null
           error: string | null
           error_stack: string | null
           id: string
           is_dry_run: boolean
           label: string
+          lead_id: string | null
           parameters: Json | null
           progress: number
+          recovered_at: string | null
+          recovered_value_cents: number | null
           result: Json | null
           started_at: string
           status: string
@@ -20918,13 +20954,17 @@ export type Database = {
           appointment_id?: string | null
           completed_at?: string | null
           created_at?: string
+          crm_contact_id?: string | null
           error?: string | null
           error_stack?: string | null
           id?: string
           is_dry_run?: boolean
           label: string
+          lead_id?: string | null
           parameters?: Json | null
           progress?: number
+          recovered_at?: string | null
+          recovered_value_cents?: number | null
           result?: Json | null
           started_at?: string
           status?: string
@@ -20935,20 +20975,39 @@ export type Database = {
           appointment_id?: string | null
           completed_at?: string | null
           created_at?: string
+          crm_contact_id?: string | null
           error?: string | null
           error_stack?: string | null
           id?: string
           is_dry_run?: boolean
           label?: string
+          lead_id?: string | null
           parameters?: Json | null
           progress?: number
+          recovered_at?: string | null
+          recovered_value_cents?: number | null
           result?: Json | null
           started_at?: string
           status?: string
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "recovery_jobs_crm_contact_id_fkey"
+            columns: ["crm_contact_id"]
+            isOneToOne: false
+            referencedRelation: "crm_contacts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "recovery_jobs_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       recovery_snapshots: {
         Row: {
