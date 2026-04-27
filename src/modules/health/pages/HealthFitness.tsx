@@ -1,9 +1,12 @@
 import { Dumbbell } from "lucide-react";
 import HealthMetricsApp from "./HealthMetricsApp";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function HealthFitness() {
   return (
-    <HealthMetricsApp
+    <>
+      <div className="px-6 pt-4"><PageTruthBanner truthState="partial" /></div>
+      <HealthMetricsApp
       title="Fitness"
       icon={Dumbbell}
       defaultKind="fitness.steps"
@@ -16,6 +19,7 @@ export default function HealthFitness() {
         { value: "fitness.heart_rate_avg", label: "Avg heart rate"  },
       ]}
       unitOptions={["count", "min", "km", "mi", "kcal", "bpm"]}
-    />
+      />
+    </>
   );
 }
