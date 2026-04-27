@@ -371,3 +371,464 @@ export function useConciergeDocuments() {
     },
   });
 }
+
+// ─── Grocery mutations (Phase 7.4) ──────────────────────────
+export function useCreateGroceryList() {
+  const uid = useUserId();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.grocery_list.create",
+      async (input: { name: string; household_id?: string; notes?: string }) => {
+        const { data, error } = await fromTable("grocery_lists")
+          .insert({ ...input, user_id: uid! })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (i) => `Create grocery list "${i.name}"`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["grocery-lists"] }),
+  });
+}
+
+export function useCreateGroceryItem() {
+  const uid = useUserId();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.grocery_item.create",
+      async (input: { list_id: string; name: string; quantity?: number; status?: string; notes?: string }) => {
+        const { data, error } = await fromTable("grocery_items")
+          .insert({ ...input, user_id: uid! })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (i) => `Add grocery item "${i.name}"`,
+    ),
+    onSuccess: (_d, vars) => {
+      qc.invalidateQueries({ queryKey: ["grocery-items"] });
+      if (vars?.list_id) qc.invalidateQueries({ queryKey: ["grocery-items", undefined, vars.list_id] });
+    },
+  });
+}
+
+export function useUpdateGroceryItem() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.grocery_item.update",
+      async ({ id, ...updates }: { id: string; [key: string]: any }) => {
+        const { data, error } = await fromTable("grocery_items")
+          .update(updates)
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (a) => `Update grocery item ${a.id}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["grocery-items"] }),
+  });
+}
+
+export function useDeleteGroceryItem() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.grocery_item.delete",
+      async (id: string) => {
+        const { error } = await fromTable("grocery_items").delete().eq("id", id);
+        if (error) throw error;
+      },
+      (id) => `Remove grocery item ${id}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["grocery-items"] }),
+  });
+}
+
+// ─── Gift tracker mutations (Phase 7.4) ─────────────────────
+export function useCreateGiftPlan() {
+  const uid = useUserId();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.gift.create",
+      async (input: {
+        recipient: string;
+        occasion?: string;
+        budget_cents?: number;
+        target_date?: string;
+        status?: string;
+        notes?: string;
+      }) => {
+        const { data, error } = await fromTable("gift_tracker")
+          .insert({ ...input, user_id: uid! })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (i) => `Track gift for ${i.recipient}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["gift-tracker"] }),
+  });
+}
+
+export function useUpdateGiftPlan() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.gift.update",
+      async ({ id, ...updates }: { id: string; [key: string]: any }) => {
+        const { data, error } = await fromTable("gift_tracker")
+          .update(updates)
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (a) => `Update gift ${a.id}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["gift-tracker"] }),
+  });
+}
+
+// ─── Service-provider mutations (Phase 7.4) ─────────────────
+export function useCreateServiceProvider() {
+  const uid = useUserId();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.provider.create",
+      async (input: { name: string; category?: string; phone?: string; email?: string; rating?: number; notes?: string }) => {
+        const { data, error } = await fromTable("service_providers_list")
+          .insert({ ...input, user_id: uid! })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (i) => `Add provider "${i.name}"`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["service-providers-list"] }),
+  });
+}
+
+export function useUpdateServiceProvider() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.provider.update",
+      async ({ id, ...updates }: { id: string; [key: string]: any }) => {
+        const { data, error } = await fromTable("service_providers_list")
+          .update(updates)
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (a) => `Update provider ${a.id}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["service-providers-list"] }),
+  });
+}
+
+export function useDeleteServiceProvider() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.provider.delete",
+      async (id: string) => {
+        const { error } = await fromTable("service_providers_list").delete().eq("id", id);
+        if (error) throw error;
+      },
+      (id) => `Remove provider ${id}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["service-providers-list"] }),
+  });
+}
+
+// ─── Concierge appointment mutations (Phase 7.4) ────────────
+// Distinct from `health.appointment.*` — household / non-medical scope.
+export function useCreateConciergeAppointment() {
+  const uid = useUserId();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.appointment.create",
+      async (input: {
+        title: string;
+        appointment_date: string;
+        location?: string;
+        provider_id?: string;
+        notes?: string;
+        status?: string;
+      }) => {
+        const { data, error } = await fromTable("appointments")
+          .insert({ ...input, user_id: uid! })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (i) => `Create appointment "${i.title}"`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["appointments"] }),
+  });
+}
+
+export function useUpdateConciergeAppointment() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.appointment.update",
+      async ({ id, ...updates }: { id: string; [key: string]: any }) => {
+        const { data, error } = await fromTable("appointments")
+          .update(updates)
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (a) => `Update appointment ${a.id}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["appointments"] }),
+  });
+}
+
+export function useCancelConciergeAppointment() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.appointment.cancel",
+      async (id: string) => {
+        const { data, error } = await fromTable("appointments")
+          .update({ status: "cancelled" })
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (id) => `Cancel appointment ${id}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["appointments"] }),
+  });
+}
+
+// ─── Concierge automation mutations (Phase 7.4) ─────────────
+// Activation is high-risk and routed through the approval gate; create,
+// pause, delete are emitted as receipts only.
+export function useCreateConciergeAutomation() {
+  const uid = useUserId();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.automation.create",
+      async (input: {
+        name: string;
+        trigger: string;
+        action: string;
+        active?: boolean;
+        config?: Record<string, unknown>;
+      }) => {
+        const { data, error } = await fromTable("concierge_automations")
+          .insert({ ...input, user_id: uid! })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (i) => `Create automation "${i.name}"`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-automations"] }),
+  });
+}
+
+export function usePauseConciergeAutomation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.automation.pause",
+      async (id: string) => {
+        const { data, error } = await fromTable("concierge_automations")
+          .update({ active: false })
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (id) => `Pause automation ${id}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-automations"] }),
+  });
+}
+
+export function useDeleteConciergeAutomation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.automation.delete",
+      async (id: string) => {
+        const { error } = await fromTable("concierge_automations").delete().eq("id", id);
+        if (error) throw error;
+      },
+      (id) => `Delete automation ${id}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-automations"] }),
+  });
+}
+
+export interface ActivateConciergeAutomationInput {
+  id: string;
+  name?: string;
+  reason?: string;
+  /** Demo bypass — when true the gate is skipped and the activation runs inline. */
+  skip?: boolean;
+}
+
+/**
+ * Activate a concierge automation. Routed through the approval queue
+ * because an active automation can take future actions on the
+ * household's behalf without further confirmation.
+ */
+export function useActivateConciergeAutomation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (
+      input: ActivateConciergeAutomationInput,
+    ): Promise<ApprovalGateResult<{ id: string }>> => {
+      const { id, name, reason, skip } = input;
+      const gated = await withApprovalGate(
+        async () => {
+          const { error } = await fromTable("concierge_automations")
+            .update({ active: true })
+            .eq("id", id);
+          if (error) throw error;
+          await emitClientReceipt({
+            actionType: "concierge.automation.activate",
+            summary: `Activate concierge automation ${name ?? id}`,
+            payload: { id, entity_ref: { entity_type: "automation", entity_id: id } },
+            riskTier: "high",
+            status: "executed",
+          });
+          return { id };
+        },
+        {
+          actionType: "concierge.automation.activate",
+          title: `Activate concierge automation${name ? `: ${name}` : ""}`,
+          justification:
+            reason ??
+            "Activating an automation grants it standing authority to act on the household's behalf.",
+          riskTier: "high",
+          payload: { id, name },
+          launchImplications:
+            "Future executions of this automation will run without per-action confirmation until paused.",
+          skip,
+        },
+      );
+      return gated;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-automations"] }),
+  });
+}
+
+// ─── Concierge document mutations (Phase 7.4) ───────────────
+export function useCreateConciergeDocument() {
+  const uid = useUserId();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.document.create",
+      async (input: {
+        title: string;
+        category?: string;
+        url?: string;
+        related_entity_type?: string;
+        related_entity_id?: string;
+        notes?: string;
+      }) => {
+        const { data, error } = await fromTable("concierge_documents")
+          .insert({ ...input, user_id: uid! })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (i) => `Attach document "${i.title}"`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-documents"] }),
+  });
+}
+
+export function useDeleteConciergeDocument() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.document.delete",
+      async (id: string) => {
+        const { error } = await fromTable("concierge_documents").delete().eq("id", id);
+        if (error) throw error;
+      },
+      (id) => `Delete document ${id}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-documents"] }),
+  });
+}
+
+// ─── Recurring obligation mutations (Phase 7.4) ─────────────
+export function useCreateRecurringObligation() {
+  const uid = useUserId();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.recurring.create",
+      async (input: {
+        title: string;
+        cadence: string;
+        next_due?: string;
+        amount_cents?: number;
+        category?: string;
+        notes?: string;
+      }) => {
+        const { data, error } = await fromTable("concierge_recurring_obligations")
+          .insert({ ...input, user_id: uid! })
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (i) => `Create recurring "${i.title}"`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-recurring-obligations"] }),
+  });
+}
+
+export function useUpdateRecurringObligation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: withTrust(
+      "concierge.recurring.update",
+      async ({ id, ...updates }: { id: string; [key: string]: any }) => {
+        const { data, error } = await fromTable("concierge_recurring_obligations")
+          .update(updates)
+          .eq("id", id)
+          .select()
+          .single();
+        if (error) throw error;
+        return data;
+      },
+      (a) => `Update recurring ${a.id}`,
+    ),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-recurring-obligations"] }),
+  });
+}
