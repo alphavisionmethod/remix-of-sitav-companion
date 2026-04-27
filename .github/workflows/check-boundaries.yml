@@ -212,26 +212,19 @@ jobs:
         run: npx tsx scripts/architecture/checks/check-edge-function-mutation-traceability.ts
 
       - name: Run hook & context ownership checker
-        # Phased rollout: failures are gated by HOOK_CONTEXT_OWNERSHIP_ENFORCE
-        # so the check publishes signal during the migration phases (0–6) and
-        # flips to blocking once Phase 7 lands. See
-        # docs/architecture/HOOK_AND_CONTEXT_OWNERSHIP_MODEL.md and
+        # Phases 4–5 closed (2026-04-27): the migration moved 11 contexts and
+        # 139 hooks to their canonical owners. The ownership map is clean
+        # under both --enforce and --enforce-classification, so the gate is
+        # now BLOCKING by default. The two whitelisted exceptions
+        # (useRealityProvider, use-flagship-loop-proof) are tracked in
+        # generated/manifests/hook-context-ownership-exceptions.json under
+        # `rationale` and skipped by the validator.
+        # See docs/architecture/HOOK_AND_CONTEXT_OWNERSHIP_MODEL.md and
         # REPOSITORY_CONSTITUTION.md rule #51.
         env:
-          HOOK_CONTEXT_OWNERSHIP_ENFORCE: ${{ vars.HOOK_CONTEXT_OWNERSHIP_ENFORCE || 'false' }}
+          HOOK_CONTEXT_OWNERSHIP_ENFORCE: ${{ vars.HOOK_CONTEXT_OWNERSHIP_ENFORCE || 'true' }}
           HOOK_CONTEXT_OWNERSHIP_VERBOSE: 'true'
-        run: |
-          set +e
-          npx tsx scripts/architecture/check-hook-context-ownership.ts
-          status=$?
-          if [ "$HOOK_CONTEXT_OWNERSHIP_ENFORCE" = "true" ] && [ "$status" -ne 0 ]; then
-            echo "::error::Hook & context ownership gate is enforcing and failed (constitution rule #51)."
-            exit "$status"
-          fi
-          if [ "$status" -ne 0 ]; then
-            echo "::warning::Hook & context ownership violations detected (non-blocking until HOOK_CONTEXT_OWNERSHIP_ENFORCE=true)."
-          fi
-          exit 0
+        run: npx tsx scripts/architecture/check-hook-context-ownership.ts
 
       - name: Upload mutation traceability report
         if: always()
