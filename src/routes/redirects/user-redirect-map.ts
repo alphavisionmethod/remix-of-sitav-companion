@@ -77,6 +77,14 @@ export const USER_REDIRECTS: UserRedirect[] = [
   { from: "/finance", to: "/money", reason: "domain-rename" },
   { from: "/finance/overview", to: "/money/overview", reason: "domain-rename" },
   { from: "/finance/bills", to: "/money/bills", reason: "domain-rename" },
+
+  // ── Business IA Phase 2 cleanup ─────────────────────────────────
+  // AutopilotHub → RevenueAutopilotConsole rename. Old slug remains
+  // mounted in the shell page map for in-app deep-links, but external
+  // bookmarks/URLs are promoted to the canonical control-plane URL.
+  { from: "/business/autopilot-hub", to: "/business/revenue-autopilot-console", reason: "domain-rename" },
+  // RevenueImpactDashboard demoted to an internal sub-tab of Revenue Home.
+  { from: "/business/revenue-impact", to: "/business/revenue", reason: "shell-consolidation" },
 ];
 
 export type { UserRedirect as UserRedirectEntry };

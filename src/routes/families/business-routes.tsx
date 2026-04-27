@@ -19,7 +19,15 @@ export function getBusinessRoutes() {
       <Route path="/business/revenue" element={<BusinessCenter />} />
       <Route path="/business/revenue-home" element={<BusinessCenter />} />
       <Route path="/business/revenue-autopilot" element={<BusinessCenter />} />
+      {/* Phase 2 IA cleanup — canonical Autopilot Console URL.
+          Legacy /business/autopilot-hub is redirected by user-redirect-map. */}
+      <Route path="/business/revenue-autopilot-console" element={<BusinessCenter />} />
+      {/* Legacy slug retained as a route for in-app deep-links not yet rewritten;
+          it resolves to the same console via the BusinessAppShell PAGE map. */}
       <Route path="/business/autopilot-hub" element={<BusinessCenter />} />
+      {/* /business/revenue-impact has been demoted to an internal sub-tab of
+          Revenue Home. The route is preserved so legacy bookmarks still load
+          the shell, where the redirect map promotes them to /business/revenue. */}
       <Route path="/business/revenue-impact" element={<BusinessCenter />} />
       <Route path="/business/playbook-builder" element={<BusinessCenter />} />
       <Route path="/business/revenue-forecast" element={<BusinessCenter />} />
