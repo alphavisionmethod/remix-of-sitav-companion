@@ -12,6 +12,8 @@ import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
+import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
+import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import {
   Plus, Trash2, GripVertical, ChevronDown, ChevronRight,
   Mail, Phone, MessageSquare, AlertTriangle, Clock, Zap,
@@ -524,6 +526,14 @@ const [draft, setDraft] = useState<PlaybookDraft>(defaultDraft);
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <PageTruthBanner />
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <HierarchyHint
+          tier="workflow"
+          surface="Playbook Builder"
+          description="Strategy / configuration view"
+        />
+        <PlaybookCrossLinks />
+      </div>
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div className="flex rounded-lg border border-border overflow-hidden">
           <button onClick={() => setMode("build")} className={`px-3 py-1.5 text-[11px] font-medium transition-all flex items-center gap-1.5 micro-press ${mode === "build" ? "bg-primary/15 text-primary" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>
