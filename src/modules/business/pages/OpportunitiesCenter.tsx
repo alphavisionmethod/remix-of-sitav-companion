@@ -55,6 +55,7 @@ const OpportunitiesCenter = () => {
   const [showAdd, setShowAdd] = useState(false);
   const [view, setView] = useState<"list" | "kanban">("list");
   const [form, setForm] = useState({ title: "", value: "", confidence: 50, stage: "lead", next_action: "" });
+  const linked = useLinkedContext();
 
   const { data: opportunities = [], isLoading } = useQuery({
     queryKey: ["opportunities", user?.id],
