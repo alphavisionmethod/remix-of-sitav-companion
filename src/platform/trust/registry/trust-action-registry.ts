@@ -682,6 +682,189 @@ export const TRUST_ACTION_REGISTRY = {
     riskTier: "high", requireApproval: true, reversible: false,
     defaultAuthorityLevel: "ask",
   },
+  // ─── Phase 7.4 — Concierge Trust Coverage ───────────────────
+  // Errands (logistical, low-risk by default; bulk variant is gated)
+  "concierge.errand.create": {
+    key: "concierge.errand.create", pillar: "concierge",
+    label: "Create errand",
+    description: "Persists a new household errand for the operator's life-admin queue.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.errand.update": {
+    key: "concierge.errand.update", pillar: "concierge",
+    label: "Update errand",
+    description: "Modifies fields on an existing errand (priority, due date, status).",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.errand.delete": {
+    key: "concierge.errand.delete", pillar: "concierge",
+    label: "Delete errand",
+    description: "Permanently removes an errand from the queue.",
+    riskTier: "medium", requireApproval: false, reversible: false,
+    defaultAuthorityLevel: "ask",
+  },
+  "concierge.errand.bulk_delete": {
+    key: "concierge.errand.bulk_delete", pillar: "concierge",
+    label: "Bulk delete errands",
+    description:
+      "Removes many errands in one operation. Routed to the approval queue " +
+      "to prevent accidental loss of life-admin context.",
+    riskTier: "high", requireApproval: true, reversible: false,
+    defaultAuthorityLevel: "ask",
+  },
+  // Grocery lists / items (low blast radius, but mutations should still be auditable)
+  "concierge.grocery_list.create": {
+    key: "concierge.grocery_list.create", pillar: "concierge",
+    label: "Create grocery list",
+    description: "Creates a new grocery list for a household.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.grocery_item.create": {
+    key: "concierge.grocery_item.create", pillar: "concierge",
+    label: "Add grocery item",
+    description: "Adds an item to a grocery list.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.grocery_item.update": {
+    key: "concierge.grocery_item.update", pillar: "concierge",
+    label: "Update grocery item",
+    description: "Modifies a grocery item (quantity, status).",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.grocery_item.delete": {
+    key: "concierge.grocery_item.delete", pillar: "concierge",
+    label: "Remove grocery item",
+    description: "Deletes a single grocery item from a list.",
+    riskTier: "low", requireApproval: false, reversible: false,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  // Gifts — complements existing concierge.gift.purchase
+  "concierge.gift.create": {
+    key: "concierge.gift.create", pillar: "concierge",
+    label: "Track new gift plan",
+    description: "Adds a planned gift to the gift tracker (no purchase yet).",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.gift.update": {
+    key: "concierge.gift.update", pillar: "concierge",
+    label: "Update tracked gift",
+    description: "Modifies fields on a tracked gift (status, budget, recipient).",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  // Service providers
+  "concierge.provider.create": {
+    key: "concierge.provider.create", pillar: "concierge",
+    label: "Add service provider",
+    description: "Registers a new service provider in the household roster.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.provider.update": {
+    key: "concierge.provider.update", pillar: "concierge",
+    label: "Update service provider",
+    description: "Modifies provider details, ratings, or contact info.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.provider.delete": {
+    key: "concierge.provider.delete", pillar: "concierge",
+    label: "Remove service provider",
+    description: "Removes a provider from the household roster.",
+    riskTier: "medium", requireApproval: false, reversible: false,
+    defaultAuthorityLevel: "ask",
+  },
+  // Concierge appointments (separate from health.appointment.*)
+  "concierge.appointment.create": {
+    key: "concierge.appointment.create", pillar: "concierge",
+    label: "Create concierge appointment",
+    description: "Books a non-medical appointment for the household.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.appointment.update": {
+    key: "concierge.appointment.update", pillar: "concierge",
+    label: "Update concierge appointment",
+    description: "Modifies date, location, or attendees on a concierge appointment.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.appointment.cancel": {
+    key: "concierge.appointment.cancel", pillar: "concierge",
+    label: "Cancel concierge appointment",
+    description: "Cancels a household appointment with a third party.",
+    riskTier: "medium", requireApproval: false, reversible: false,
+    defaultAuthorityLevel: "ask",
+  },
+  // Concierge automations (rules that act on the household's behalf)
+  "concierge.automation.create": {
+    key: "concierge.automation.create", pillar: "concierge",
+    label: "Create concierge automation",
+    description:
+      "Registers a new automation rule that may act on the household's behalf. " +
+      "Activation is a separate gated action.",
+    riskTier: "medium", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "ask",
+  },
+  "concierge.automation.activate": {
+    key: "concierge.automation.activate", pillar: "concierge",
+    label: "Activate concierge automation",
+    description:
+      "Turns on a concierge automation that will execute future actions " +
+      "without further confirmation. Routed to the approval queue.",
+    riskTier: "high", requireApproval: true, reversible: true,
+    defaultAuthorityLevel: "ask",
+  },
+  "concierge.automation.pause": {
+    key: "concierge.automation.pause", pillar: "concierge",
+    label: "Pause concierge automation",
+    description: "Disables an active concierge automation. Reversible — no external impact.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.automation.delete": {
+    key: "concierge.automation.delete", pillar: "concierge",
+    label: "Delete concierge automation",
+    description: "Permanently removes an automation rule.",
+    riskTier: "medium", requireApproval: false, reversible: false,
+    defaultAuthorityLevel: "ask",
+  },
+  // Documents
+  "concierge.document.create": {
+    key: "concierge.document.create", pillar: "concierge",
+    label: "Attach concierge document",
+    description: "Uploads or registers a document tied to a concierge entity.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.document.delete": {
+    key: "concierge.document.delete", pillar: "concierge",
+    label: "Delete concierge document",
+    description: "Removes a stored concierge document.",
+    riskTier: "medium", requireApproval: false, reversible: false,
+    defaultAuthorityLevel: "ask",
+  },
+  // Recurring obligations
+  "concierge.recurring.create": {
+    key: "concierge.recurring.create", pillar: "concierge",
+    label: "Create recurring obligation",
+    description: "Adds a recurring household obligation (bills, renewals, etc.).",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
+  "concierge.recurring.update": {
+    key: "concierge.recurring.update", pillar: "concierge",
+    label: "Update recurring obligation",
+    description: "Modifies cadence, amount, or status of a recurring obligation.",
+    riskTier: "low", requireApproval: false, reversible: true,
+    defaultAuthorityLevel: "pre_approved",
+  },
 } as const satisfies Record<string, TrustActionPreset>;
 
 export type TrustActionKey = keyof typeof TRUST_ACTION_REGISTRY;
