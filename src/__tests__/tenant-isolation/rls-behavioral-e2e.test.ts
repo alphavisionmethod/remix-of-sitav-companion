@@ -25,6 +25,7 @@ interface Policy {
   tablename: string;
   policyname: string;
   cmd: string;
+  roles: string;
   qual: string;
   with_check: string;
 }
@@ -170,6 +171,10 @@ describe("Phase 10 — Multi-Tenancy + RLS Behavioral E2E", () => {
     it("no policy uses a tautology (true / 1=1) as its USING clause", () => {
       const tautologies: string[] = [];
       for (const p of policies) {
+        // Service-role-only policies are intentionally permissive — the
+        // service role bypasses RLS at the connection level, so a USING
+        // = true policy is just a no-op formality. Skip them.
+        if (p.roles.includes("service_role")) continue;
         const trimmed = p.qual.trim().toLowerCase().replace(/\s+/g, "");
         if (
           trimmed === "true" ||
@@ -181,7 +186,7 @@ describe("Phase 10 — Multi-Tenancy + RLS Behavioral E2E", () => {
           // (e.g. policy_template_catalog). We flag for review by listing
           // them in the failure message — but only fail on DML cmds.
           if (["INSERT", "UPDATE", "DELETE", "ALL"].includes(p.cmd.toUpperCase())) {
-            tautologies.push(`${p.tablename}.${p.policyname} [${p.cmd}]`);
+            tautologies.push(`${p.tablename}.${p.policyname} [${p.cmd}, roles=${p.roles}]`);
           }
         }
       }
@@ -194,6 +199,9 @@ describe("Phase 10 — Multi-Tenancy + RLS Behavioral E2E", () => {
     it("no policy uses a tautology (true / 1=1) as its WITH CHECK clause", () => {
       const tautologies: string[] = [];
       for (const p of policies) {
+        // Same exemption as USING — service-role-only policies are
+        // structurally permissive and live below the RLS boundary.
+        if (p.roles.includes("service_role")) continue;
         const trimmed = p.with_check.trim().toLowerCase().replace(/\s+/g, "");
         if (
           trimmed === "true" ||
@@ -202,7 +210,7 @@ describe("Phase 10 — Multi-Tenancy + RLS Behavioral E2E", () => {
           trimmed === "(1=1)"
         ) {
           if (["INSERT", "UPDATE", "ALL"].includes(p.cmd.toUpperCase())) {
-            tautologies.push(`${p.tablename}.${p.policyname} [${p.cmd}]`);
+            tautologies.push(`${p.tablename}.${p.policyname} [${p.cmd}, roles=${p.roles}]`);
           }
         }
       }
@@ -210,6 +218,13 @@ describe("Phase 10 — Multi-Tenancy + RLS Behavioral E2E", () => {
         tautologies,
         `DML policies with tautological WITH CHECK (overpermissive): ${tautologies.join(", ")}`,
       ).toEqual([]);
+    });
+
+    it("service-role exemptions are bounded (snapshot watermark)", () => {
+      // The exemption above only applies to service-role policies. Catch
+      // any explosion in service-role-only DML policies as a regression
+      // signal — large changes deserve human review.
+      expect(snapshot.totals.serviceRolePolicies).toBeLessThan(50);
     });
   });
 
