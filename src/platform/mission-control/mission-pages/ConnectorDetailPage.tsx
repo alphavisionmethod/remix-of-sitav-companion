@@ -5,7 +5,7 @@
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { useConnectorDetail, useConnectorHealth, useConnectorLogs } from "@/hooks/use-mission-control-views";
+import { useConnectorDetail, useConnectorHealth, useConnectorLogs } from "@/platform/mission-control/hooks/use-mission-control-views";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

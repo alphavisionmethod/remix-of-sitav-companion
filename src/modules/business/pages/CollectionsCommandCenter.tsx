@@ -6,14 +6,14 @@ import { toast } from "sonner";
 
 import { useAuth } from "@/contexts/AuthContext";
 import { useState, useMemo } from "react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import {
   DollarSign, AlertTriangle, Clock, CheckCircle, ArrowRight, Zap,
   Send, Phone, Mail, MessageSquare, Shield, FileText, Scale, LogIn, Inbox,
 } from "lucide-react";
-import { useCollectionsAccounts } from "@/hooks/use-domain-data";
+import { useCollectionsAccounts } from "@/modules/business/hooks/use-domain-data";
 import type { CollectionsAccount } from "@/data/fixtures/mock-data/collections";
 import { COLLECTIONS_CHASE_SEQUENCE as CHASE_SEQUENCE, ESCALATION_LABELS as escalationLabel } from "./_config/CollectionsCommandCenter.config";
 

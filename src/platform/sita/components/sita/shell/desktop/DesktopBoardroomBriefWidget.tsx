@@ -1,6 +1,6 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import { Brain, AlertTriangle } from "lucide-react";
-import { useBoardroomBriefData } from "@/hooks/useDesktopWidgetsData";
+import { useBoardroomBriefData } from "@/platform/sita/hooks/useDesktopWidgetsData";
 
 interface Props { onLaunchApp?: (appId: string) => void; }
 

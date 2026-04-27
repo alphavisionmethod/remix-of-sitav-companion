@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { ReactNode, useState, useEffect, Suspense, useCallback } from "react";
-import { useWindowManager } from "@/hooks/useWindowManager";
+import { useWindowManager } from "@/platform/sita/hooks/useWindowManager";
 import { WindowManagerContext } from "@/contexts/WindowManagerContext";
 import { OSWindowProvider } from "@/platform/sita/components/sita/os/WindowContext";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -35,7 +35,7 @@ import { useGestureEngine } from "@/hooks/use-gesture-engine";
 import { useFocusMode } from "@/hooks/use-focus-mode";
 import { registerActivity, removeActivity, updateActivity } from "@/platform/sita/components/sita/shell/LiveActivityBar";
 import { useSitaVoiceBridge } from "@/lib/sita-voice/useSitaVoiceBridge";
-import { useLiveActivityDomainData } from "@/hooks/useLiveActivityDomainData";
+import { useLiveActivityDomainData } from "@/platform/personal-brain/hooks/useLiveActivityDomainData";
 import { lazy } from "react";
 
 // Sub-layers

@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useComputeSnapshots } from "@/hooks/useIntelligencePersistence";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
+import { useComputeSnapshots } from "@/platform/personal-brain/hooks/useIntelligencePersistence";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const PortfolioAllocationDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();

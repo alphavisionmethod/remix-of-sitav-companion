@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FirstBootScreen } from "@/platform/sita/components/sita/FirstBootScreen";
-import { useSetupOrchestration } from "@/hooks/useSetupOrchestration";
+import { useSetupOrchestration } from "@/platform/orchestration/hooks/useSetupOrchestration";
 import { SetupOrchestrationEngine } from "@/domains/engines/setup-orchestration-engine";
 import type { SetupPhaseId, SetupPhaseStatus } from "@/packages/contracts/specialized/setup-orchestration";
 import { SetupStyleChooser } from "@/platform/sita/components/sita/onboarding/SetupStyleChooser";

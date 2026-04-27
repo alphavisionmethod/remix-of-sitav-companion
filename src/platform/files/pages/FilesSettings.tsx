@@ -4,7 +4,7 @@ import { ConnectorStatusCard, SensitivityBadge } from "@/platform/sita/component
 import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { Settings, Upload, Brain, Shield, Clock, Zap, Eye, Globe, Lock } from "lucide-react";
 import { motion } from "framer-motion";
-import { useFileSettings } from "@/hooks/use-domain-data";
+import { useFileSettings } from "@/modules/business/hooks/use-domain-data";
 import { useQueryClient } from "@tanstack/react-query";
 import { upsertFileSettings } from "@/data/repositories/files-data-service";
 import { toast } from "sonner";

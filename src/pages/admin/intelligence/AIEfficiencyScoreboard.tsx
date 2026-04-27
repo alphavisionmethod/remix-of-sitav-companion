@@ -9,8 +9,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
 import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useEfficiencyScoreboard } from "@/hooks/use-intelligence-screen-data";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
+import { useEfficiencyScoreboard } from "@/platform/personal-brain/hooks/use-intelligence-screen-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const trendIcons = { improving: TrendingUp, stable: Activity, degrading: TrendingDown };

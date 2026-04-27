@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { ShieldAlert, CheckCircle2, XCircle, AlertTriangle, Ban } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useComplianceViolations, useGatewayStats } from "@/hooks/use-sag-data";
+import { useComplianceViolations, useGatewayStats } from "@/modules/business/hooks/use-sag-data";
 import type { ComplianceGate, TenantFirewallRule, SecurityIncident } from "@/packages/enterprise-contracts";
 import SAGSubNav from "@/platform/admin/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

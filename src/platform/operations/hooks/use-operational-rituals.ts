@@ -24,11 +24,11 @@ import {
   useCRMTasks,
   useCRMCommunications,
   useCRMNotes,
-} from "@/hooks/use-crm-data";
+} from "@/modules/business/hooks/use-crm-data";
 import {
   useScheduledAppointments,
   type ScheduledAppointmentVM,
-} from "@/hooks/use-scheduled-appointments";
+} from "@/modules/business/hooks/use-scheduled-appointments";
 import type {
   CRMContact,
   CRMCompany,

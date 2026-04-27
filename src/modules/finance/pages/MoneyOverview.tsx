@@ -4,8 +4,8 @@ import { FinanceMoneyFlow } from "@/modules/finance/components/finance/FinanceMo
 import { FinanceQuickTransfer } from "@/modules/finance/components/finance/FinanceQuickTransfer";
 import { FinanceRecentTransactions } from "@/modules/finance/components/finance/FinanceRecentTransactions";
 import { FinanceStatCards } from "@/modules/finance/components/finance/FinanceStatCards";
-import { useBills, useSubscriptions, useInvoices } from "@/hooks/use-sita-data";
-import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
+import { useBills, useSubscriptions, useInvoices } from "@/platform/sita/hooks/use-sita-data";
+import { useFinancialAccounts, useMoneyKPIs } from "@/modules/business/hooks/use-domain-data";
 import { DollarSign, Receipt, CreditCard } from "lucide-react";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { useFinanceNavigation } from "@/modules/finance/contexts/FinanceNavigationContext";

@@ -6,7 +6,7 @@ import {
   Gavel, Eye, Zap, PhoneCall, RotateCcw, Settings,
   Sparkles, Play, BarChart3, Leaf, Shield
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { HomeIdentityHeader } from "@/modules/business/components/business/home/HomeIdentityHeader";
 import { WhatMattersNowHero } from "@/modules/business/components/business/home/WhatMattersNowHero";

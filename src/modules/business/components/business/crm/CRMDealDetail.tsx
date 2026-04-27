@@ -12,7 +12,7 @@ import {
   MessageSquare, Sparkles, Plus, Mail, Phone, Heart, Shield
 } from "lucide-react";
 import { format, formatDistanceToNow, isPast } from "date-fns";
-import { useCRMCommunications, useCRMTasks, useCRMNotes, useCRMContacts, useCRMCompanies, useCRMPipelineStages, useUpdateOpportunity, useCreateTask, useCreateNote } from "@/hooks/use-crm-data";
+import { useCRMCommunications, useCRMTasks, useCRMNotes, useCRMContacts, useCRMCompanies, useCRMPipelineStages, useUpdateOpportunity, useCreateTask, useCreateNote } from "@/modules/business/hooks/use-crm-data";
 import type { CRMOpportunity } from "@/data/repositories/crm-data-service";
 import { CRMEscalateToBoardroom } from "./CRMEscalateToBoardroom";
 

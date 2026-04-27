@@ -14,8 +14,8 @@ import {
   BarChart3, DollarSign, PiggyBank, Shield, TrendingUp, Clock,
   AlertTriangle, CheckCircle, Target, Sparkles, Wallet
 } from "lucide-react";
-import { useMoneyKPIs, useReservesSavings } from "@/hooks/use-domain-data";
-import { useSubscriptions } from "@/hooks/use-sita-data";
+import { useMoneyKPIs, useReservesSavings } from "@/modules/business/hooks/use-domain-data";
+import { useSubscriptions } from "@/platform/sita/hooks/use-sita-data";
 
 const FinanceBoardroom = () => {
   const [mode, setMode] = useState("weekly");

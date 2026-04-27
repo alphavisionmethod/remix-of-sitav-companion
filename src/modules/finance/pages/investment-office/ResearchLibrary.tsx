@@ -1,9 +1,9 @@
 // truth-allow: ia-config
 import { useState } from "react";
 import { BookOpen, Search, Calendar, Tag, Brain, Zap } from "lucide-react";
-import { INSTRUMENTS, SAMPLE_RESEARCH } from "@/hooks/useInvestmentOfficeData";
+import { INSTRUMENTS, SAMPLE_RESEARCH } from "@/modules/finance/hooks/useInvestmentOfficeData";
 import { ADVISOR_MEMOS, CATALYST_CALENDAR } from "@/domains/investment";
-import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
+import { useInvestmentThesisEntries } from "@/modules/finance/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function ResearchLibrary() {

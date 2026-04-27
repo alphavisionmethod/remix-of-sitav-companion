@@ -3,7 +3,7 @@ import { Activity, AlertTriangle, CheckCircle2, Wifi, WifiOff } from "lucide-rea
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useProviderHealth } from "@/hooks/use-sag-data";
+import { useProviderHealth } from "@/modules/business/hooks/use-sag-data";
 import { PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
 import SAGSubNav from "@/platform/admin/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

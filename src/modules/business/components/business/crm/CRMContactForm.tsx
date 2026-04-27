@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Plus, Zap, FileText } from "lucide-react";
-import { useCreateContact } from "@/hooks/use-crm-data";
+import { useCreateContact } from "@/modules/business/hooks/use-crm-data";
 import type { CRMCompany } from "@/data/repositories/crm-data-service";
 
 interface CRMContactFormProps {

@@ -4,8 +4,8 @@ import {
   BarChart3, Brain, TrendingUp, TrendingDown, Shield, PieChart, Target, Eye,
   Zap, Globe, DollarSign, AlertTriangle, ChevronRight, Calendar
 } from "lucide-react";
-import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_ORDERS, SAMPLE_SCENARIOS, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
-import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
+import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_ORDERS, SAMPLE_SCENARIOS, SAMPLE_THESES } from "@/modules/finance/hooks/useInvestmentOfficeData";
+import { useInvestmentStrategyRecords } from "@/modules/finance/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const fmt = (n: number) => n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;

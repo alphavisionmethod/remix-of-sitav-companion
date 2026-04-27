@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
 import { fromTable } from "@/lib/supabase-helpers";
-import { useUpdateDaemon } from "@/hooks/useUpdateDaemon";
+import { useUpdateDaemon } from "@/platform/runtime/hooks/useUpdateDaemon";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
 import { motion } from "framer-motion";

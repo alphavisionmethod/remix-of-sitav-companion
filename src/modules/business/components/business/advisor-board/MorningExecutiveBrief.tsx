@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import type { ProfitabilityBrief } from "@/domains/engines/business-profitability-engine";
 import type { ProfitLoopSummary } from "@/domains/engines/continuous-profit-engine";
 import type { BusinessContextSnapshot } from "@/domains/engines/business-context-graph";
-import type { AIRecommendation } from "@/hooks/useBusinessAdvisorBoard";
+import type { AIRecommendation } from "@/modules/business/hooks/useBusinessAdvisorBoard";
 
 interface Props {
   brief: ProfitabilityBrief;

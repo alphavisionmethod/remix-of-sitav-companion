@@ -13,7 +13,7 @@ import { useGovernanceSummary } from "@/hooks/use-admin-durable-state";
 import { Scale, Shield, AlertTriangle, CheckCircle, Clock, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ReadinessInput } from "@/domains/engines/readiness-engine";
-import { useOSRuntime } from "@/hooks/useOSRuntime";
+import { useOSRuntime } from "@/platform/sita/hooks/useOSRuntime";
 import { useMemo } from "react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PageShell } from "@/platform/sita/components/sita/PageShell";

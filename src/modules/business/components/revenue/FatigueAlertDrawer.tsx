@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { AlertTriangle, BellOff, RefreshCw, ShieldCheck, MessageSquareOff, ListChecks } from "lucide-react";
-import type { FatigueAlertRow } from "@/hooks/use-revenue-automation-health";
+import type { FatigueAlertRow } from "@/modules/business/hooks/use-revenue-automation-health";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";

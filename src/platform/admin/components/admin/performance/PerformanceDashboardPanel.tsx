@@ -16,7 +16,7 @@ import { getPerfLog, computePercentiles, type PerfEntry } from "@/hooks/useRoute
 import {
   getChatPerfLog, computeChatPercentiles, getChatPerfModels,
   type PerfEnvironment, type ChatPerfFilter,
-} from "@/hooks/useAIChatPerformance";
+} from "@/platform/governance/hooks/useAIChatPerformance";
 import { PERFORMANCE_BASELINES } from "@/lib/observability/performance-baselines";
 import { Button } from "@/components/ui/button";
 

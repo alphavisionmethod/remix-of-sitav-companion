@@ -12,7 +12,7 @@ import { BoardroomIssueFrame } from "./BoardroomIssueFrame";
 import { useCountUp, useCountUpFormatted } from "@/hooks/useCountUp";
 import { SparklineChart } from "@/platform/sita/components/sita/SparklineChart";
 import { TrustStateBadge, type TrustState } from "@/platform/sita/components/sita/TrustStateBadge";
-import { useBoardroomLiveData } from "@/hooks/useBoardroomLiveData";
+import { useBoardroomLiveData } from "@/platform/boardroom/hooks/useBoardroomLiveData";
 import { getSynthesisForDomain } from "@/lib/services/orchestration-pipeline/app-board-synthesizer";
 import { getTransmissionLog } from "@/lib/services/orchestration-pipeline/signal-emitter";
 import type { Domain } from "@/lib/services/orchestration-pipeline/types";

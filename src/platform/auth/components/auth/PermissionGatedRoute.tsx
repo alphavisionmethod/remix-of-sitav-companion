@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { useRequireAdminPermission } from "@/hooks/useRequireAdminPermission";
+import { useRequireAdminPermission } from "@/platform/auth/hooks/useRequireAdminPermission";
 
 interface PermissionGatedRouteProps {
   children: ReactNode;

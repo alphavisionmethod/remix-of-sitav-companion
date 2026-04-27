@@ -6,7 +6,7 @@
 
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
-import { useAIEngineeringRealtime } from "@/hooks/use-ai-engineering-realtime";
+import { useAIEngineeringRealtime } from "@/platform/governance/hooks/use-ai-engineering-realtime";
 import {
   aiEngineeringMissions,
   aiFixProposals,

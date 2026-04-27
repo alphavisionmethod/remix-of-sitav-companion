@@ -9,7 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // Production fallback — seed data removed

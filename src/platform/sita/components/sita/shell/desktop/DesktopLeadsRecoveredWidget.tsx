@@ -1,6 +1,6 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import { UserCheck, UserX, DollarSign } from "lucide-react";
-import { useLeadsRecoveredData } from "@/hooks/useDesktopWidgetsData";
+import { useLeadsRecoveredData } from "@/platform/sita/hooks/useDesktopWidgetsData";
 
 const ICONS: Record<string, any> = {
   recovered: UserCheck,

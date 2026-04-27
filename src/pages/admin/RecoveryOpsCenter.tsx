@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useRecoveryPermissions } from "@/hooks/useRecoveryPermissions";
+import { useRecoveryPermissions } from "@/platform/auth/hooks/useRecoveryPermissions";
 import { RecoveryJobMonitor } from "@/platform/admin/components/admin/recovery/RecoveryJobMonitor";
 import { WebhookReplayPanel } from "@/platform/admin/components/admin/recovery/WebhookReplayPanel";
 import { DiagnosticExportAuditPanel } from "@/platform/admin/components/admin/recovery/DiagnosticExportAudit";

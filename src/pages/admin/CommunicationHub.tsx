@@ -20,15 +20,15 @@ import {
   ArrowRight, Play, Pause, RotateCcw, FileText,
   Box, Settings, Search, ChevronRight
 } from "lucide-react";
-import { useCommands, useCreateCommand, useApproveCommand, useDenyCommand, useCancelCommand } from "@/hooks/use-os-api";
-import { useSystemStatus, useSystemHealth } from "@/hooks/use-os-api";
-import { useSecurityPosture, useSecurityPendingApprovals, useEmergencyLock } from "@/hooks/use-os-api";
-import { useNotifications, useNotificationManager } from "@/hooks/use-os-api";
-import { usePolicies, usePolicyManager } from "@/hooks/use-os-api";
-import { useManagedApps, useAppManager } from "@/hooks/use-os-api";
-import { useUnifiedTimeline, useAuditTimeline } from "@/hooks/use-os-api";
-import { useSyncStatus, useSyncConflicts, useSyncControl } from "@/hooks/use-os-api";
-import { useUpdateControl, useUpdateHistory } from "@/hooks/use-os-api";
+import { useCommands, useCreateCommand, useApproveCommand, useDenyCommand, useCancelCommand } from "@/platform/sita/hooks/use-os-api";
+import { useSystemStatus, useSystemHealth } from "@/platform/sita/hooks/use-os-api";
+import { useSecurityPosture, useSecurityPendingApprovals, useEmergencyLock } from "@/platform/sita/hooks/use-os-api";
+import { useNotifications, useNotificationManager } from "@/platform/sita/hooks/use-os-api";
+import { usePolicies, usePolicyManager } from "@/platform/sita/hooks/use-os-api";
+import { useManagedApps, useAppManager } from "@/platform/sita/hooks/use-os-api";
+import { useUnifiedTimeline, useAuditTimeline } from "@/platform/sita/hooks/use-os-api";
+import { useSyncStatus, useSyncConflicts, useSyncControl } from "@/platform/sita/hooks/use-os-api";
+import { useUpdateControl, useUpdateHistory } from "@/platform/sita/hooks/use-os-api";
 import { channelManager } from "@/lib/services/realtime-gateway/resilient-channel";
 import { useWsEventStream, useWsConnectionStatus, useWsEventRate } from "@/hooks/use-unified-ws";
 import type { WsEventEnvelope, WsEventScope } from "@/packages/contracts/core/ws-event-envelope";

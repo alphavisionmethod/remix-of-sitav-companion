@@ -1,6 +1,6 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import { CalendarDays } from "lucide-react";
-import { useCalendarTodayData } from "@/hooks/useDesktopWidgetsData";
+import { useCalendarTodayData } from "@/platform/sita/hooks/useDesktopWidgetsData";
 
 const DOMAIN_COLOR: Record<string, string> = {
   business: "bg-violet-500",

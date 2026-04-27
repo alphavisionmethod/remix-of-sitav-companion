@@ -11,7 +11,7 @@ import {
   Maximize2, Crosshair, Shield, Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useBoardroomPacket } from "@/hooks/use-boardroom";
+import { useBoardroomPacket } from "@/platform/boardroom/hooks/use-boardroom";
 import type { BoardroomType, BoardroomContentSection, MetricCardData, NarrativeData, AlertData, ActionItemData, TableData } from "@/lib/boardroom/types";
 import { BOARDROOM_META as META } from "@/lib/boardroom/types";
 import { KPITile, RiskCard } from "@/platform/sita/components/sita/SitaComponents";

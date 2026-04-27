@@ -23,7 +23,7 @@ const data: Record<string, any[]> = {
   notes: [],
 };
 
-vi.mock("@/hooks/use-crm-data", async (importOriginal) => {
+vi.mock("@/modules/business/hooks/use-crm-data", async (importOriginal) => {
   const actual = (await importOriginal()) as Record<string, unknown>;
   return {
     ...actual,

@@ -15,7 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
 import type { AuditEntry, ComplianceReport } from "@/packages/audit-contracts";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
 import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { NotificationInbox } from "@/platform/notifications/components/notifications/NotificationInbox";
 import { ArchitectureHealthBadge } from "@/platform/admin/components/admin/panels/ArchitectureHealthBadge";

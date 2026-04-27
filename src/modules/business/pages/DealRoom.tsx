@@ -6,7 +6,7 @@ import {
   BarChart3, ArrowUpRight, Star, Briefcase, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useDeals } from "@/hooks/use-revenue-office";
+import { useDeals } from "@/modules/business/hooks/use-revenue-office";
 import {
   DEAL_SAMPLES,
   DEAL_RISK_FACTORS,

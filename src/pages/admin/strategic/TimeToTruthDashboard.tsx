@@ -2,9 +2,9 @@ import { Clock, Activity, Zap, CheckCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useEngineEvents } from "@/hooks/useEngineEventsData";
-import { useIntelligenceOverview } from "@/hooks/useIntelligenceAPI";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
+import { useEngineEvents } from "@/platform/personal-brain/hooks/useEngineEventsData";
+import { useIntelligenceOverview } from "@/platform/personal-brain/hooks/useIntelligenceAPI";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const TimeToTruthDashboard = () => {

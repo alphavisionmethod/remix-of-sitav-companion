@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useState, useMemo } from "react";
-import { useCustomerJourneyStages } from "@/hooks/use-revenue-office";
+import { useCustomerJourneyStages } from "@/modules/business/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Typography } from "@/platform/sita/components/sita/Typography";

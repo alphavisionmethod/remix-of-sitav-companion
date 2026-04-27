@@ -9,7 +9,7 @@ import {
   ArrowUpRight, Shield, Eye, Zap, PartyPopper, RotateCcw,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import {
   analyzeProfileEvolution,

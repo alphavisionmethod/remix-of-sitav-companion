@@ -12,9 +12,9 @@ import { useState } from "react";
 import AutomationSubNav from "./AutomationSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
-import { useRevenueAutomationHealth } from "@/hooks/use-revenue-automation-health";
+import { useRevenueAutomationHealth } from "@/modules/business/hooks/use-revenue-automation-health";
 import { FatigueAlertDrawer } from "@/modules/business/components/revenue/FatigueAlertDrawer";
-import type { FatigueAlertRow } from "@/hooks/use-revenue-automation-health";
+import type { FatigueAlertRow } from "@/modules/business/hooks/use-revenue-automation-health";
 const statusIcon = { healthy: CheckCircle, warning: AlertTriangle, error: XCircle, underperforming: TrendingUp };
 const statusColor = { healthy: "text-emerald-400", warning: "text-amber-400", error: "text-red-400", underperforming: "text-blue-400" };
 

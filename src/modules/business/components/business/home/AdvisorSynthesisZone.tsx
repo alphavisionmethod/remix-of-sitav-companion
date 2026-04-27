@@ -4,7 +4,7 @@ import {
   Sparkles, Shield, AlertTriangle, ChevronRight,
   ArrowRight, Eye, Zap, MessageCircle
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { generateHomeAdvisors, detectAdvisorDisagreements } from "@/domains/engines/business-advisor-engine";

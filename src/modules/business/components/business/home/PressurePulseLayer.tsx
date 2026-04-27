@@ -5,7 +5,7 @@ import {
   Settings, Calendar, ArrowRight, ShoppingCart,
   FileText, Layers, Package, Clock as ClockIcon
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 
 interface PressureDomain {

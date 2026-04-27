@@ -5,7 +5,7 @@ import { SitaButton, SitaCard, SitaCardTitle } from "@/platform/sita/components/
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { useOnboardingResume, type OnboardingBranch } from "@/hooks/useOnboardingResume";
+import { useOnboardingResume, type OnboardingBranch } from "@/platform/setup/hooks/useOnboardingResume";
 
 import { useActionFn } from "@/hooks/use-action";
 import { toast } from "sonner";

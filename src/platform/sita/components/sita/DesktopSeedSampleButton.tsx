@@ -8,7 +8,7 @@
 
 import { useState } from "react";
 import { Sparkles, Loader2 } from "lucide-react";
-import { useIsAdmin } from "@/hooks/useIsAdmin";
+import { useIsAdmin } from "@/platform/auth/hooks/useIsAdmin";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { fromTable } from "@/lib/supabase-helpers";

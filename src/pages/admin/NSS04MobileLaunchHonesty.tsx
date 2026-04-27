@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, Clock } from "lucide-react";
-import { useNssLaunchReadiness } from "@/hooks/use-native-shell-data";
+import { useNssLaunchReadiness } from "@/platform/runtime/hooks/use-native-shell-data";
 import NSSSubNav from "@/platform/admin/components/admin/NSSSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

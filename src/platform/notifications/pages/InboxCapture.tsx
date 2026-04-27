@@ -1,7 +1,7 @@
 import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaButton } from "@/platform/sita/components/sita/SitaCard";
-import { useInboxItems } from "@/hooks/use-domain-data";
+import { useInboxItems } from "@/modules/business/hooks/use-domain-data";
 import { KPITile, SitaTabs, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { StateBadge } from "@/platform/sita/components/sita/StateBadge";
 import { useState, useEffect } from "react";

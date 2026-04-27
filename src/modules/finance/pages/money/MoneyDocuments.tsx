@@ -8,7 +8,7 @@ import { QueueCard } from "@/platform/sita/components/sita/cards";
 import { useState, useMemo } from "react";
 import { FileText, Upload, Search, DollarSign, Calendar, Shield, Clock, AlertCircle, Eye, FolderOpen } from "lucide-react";
 import { motion } from "framer-motion";
-import { useFinancialDocuments } from "@/hooks/use-domain-data";
+import { useFinancialDocuments } from "@/modules/business/hooks/use-domain-data";
 import { formatDistanceToNow } from "date-fns";
 
 const sensitivityConfig: Record<string, { label: string; dot: string }> = {

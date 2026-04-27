@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { useApprovalQueue } from "@/hooks/use-brain-core";
+import { useApprovalQueue } from "@/platform/personal-brain/hooks/use-brain-core";
 import ReactMarkdown from "react-markdown";
 import { useNavigate, useParams } from "react-router-dom";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaMetric, SitaButton } from "@/platform/sita/components/sita/SitaCard";
@@ -22,7 +22,7 @@ import {
   AdvisorCard, RecommendationCard, SimulationCard, ApprovalCard,
   ProofCard, MemoryCard, SynthesisCard, ConfidenceLadder,
   BoardroomAdvisorCard, UncertaintyCard } from "@/platform/sita/components/sita/AdvisorComponents";
-import { advisors, recommendations, simulations, approvals, proofHistory, memoryItems, synthesis } from "@/hooks/useAdvisorMissionControl";
+import { advisors, recommendations, simulations, approvals, proofHistory, memoryItems, synthesis } from "@/platform/advisors/hooks/useAdvisorMissionControl";
 import { useStreamingChat } from "@/hooks/use-streaming-chat";
 import {
   Brain, Users, GitCompare, Play, CheckCircle, FileText, Eye,
@@ -32,7 +32,7 @@ import {
   RefreshCw, ShieldCheck, Lightbulb, MessageSquare
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAdvisorStatuses, STATE_COLORS, STATE_LABELS, type AdvisorLiveState } from "@/hooks/use-advisor-status";
+import { useAdvisorStatuses, STATE_COLORS, STATE_LABELS, type AdvisorLiveState } from "@/platform/advisors/hooks/use-advisor-status";
 import type { ApprovalRequest, ExecutionEnvelope, Receipt, TrustState, Opportunity } from "@/packages/contracts";
 import type { AdvisorConfig, AdvisorId } from "@/packages/advisor-config";
 import type { ProofPack, TypedReceipt } from "@/packages/proof-model";

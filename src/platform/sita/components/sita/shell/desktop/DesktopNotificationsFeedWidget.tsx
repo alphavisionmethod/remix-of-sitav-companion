@@ -1,6 +1,6 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import { Bell, AlertCircle, Info, AlertTriangle } from "lucide-react";
-import { useNotificationsFeedData } from "@/hooks/useDesktopWidgetsData";
+import { useNotificationsFeedData } from "@/platform/sita/hooks/useDesktopWidgetsData";
 
 const URG_ICON: Record<string, any> = {
   high: AlertCircle,

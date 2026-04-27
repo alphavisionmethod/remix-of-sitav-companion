@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { describe, it, expect } from "vitest";
-import { deriveEntityRef } from "@/hooks/use-crm-data";
+import { deriveEntityRef } from "@/modules/business/hooks/use-crm-data";
 
 describe("deriveEntityRef (Phase 7.2)", () => {
   it("returns null for an unknown action key", () => {

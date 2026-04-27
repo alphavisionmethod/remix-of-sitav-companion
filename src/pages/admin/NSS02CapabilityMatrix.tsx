@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Grid3X3, CheckCircle2, AlertTriangle } from "lucide-react";
-import { useCapabilitySurfaceBindings } from "@/hooks/use-native-shell-data";
+import { useCapabilitySurfaceBindings } from "@/platform/runtime/hooks/use-native-shell-data";
 import NSSSubNav from "@/platform/admin/components/admin/NSSSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

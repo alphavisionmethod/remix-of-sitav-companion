@@ -1,11 +1,11 @@
-import { usePolicyDecision } from "@/hooks/use-policy-decision";
+import { usePolicyDecision } from "@/platform/trust/hooks/use-policy-decision";
 import { AdminControlPlaneShell as AdminShell } from "@/platform/admin/components/admin/shells/AdminControlPlaneShell";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Bot, Play, Loader2, Zap, Shield, Activity } from "lucide-react";
-import { useAdvisorAgents } from "@/hooks/use-advisor-agents";
+import { useAdvisorAgents } from "@/platform/advisors/hooks/use-advisor-agents";
 import { AdvisorAgentCard } from "@/platform/admin/components/admin/advisor-agents/AdvisorAgentCard";
 import { AdvisorActionQueue } from "@/platform/admin/components/admin/advisor-agents/AdvisorActionQueue";
 import { toast } from "sonner";

@@ -12,7 +12,7 @@ import {
   ChevronDown, ChevronRight, ArrowRight, Zap, Radio, RefreshCw,
   Bug, Target, Layers, Database, Hash, Network,
 } from "lucide-react";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
 import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { getRecoveryEngine } from "@/lib/os-security/recovery";
 import { getPromptDaemon } from "@/lib/os-security/promptd";

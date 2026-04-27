@@ -8,10 +8,10 @@ import {
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { DomainAdvisorBoard } from "@/platform/sita/components/sita/domain-shared/DomainAdvisorBoard";
-import { useBoardroomBridge } from "@/hooks/useBoardroomBridge";
+import { useBoardroomBridge } from "@/platform/boardroom/hooks/useBoardroomBridge";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 import { FinanceNavigationContext } from "@/modules/finance/contexts/FinanceNavigationContext";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getFinanceAdaptation } from "@/domains/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/platform/sita/components/sita/cross-os/CrossOSLinksPanel";
 import { CrossDomainIntelligenceBridge } from "@/platform/sita/components/sita/cross-os/CrossDomainIntelligenceBridge";

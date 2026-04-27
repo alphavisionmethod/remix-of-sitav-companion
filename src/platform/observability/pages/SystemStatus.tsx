@@ -2,7 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton 
 import { KPITile, SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useState, useMemo } from "react";
-import { useOSRuntime } from "@/hooks/useOSRuntime";
+import { useOSRuntime } from "@/platform/sita/hooks/useOSRuntime";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";

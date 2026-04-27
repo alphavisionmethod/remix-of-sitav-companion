@@ -10,7 +10,7 @@ import { describe, it, expect } from "vitest";
 
 describe("Mobile Data Hook Exports", () => {
   it("exports all required mobile hooks", async () => {
-    const mod = await import("@/hooks/use-mobile-data");
+    const mod = await import("@/modules/mobile/hooks/use-mobile-data");
     const required = [
       "useMobileHomePulse",
       "useMobileHomeQuickActions",
@@ -30,11 +30,11 @@ describe("Mobile Data Hook Exports", () => {
 
 describe("MobileHome pulse metric shape", () => {
   it("MobilePulseMetric has required render fields", async () => {
-    const mod = await import("@/hooks/use-mobile-data");
+    const mod = await import("@/modules/mobile/hooks/use-mobile-data");
     // Verify demo data matches the interface the page needs
     const demoMetric = (mod as any).DEMO_PULSE?.[0];
     // Since DEMO data isn't exported, we test the type structurally via a compile check
-    const sampleMetric: import("@/hooks/use-mobile-data").MobilePulseMetric = {
+    const sampleMetric: import("@/modules/mobile/hooks/use-mobile-data").MobilePulseMetric = {
       label: "Test", value: "100%", accent: "green", icon: "Heart",
     };
     expect(sampleMetric).toHaveProperty("label");
@@ -44,7 +44,7 @@ describe("MobileHome pulse metric shape", () => {
   });
 
   it("MobilePulseMetric trend is optional and constrained", () => {
-    const withTrend: import("@/hooks/use-mobile-data").MobilePulseMetric = {
+    const withTrend: import("@/modules/mobile/hooks/use-mobile-data").MobilePulseMetric = {
       label: "X", value: "1", accent: "green", icon: "Heart", trend: "up",
     };
     expect(["up", "down", "stable", undefined]).toContain(withTrend.trend);
@@ -52,7 +52,7 @@ describe("MobileHome pulse metric shape", () => {
 
   it("MobilePulseMetric accent is constrained to 4 values", () => {
     const allowed = ["green", "amber", "red", "purple"];
-    const m: import("@/hooks/use-mobile-data").MobilePulseMetric = {
+    const m: import("@/modules/mobile/hooks/use-mobile-data").MobilePulseMetric = {
       label: "X", value: "1", accent: "amber", icon: "Heart",
     };
     expect(allowed).toContain(m.accent);
@@ -61,7 +61,7 @@ describe("MobileHome pulse metric shape", () => {
 
 describe("MobileHome quick action shape", () => {
   it("MobileQuickAction has label, path, count", () => {
-    const qa: import("@/hooks/use-mobile-data").MobileQuickAction = {
+    const qa: import("@/modules/mobile/hooks/use-mobile-data").MobileQuickAction = {
       label: "Approvals", path: "/mobile/approvals", count: 3,
     };
     expect(qa.label).toBeTruthy();
@@ -72,7 +72,7 @@ describe("MobileHome quick action shape", () => {
 
 describe("MobileHome activity item shape", () => {
   it("MobileActivityItem has time, action, domain", () => {
-    const item: import("@/hooks/use-mobile-data").MobileActivityItem = {
+    const item: import("@/modules/mobile/hooks/use-mobile-data").MobileActivityItem = {
       time: "2m ago", action: "Invoice paid", domain: "business",
     };
     expect(item.time).toBeTruthy();
@@ -83,7 +83,7 @@ describe("MobileHome activity item shape", () => {
 
 describe("MobileMoney account shape", () => {
   it("MobileAccount has label, balance, trend", () => {
-    const a: import("@/hooks/use-mobile-data").MobileAccount = {
+    const a: import("@/modules/mobile/hooks/use-mobile-data").MobileAccount = {
       label: "Operating", balance: "$24,300", trend: "+$3,200",
     };
     expect(a.label).toBeTruthy();
@@ -94,7 +94,7 @@ describe("MobileMoney account shape", () => {
 
 describe("MobileMoney transaction shape", () => {
   it("MobileTransaction has desc, amount, type, time", () => {
-    const tx: import("@/hooks/use-mobile-data").MobileTransaction = {
+    const tx: import("@/modules/mobile/hooks/use-mobile-data").MobileTransaction = {
       desc: "Payment", amount: "+$100", type: "in", time: "Today",
     };
     expect(tx.desc).toBeTruthy();
@@ -106,7 +106,7 @@ describe("MobileMoney transaction shape", () => {
 
 describe("MobileConcierge section shape", () => {
   it("MobileConciergeSection has title, iconName, items[]", () => {
-    const s: import("@/hooks/use-mobile-data").MobileConciergeSection = {
+    const s: import("@/modules/mobile/hooks/use-mobile-data").MobileConciergeSection = {
       title: "Schedule", iconName: "Calendar",
       items: [{ label: "Dentist", detail: "10am", status: "upcoming" }],
     };

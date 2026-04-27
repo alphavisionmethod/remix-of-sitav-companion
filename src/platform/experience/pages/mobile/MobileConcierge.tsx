@@ -4,7 +4,7 @@
 
 import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { Calendar, ShoppingCart, RotateCcw, ArrowRight, CheckCircle2, Clock, CalendarCheck } from "lucide-react";
-import { useMobileConciergeData } from "@/hooks/use-mobile-data";
+import { useMobileConciergeData } from "@/modules/mobile/hooks/use-mobile-data";
 import { MobileEmptyState, MobileErrorState } from "@/platform/experience/components/mobile/MobileEmptyState";
 import { ConciergeSectionSkeleton } from "@/platform/experience/components/mobile/MobileSectionSkeleton";
 

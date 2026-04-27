@@ -11,7 +11,7 @@ import { useInvoiceRenderHtml, useInvoiceSend } from "@/hooks/use-backend-action
 import { InvoiceDetailPane } from "@/modules/business/components/business/InvoiceDetailPane";
 import { cn } from "@/lib/utils";
 import { CrossAppAction, consumeLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { useDraftAutosave } from "@/hooks/useDraftAutosave";
 

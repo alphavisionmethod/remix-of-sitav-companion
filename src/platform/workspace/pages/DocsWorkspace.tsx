@@ -9,7 +9,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/platform/sita/compone
 import { SitaTabs } from "@/platform/sita/components/sita/SitaComponents";
 import { EmptyState } from "@/platform/sita/components/sita/EmptyState";
 import { motion, AnimatePresence } from "framer-motion";
-import { useDocs } from "@/hooks/use-domain-data";
+import { useDocs } from "@/modules/business/hooks/use-domain-data";
 import type { MockDoc } from "@/data/fixtures/mock-data/workspace";
 import ReactMarkdown from "react-markdown";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

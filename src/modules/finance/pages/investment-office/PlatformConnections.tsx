@@ -1,9 +1,9 @@
 // truth-allow: ia-config
 import { useState, useMemo } from "react";
 import { Link2, Plus, RefreshCw, CheckCircle2, AlertTriangle, XCircle, Shield, Clock, Search, Star } from "lucide-react";
-import { PLATFORM_CONNECTIONS } from "@/hooks/useInvestmentOfficeData";
+import { PLATFORM_CONNECTIONS } from "@/modules/finance/hooks/useInvestmentOfficeData";
 import { SYNC_HISTORY, PLATFORM_PERMISSIONS } from "@/domains/investment";
-import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
+import { useMarketWatchlistItems } from "@/modules/finance/hooks/use-investment-office";
 import { ConnectPlatformModal } from "@/modules/finance/components/investment/ConnectPlatformModal";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";

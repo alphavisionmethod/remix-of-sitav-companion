@@ -6,7 +6,7 @@ import {
   Phone, Calendar, Target, ArrowUpRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useCustomers } from "@/hooks/use-domain-data";
+import { useCustomers } from "@/modules/business/hooks/use-domain-data";
 import {
   STRATEGIC_ACCOUNT_SAMPLES,
   ACCOUNT_HEALTH_FACTOR_SAMPLES,

@@ -3,7 +3,7 @@ import { Shield, TrendingDown, AlertTriangle, Clock, Zap, Activity } from "lucid
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useMarginProtectionFeed, type MarginProtectionEvent } from "@/hooks/use-compute-governance";
+import { useMarginProtectionFeed, type MarginProtectionEvent } from "@/platform/governance/hooks/use-compute-governance";
 
 const sevColors = { critical: "text-rose-400", warning: "text-amber-400", info: "text-blue-400" };
 const actionIcons: Record<string, typeof Shield> = {

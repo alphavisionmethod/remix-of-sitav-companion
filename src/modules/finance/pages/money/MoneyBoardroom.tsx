@@ -10,8 +10,8 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { BarChart3, Sun, AlertTriangle, CheckCircle, Clock, PiggyBank, CreditCard, DollarSign, Shield, TrendingUp, Eye, ArrowDownLeft, Repeat, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import { useMoneyKPIs, useReservesSavings } from "@/hooks/use-domain-data";
-import { useSubscriptions } from "@/hooks/use-sita-data";
+import { useMoneyKPIs, useReservesSavings } from "@/modules/business/hooks/use-domain-data";
+import { useSubscriptions } from "@/platform/sita/hooks/use-sita-data";
 import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 
 const MoneyBoardroom = () => {

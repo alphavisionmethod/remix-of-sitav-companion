@@ -5,14 +5,14 @@ import { useAction } from "@/hooks/use-action";
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
 import { useAIRuntimeVerification, type CapabilityVerification } from "@/lib/ai/hooks/use-ai-runtime-verification";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { dbAny as db } from "@/lib/supabase-helpers";
 import { reclassifyAIFeatures, type ReclassificationResult } from "@/lib/ai/ai-launch-honesty-reclassifier";
 import { seedAIRoutingActivation } from "@/lib/ai/ai-routing-seed-service";
-import { getAIStatusMessage } from "@/hooks/use-ai-health";
+import { getAIStatusMessage } from "@/platform/governance/hooks/use-ai-health";
 import { Button } from "@/components/ui/button";
 import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";

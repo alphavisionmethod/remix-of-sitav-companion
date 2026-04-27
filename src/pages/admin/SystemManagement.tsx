@@ -13,7 +13,7 @@ import {
   CheckCircle, AlertTriangle, Clock, RefreshCw, Cpu, MemoryStick,
   Lock, Eye, Zap, Archive
 } from "lucide-react";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";

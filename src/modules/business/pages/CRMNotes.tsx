@@ -1,10 +1,10 @@
 import React, { useState, useMemo } from "react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { useCRMNotes, useCRMContacts, useCRMCompanies, useCreateNote, useUpdateNote, useDeleteNote } from "@/hooks/use-crm-data";
+import { useCRMNotes, useCRMContacts, useCRMCompanies, useCreateNote, useUpdateNote, useDeleteNote } from "@/modules/business/hooks/use-crm-data";
 import {
   StickyNote, Plus, Pin, PinOff, Trash2, Search, User, Building2,
   MessageSquare, Phone, Briefcase, FileText, Edit2, CheckSquare,

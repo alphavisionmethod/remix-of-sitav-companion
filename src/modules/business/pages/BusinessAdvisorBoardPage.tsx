@@ -9,7 +9,7 @@ import { Brain, Sparkles, RefreshCw, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
-import { useBusinessAdvisorBoard } from "@/hooks/useBusinessAdvisorBoard";
+import { useBusinessAdvisorBoard } from "@/modules/business/hooks/useBusinessAdvisorBoard";
 
 // Board components
 import { ExecutiveBriefCard } from "@/modules/business/components/business/advisor-board/ExecutiveBriefCard";

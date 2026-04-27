@@ -17,7 +17,7 @@ import {
   useBackgroundJobsRealtime,
   useRetryBackgroundJob,
   useCancelBackgroundJob,
-} from "@/hooks/use-background-tasks";
+} from "@/modules/business/hooks/use-background-tasks";
 import type {
   BackgroundJobVM,
   BackgroundJobKind,

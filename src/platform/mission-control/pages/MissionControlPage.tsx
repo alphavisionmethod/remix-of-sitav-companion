@@ -4,12 +4,12 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, createContext, useContext } from "react";
-import { useOSRuntime, type OSRuntime } from "@/hooks/useOSRuntime";
+import { useOSRuntime, type OSRuntime } from "@/platform/sita/hooks/useOSRuntime";
 import { useNavigate } from "react-router-dom";
-import { useMissionControlLive } from "@/hooks/use-mission-control-data";
-import { useControlMode, useWhatMattersNow, useMissionControlSummary, useSystemActivity } from "@/hooks/use-mission-control-views";
+import { useMissionControlLive } from "@/platform/mission-control/hooks/use-mission-control-data";
+import { useControlMode, useWhatMattersNow, useMissionControlSummary, useSystemActivity } from "@/platform/mission-control/hooks/use-mission-control-views";
 import { useAdminIncidents, useFleetHealth, useTrustCenter } from "@/hooks/use-admin-data";
-import { useMissionGoals } from "@/hooks/use-mission-data";
+import { useMissionGoals } from "@/platform/mission-control/hooks/use-mission-data";
 import { AdminSpendChart } from "@/platform/sita/components/sita/AdminSpendChart";
 import { AnimatedProgressRing } from "@/platform/sita/components/sita/AnimatedProgressRing";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/platform/sita/components/sita/SitaCard";
@@ -25,7 +25,7 @@ import {
   CostAnomalyCard, PolicyAnomalyCard, ReleaseSafetyCard, SafeModeCard,
   PermissionsCard,
 } from "@/platform/sita/components/sita/MissionControlComponents";
-import { advisors, recommendations, internalAgents, incidents, connectorHealth, stuckWorkflows, costAnomalies, policyAnomalies, releaseSafety, approvals, safeMode, type SafeModeState } from "@/hooks/useAdvisorMissionControl";
+import { advisors, recommendations, internalAgents, incidents, connectorHealth, stuckWorkflows, costAnomalies, policyAnomalies, releaseSafety, approvals, safeMode, type SafeModeState } from "@/platform/advisors/hooks/useAdvisorMissionControl";
 import { cn } from "@/lib/utils";
 import { useFraudSentinel, useGovernanceSimulator } from "@/platform/sita/contexts/SitaKernelContext";
 import type { TrustState, ExecutionEnvelope, WorkflowState, DiagnosticBundle } from "@/packages/contracts";
@@ -43,7 +43,7 @@ import { CABWorkflow } from "@/platform/sita/components/sita/CABWorkflow";
 import { AgentCommunicationGraph } from "@/platform/sita/components/sita/AgentCommunicationGraph";
 import { SelfHealingNotifications } from "@/platform/sita/components/sita/SelfHealingNotifications";
 import PlatformTruthDashboard from "./PlatformTruthDashboard";
-import { useTokenUsages } from "@/hooks/use-domain-data";
+import { useTokenUsages } from "@/modules/business/hooks/use-domain-data";
 
 
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

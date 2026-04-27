@@ -1,6 +1,6 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import { TrendingUp, TrendingDown, LineChart } from "lucide-react";
-import { useInvestmentPulseData } from "@/hooks/useDesktopWidgetsData";
+import { useInvestmentPulseData } from "@/platform/sita/hooks/useDesktopWidgetsData";
 
 interface Props { onLaunchApp?: (appId: string) => void; }
 

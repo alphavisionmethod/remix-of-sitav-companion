@@ -13,7 +13,7 @@ import {
   RefreshCw, Zap, Star, Package, Heart, Clock, MapPin,
   Bot, ChevronDown, ChevronUp,
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 

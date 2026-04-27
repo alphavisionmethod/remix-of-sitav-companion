@@ -1,7 +1,7 @@
 import { SitaPageHeader } from "@/platform/sita/components/sita/SitaCard";
 import { CustomerHealthDashboard } from "@/modules/business/components/business/CustomerHealthDashboard";
 import { PageShell } from "@/platform/sita/components/sita/PageShell";
-import { useCustomers } from "@/hooks/use-domain-data";
+import { useCustomers } from "@/modules/business/hooks/use-domain-data";
 
 const CustomerHealthPage = () => {
   // Truth-anchored portfolio sizing — drives the subtitle and ensures

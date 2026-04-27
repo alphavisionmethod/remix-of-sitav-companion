@@ -10,7 +10,7 @@ import {
   Crosshair, Zap, Check, ChevronRight, Star, ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 

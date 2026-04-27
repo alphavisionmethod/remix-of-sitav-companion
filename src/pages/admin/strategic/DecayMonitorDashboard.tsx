@@ -3,9 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useEngineEvents } from "@/hooks/useEngineEventsData";
-import { useIntelligenceAssets } from "@/hooks/useIntelligencePersistence";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
+import { useEngineEvents } from "@/platform/personal-brain/hooks/useEngineEventsData";
+import { useIntelligenceAssets } from "@/platform/personal-brain/hooks/useIntelligencePersistence";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const sevColors: Record<string,string> = { critical: "text-rose-400 bg-rose-500/10", high: "text-amber-400 bg-amber-500/10", medium: "text-yellow-400 bg-yellow-500/10", low: "text-muted-foreground bg-secondary/30" };

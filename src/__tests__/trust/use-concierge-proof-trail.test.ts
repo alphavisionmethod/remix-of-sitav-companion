@@ -43,7 +43,7 @@ vi.mock("@/integrations/supabase/client", () => {
   };
 });
 
-import { useConciergeProofTrail } from "@/hooks/use-concierge-proof-trail";
+import { useConciergeProofTrail } from "@/modules/concierge/hooks/use-concierge-proof-trail";
 
 function wrapper() {
   const qc = new QueryClient({

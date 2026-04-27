@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
-import { useBrainCore, AdvisorResponse } from "@/hooks/use-brain-core";
+import { useBrainCore, AdvisorResponse } from "@/platform/personal-brain/hooks/use-brain-core";
 import { useStreamingChat } from "@/hooks/use-streaming-chat";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { TrustBadge } from "./TrustBadge";

@@ -8,7 +8,7 @@ import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Zap, Play, Shield, Clock, Mail, Phone, RotateCcw, CalendarDays, ShoppingCart, Users, FileText, Bell, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";
 

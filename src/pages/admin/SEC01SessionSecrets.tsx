@@ -12,7 +12,7 @@ import {
   Monitor, Cpu, HardDrive, Activity, Layers, ArrowRight,
   Fingerprint, Wifi, Globe, Server, Terminal, ChevronDown, ChevronRight,
 } from "lucide-react";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
 import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { getSessionDaemon, type ExtendedOSSession } from "@/lib/os-security/sessiond";
 import { getSecretsDaemon } from "@/lib/os-security/secretsd";

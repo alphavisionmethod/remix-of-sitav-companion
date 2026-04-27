@@ -12,7 +12,7 @@ import {
   Clock, Target, Receipt, Users
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import {
   getActiveSignals, crossNavigate,
   getFinanceAdaptation, getConciergeAdaptation,

@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
-import { useRelationshipDossier } from "@/hooks/use-operational-rituals";
+import { useRelationshipDossier } from "@/platform/operations/hooks/use-operational-rituals";
 
 const typeIcons: Record<string, React.ElementType> = {
   call: Phone, email: Mail, meeting: Calendar, deal: DollarSign, support: Shield, note: FileText, task: Clock,

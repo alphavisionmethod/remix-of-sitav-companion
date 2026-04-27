@@ -37,7 +37,7 @@ import {
   useApprovalQueue,
   useApproveApprovalItem,
   useRejectApprovalItem,
-} from "@/hooks/use-approval-queue-mutations";
+} from "@/platform/trust/hooks/use-approval-queue-mutations";
 
 const db = supabase as any;
 

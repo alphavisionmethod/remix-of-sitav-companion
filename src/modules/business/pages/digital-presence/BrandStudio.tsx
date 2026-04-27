@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { useBrandAssets } from "@/hooks/use-digital-presence";
+import { useBrandAssets } from "@/modules/business/hooks/use-digital-presence";
 import DPOSubNav from "./DPOSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 export default function BrandStudio() {

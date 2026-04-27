@@ -38,7 +38,7 @@ import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner
 import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 
 const statusConfig: Record<string, { icon: typeof CheckCircle; color: string; bg: string; label: string }> = {

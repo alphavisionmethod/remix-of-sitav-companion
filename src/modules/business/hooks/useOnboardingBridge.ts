@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useEffect, useRef, useCallback } from "react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import type { ArchetypeWeights } from "@/domains/engines/business-profile-engine";
 import type { OnboardingState } from "@/pages/revenue-office/onboarding/types";
 

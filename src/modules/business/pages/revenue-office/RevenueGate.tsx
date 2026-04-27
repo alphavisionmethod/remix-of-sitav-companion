@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
-import { useDeals } from "@/hooks/use-revenue-office";
+import { useDeals } from "@/modules/business/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

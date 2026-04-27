@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from "react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useCRMCompanies, useCreateCompany, useDeleteCompany } from "@/hooks/use-crm-data";
+import { useCRMCompanies, useCreateCompany, useDeleteCompany } from "@/modules/business/hooks/use-crm-data";
 import { Building2, Plus, Search, ChevronRight, Globe, DollarSign, Heart, MoreHorizontal, Trash2, List, Grid3X3 } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { CRMCompanyDetail } from "@/modules/business/components/business/crm/CRMCompanyDetail";

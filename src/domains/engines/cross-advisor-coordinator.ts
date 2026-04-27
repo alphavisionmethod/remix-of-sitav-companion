@@ -3,7 +3,7 @@
 // De-duplicates, merges, ranks recommendations across advisors
 // ═══════════════════════════════════════════════════════════════
 
-import type { AIRecommendation } from "@/hooks/useBusinessAdvisorBoard";
+import type { AIRecommendation } from "@/modules/business/hooks/useBusinessAdvisorBoard";
 import { resolveConflict, type ConflictRule } from "@/lib/advisors/advisor-conflict-resolution-policy";
 import { resolveDebate, DEFAULT_DEBATE_POLICY, type DebateOutcome } from "@/lib/advisors/advisor-debate-orchestrator";
 

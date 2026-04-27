@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useCRMContacts, useCRMCompanies, useCRMOpportunities, useCRMTasks, useCRMCommunications, useCRMNotes } from "@/hooks/use-crm-data";
+import { useCRMContacts, useCRMCompanies, useCRMOpportunities, useCRMTasks, useCRMCommunications, useCRMNotes } from "@/modules/business/hooks/use-crm-data";
 import {
   Users, Building2, TrendingUp, Clock, Plus, Upload, AlertTriangle, CheckCircle2,
   Phone, Mail, Calendar, ArrowRight, Heart, Zap, DollarSign, BarChart3, Target,
@@ -14,7 +14,7 @@ import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavig
 import CRMCommandSearch from "@/modules/business/components/business/crm/CRMCommandSearch";
 import { CRMLifecycleEngine } from "@/modules/business/components/business/crm/CRMLifecycleEngine";
 import { CRMRelationshipIntelligence } from "@/modules/business/components/business/crm/CRMRelationshipIntelligence";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 
 const CRMHome = () => {
   const { data: contacts = [] } = useCRMContacts();

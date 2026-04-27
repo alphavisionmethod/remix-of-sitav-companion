@@ -30,7 +30,7 @@ import {
 import { AlertTriangle, History, Power, ShieldOff } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import { useKillSwitch } from "@/hooks/useKillSwitch";
+import { useKillSwitch } from "@/platform/runtime/hooks/useKillSwitch";
 import {
   engageKillSwitch,
   fetchKillSwitchAudit,

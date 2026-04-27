@@ -4,7 +4,7 @@ import {
   ArrowUpRight, ArrowDownRight, AlertTriangle,
   CheckCircle, Clock, TrendingUp, RefreshCw, Zap
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 
 interface TimelineEntry {
   id: string;

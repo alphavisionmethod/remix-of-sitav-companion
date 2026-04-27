@@ -5,7 +5,7 @@
 
 import { AlertTriangle, XCircle, RefreshCw, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useAIHealth, getAIStatusMessage, type AIHealthStatus } from "@/hooks/use-ai-health";
+import { useAIHealth, getAIStatusMessage, type AIHealthStatus } from "@/platform/governance/hooks/use-ai-health";
 
 interface AIGateProps {
   children: React.ReactNode;

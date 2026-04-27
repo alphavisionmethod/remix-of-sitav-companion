@@ -19,7 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { CapabilityLease, LeaseViolation } from "@/lib/services/lease-manager";
-import { useLeases } from "@/hooks/use-domain-data";
+import { useLeases } from "@/modules/business/hooks/use-domain-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 // ── Status helpers ──────────────────────────────────────────────

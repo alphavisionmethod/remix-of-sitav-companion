@@ -29,7 +29,7 @@ const apptHookState: {
   isUnauthenticated: false,
 };
 
-vi.mock("@/hooks/use-scheduled-appointments", () => ({
+vi.mock("@/modules/business/hooks/use-scheduled-appointments", () => ({
   useScheduledAppointments: () => ({
     ...apptHookState,
     state: apptHookState.isLoading

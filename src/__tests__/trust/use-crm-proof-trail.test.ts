@@ -37,7 +37,7 @@ vi.mock("@/integrations/supabase/client", () => {
   };
 });
 
-import { useCRMEntityProofTrail } from "@/hooks/use-crm-proof-trail";
+import { useCRMEntityProofTrail } from "@/modules/business/hooks/use-crm-proof-trail";
 
 function wrapper() {
   const qc = new QueryClient({

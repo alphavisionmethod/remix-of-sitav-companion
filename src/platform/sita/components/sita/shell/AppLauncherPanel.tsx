@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/platform/app-platform/contexts/AppPlatformContext";
-import { useLauncherViewModel, type LauncherAppItem, type AppInstallCTA } from "@/hooks/useLauncherViewModel";
+import { useLauncherViewModel, type LauncherAppItem, type AppInstallCTA } from "@/platform/app-platform/hooks/useLauncherViewModel";
 import type { AppCategory } from "@/domains/apps/types";
 import { SoundEngine } from "@/platform/runtime/sound-engine";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";

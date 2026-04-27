@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
 import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { CloudAdminLayout, type CloudTab } from "./CloudAdminLayout";

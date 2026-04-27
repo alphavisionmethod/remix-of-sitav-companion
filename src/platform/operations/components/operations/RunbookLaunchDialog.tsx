@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { Play, BookOpen, AlertCircle } from "lucide-react";
-import type { RunbookRow } from "@/hooks/use-operations-command-center";
+import type { RunbookRow } from "@/modules/business/hooks/use-operations-command-center";
 import { useState } from "react";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";

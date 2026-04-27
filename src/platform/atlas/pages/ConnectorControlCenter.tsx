@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
-import { useConnectorControlCenter } from "@/hooks/use-connector-control-center";
+import { useConnectorControlCenter } from "@/platform/integration/hooks/use-connector-control-center";
 import { useNavigate } from "react-router-dom";
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();

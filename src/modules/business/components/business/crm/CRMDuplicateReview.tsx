@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useCRMContacts, useUpdateContact, useDeleteContact } from "@/hooks/use-crm-data";
+import { useCRMContacts, useUpdateContact, useDeleteContact } from "@/modules/business/hooks/use-crm-data";
 import { Merge, ArrowRight, CheckCircle, AlertTriangle, User, Mail, Phone, Building, Search, Shield } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";

@@ -14,7 +14,7 @@ import { DollarSign, Plus, History, Pencil, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
-import { usePricingItems } from "@/hooks/use-domain-data";
+import { usePricingItems } from "@/modules/business/hooks/use-domain-data";
 import type { OwnerPricingItem as PricingItem } from "@/data/fixtures/mock-data/owner";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

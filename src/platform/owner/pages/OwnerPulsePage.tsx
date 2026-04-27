@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
   useMissionControlSummary, useFounderCostSummary, useTrustSummary,
-} from "@/hooks/use-mission-control-views";
+} from "@/platform/mission-control/hooks/use-mission-control-views";
 import {
   BarChart3, TrendingUp, DollarSign, Shield, Users, Rocket,
   Heart, AlertTriangle, Target, Calendar, Clock, Sparkles,

@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useModelRegistry, useCreateModel } from "@/hooks/use-sag-data";
+import { useModelRegistry, useCreateModel } from "@/modules/business/hooks/use-sag-data";
 import { MODEL_CLASSES, PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
 import SAGSubNav from "@/platform/admin/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

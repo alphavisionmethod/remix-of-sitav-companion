@@ -4,7 +4,7 @@ import { Cpu, ArrowRight, CheckCircle2, Layers, FileText, Shield, Zap, MessageSq
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useModelRegistry, usePromptFamilies, useRoutingPolicies, useTaskRequests } from "@/hooks/use-sag-data";
+import { useModelRegistry, usePromptFamilies, useRoutingPolicies, useTaskRequests } from "@/modules/business/hooks/use-sag-data";
 import { TASK_CLASSES, MODEL_CLASSES } from "@/lib/sovereign-ai-gateway/types";
 import SAGSubNav from "@/platform/admin/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

@@ -13,7 +13,7 @@ import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
   NovaToggle, NovaBadge, NovaAvatar, NovaSlider,
 } from "@/platform/nova-sdk/ui/components";
-import { useSettingsValue } from "@/hooks/use-settings-value";
+import { useSettingsValue } from "@/platform/settings/hooks/use-settings-value";
 import { toast } from "sonner";
 import { SettingRow, ResetSectionButton } from "./shared";
 import { useAuth } from "@/contexts/AuthContext";

@@ -10,7 +10,7 @@ import {
   ContextMenu,
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
-import { useDesktopWidgets } from "@/hooks/useDesktopWidgets";
+import { useDesktopWidgets } from "@/platform/sita/hooks/useDesktopWidgets";
 import {
   useOSWindowContext,
   type OSWindow,

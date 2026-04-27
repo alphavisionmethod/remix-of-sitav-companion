@@ -10,7 +10,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { useOSRuntime } from "@/hooks/useOSRuntime";
+import { useOSRuntime } from "@/platform/sita/hooks/useOSRuntime";
 import {
   Shield, Activity, Wifi, AlertTriangle, Rocket, Lock, Eye,
   Monitor, Smartphone, Tablet, Server, CheckCircle2, XCircle,

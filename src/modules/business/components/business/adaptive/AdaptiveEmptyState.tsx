@@ -11,7 +11,7 @@ import {
   Package, MapPin, CreditCard, Heart, Globe, CheckCircle,
   Zap, BarChart3, Clock,
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import type { ProfileArchetype } from "@/domains/engines/business-profile-engine";

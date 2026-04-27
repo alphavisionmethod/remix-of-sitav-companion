@@ -9,8 +9,8 @@ import {
   ApprovalGate, DecisionSeal, ProofReceipt,
   ExecutionChainTimeline, buildDefaultChain,
 } from "@/platform/sita/components/sita/primitives";
-import { useBoardroomData } from "@/hooks/use-boardroom-data";
-import { useBoardroomLiveData } from "@/hooks/useBoardroomLiveData";
+import { useBoardroomData } from "@/platform/boardroom/hooks/use-boardroom-data";
+import { useBoardroomLiveData } from "@/platform/boardroom/hooks/useBoardroomLiveData";
 import { pushDecisionToApp } from "@/lib/services/boardroom-bridge";
 import { toast } from "sonner";
 import { useDataMode } from "@/contexts/DataModeContext";

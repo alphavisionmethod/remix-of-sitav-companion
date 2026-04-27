@@ -2,7 +2,7 @@ import { MobileShell } from "@/platform/experience/components/mobile/MobileShell
 import { useParams } from "react-router-dom";
 import { CheckCircle2, Clock, ArrowRight, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useMobileWorkflowSteps } from "@/hooks/use-domain-data";
+import { useMobileWorkflowSteps } from "@/modules/business/hooks/use-domain-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const statusIcon = {

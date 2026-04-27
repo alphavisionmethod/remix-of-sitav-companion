@@ -16,7 +16,7 @@ import { RecoveryCard } from "@/modules/business/components/business/lead-recove
 import { RecoveryHighPressureBanner } from "@/modules/business/components/business/lead-recovery/RecoveryStates";
 import type { RecoveryCandidate } from "@/domains/business";
 import { filterByQueue } from "@/domains/engines/lead-recovery-engine";
-import { useLeadRecoveryCandidates } from "@/hooks/use-lead-recovery-candidates";
+import { useLeadRecoveryCandidates } from "@/modules/business/hooks/use-lead-recovery-candidates";
 import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { LEAD_RECOVERY_CAMPAIGNS } from "@/data/fixtures/mock-data/lead-recovery-campaigns";

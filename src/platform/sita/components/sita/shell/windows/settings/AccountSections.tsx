@@ -23,7 +23,7 @@ import { AllProviderFamiliesStatus } from "@/platform/sita/components/sita/AllPr
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useQuery } from "@tanstack/react-query";
 import { fromDynamicTable } from "@/lib/supabase-helpers";
-import { useDemoMode } from "@/hooks/use-brain-core";
+import { useDemoMode } from "@/platform/personal-brain/hooks/use-brain-core";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/platform/sita/components/sita/ConfirmationDialog";
 

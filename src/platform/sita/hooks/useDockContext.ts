@@ -5,7 +5,7 @@
 
 import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
-import type { DockContext } from "./useAppSurfacing";
+import type { DockContext } from "@/platform/app-platform/hooks/useAppSurfacing";
 
 export function useDockContext(): DockContext {
   const location = useLocation();

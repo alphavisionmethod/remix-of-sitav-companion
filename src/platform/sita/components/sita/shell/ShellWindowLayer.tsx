@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useCallback } from "react";
-import { useWindowManager } from "@/hooks/useWindowManager";
+import { useWindowManager } from "@/platform/sita/hooks/useWindowManager";
 type WindowManager = ReturnType<typeof useWindowManager>;
 import { FinderWindow } from "./windows/FinderWindow";
 import { SettingsWindow } from "./windows/SettingsWindow";

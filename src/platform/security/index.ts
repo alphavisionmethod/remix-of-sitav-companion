@@ -3,8 +3,8 @@
 // Canonical import: @/platform/security
 // ═══════════════════════════════════════════════════════════════
 
-export * from "@/hooks/use-security-fabric";
-export * from "@/hooks/useOSSecurity";
+export * from "@/platform/security/hooks/use-security-fabric";
+export * from "@/platform/sita/hooks/useOSSecurity";
 
 // Advanced Hardening — AI Leak Prevention & Session Security
 export {

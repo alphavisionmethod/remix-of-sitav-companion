@@ -4,7 +4,7 @@ import {
   Gavel, ChevronDown, AlertTriangle, Shield,
   ArrowRight, TrendingDown, Users, Clock, Zap
 } from "lucide-react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/domains/engines/business-identity-layers";
 import { Button } from "@/components/ui/button";
 

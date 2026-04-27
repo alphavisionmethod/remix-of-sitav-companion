@@ -9,7 +9,7 @@ import { SitaOSProvider } from "@/platform/sita/contexts/SitaOSContext";
 import { NovaSDKProvider } from "@/platform/nova-sdk/contexts/NovaSDKContext";
 import { RuntimeTierProvider } from "@/runtimes/runtime-context";
 import { usePipelineBootstrap } from "@/hooks/usePipelineBootstrap";
-import { useAutonomyBootstrap } from "@/hooks/useAutonomyBootstrap";
+import { useAutonomyBootstrap } from "@/platform/orchestration/hooks/useAutonomyBootstrap";
 import { ActiveWorkspaceProvider } from "@/platform/workspace/workspace-context";
 
 /** Boots the orchestration pipeline inside the provider tree */

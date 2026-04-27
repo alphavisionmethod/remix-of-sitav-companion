@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useRealityClassifications } from "@/hooks/useRealityClassifications";
+import { useRealityClassifications } from "@/platform/runtime/hooks/useRealityClassifications";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { Rocket, AlertTriangle, ShieldCheck, Eye, TrendingDown } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

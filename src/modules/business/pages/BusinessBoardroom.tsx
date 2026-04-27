@@ -11,8 +11,8 @@ import { cn } from "@/lib/utils";
 import { useState, useMemo } from "react";
 import { BarChart3, AlertTriangle, Target, Sparkles, Clock, ArrowRight, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
-import { useLeads, useCustomers, useInvoices, useOpportunities } from "@/hooks/use-sita-data";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useLeads, useCustomers, useInvoices, useOpportunities } from "@/platform/sita/hooks/use-sita-data";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { getTopAdvisors } from "@/domains/engines/adaptive-advisor-roster";
 import { getBoardroomAgenda } from "@/domains/engines/adaptive-boardroom-framing";
 

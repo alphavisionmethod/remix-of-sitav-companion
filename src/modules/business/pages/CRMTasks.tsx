@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from "react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useCRMTasks, useCRMContacts, useCRMCompanies, useCRMOpportunities, useCreateTask, useUpdateTask } from "@/hooks/use-crm-data";
+import { useCRMTasks, useCRMContacts, useCRMCompanies, useCRMOpportunities, useCreateTask, useUpdateTask } from "@/modules/business/hooks/use-crm-data";
 import {
   CheckCircle2, Circle, Clock, Plus, AlertTriangle, Calendar,
   Filter, Target, User, Building2, TrendingUp, Zap, ListTodo,

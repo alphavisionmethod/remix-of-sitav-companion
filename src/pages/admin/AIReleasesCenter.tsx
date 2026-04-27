@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Rocket, CheckCircle2, AlertTriangle, Shield, Clock, ArrowRight, RotateCcw, Activity, GitBranch, Eye, TrendingUp } from "lucide-react";
-import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
+import { useAIEngDomain } from "@/platform/governance/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const RELEASE_GATES: any[] = [];

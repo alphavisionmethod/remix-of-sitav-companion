@@ -14,7 +14,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { useOSRuntime } from "@/hooks/useOSRuntime";
+import { useOSRuntime } from "@/platform/sita/hooks/useOSRuntime";
 import type { ScenarioTemplate, ScenarioSimulation, ScenarioOutcome } from "@/packages/contracts";
 import type { RealityLane, ConfidenceScore, SimulationResult } from "@/packages/reality-contracts";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

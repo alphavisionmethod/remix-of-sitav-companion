@@ -7,7 +7,7 @@ import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { Shield, Lock, Eye, AlertTriangle, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
-import { useFilesBySensitivity } from "@/hooks/use-domain-data";
+import { useFilesBySensitivity } from "@/modules/business/hooks/use-domain-data";
 import { useMemo } from "react";
 
 function retentionFromClassification(c: string | null): string {

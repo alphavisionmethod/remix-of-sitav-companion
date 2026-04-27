@@ -7,7 +7,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { useGroceryLists } from "@/hooks/use-concierge-data";
+import { useGroceryLists } from "@/modules/concierge/hooks/use-concierge-data";
 // Production fallback — seed data removed
 const categories: any[] = [];
 const stores: any[] = [];

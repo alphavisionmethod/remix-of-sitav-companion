@@ -7,7 +7,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Play, Pause, Square, ChevronRight, Clock, Radio, Users } from "lucide-react";
-import type { SessionStatus } from "@/hooks/useBoardroomSession";
+import type { SessionStatus } from "@/platform/boardroom/hooks/useBoardroomSession";
 
 interface Props {
   status: SessionStatus;

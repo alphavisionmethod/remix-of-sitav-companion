@@ -3,7 +3,7 @@ import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
 import { KPITile, EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
-import { useHouseholds, useHouseholdMembers, useCreateHousehold, useAddHouseholdMember, useDeleteHouseholdMember } from "@/hooks/use-household";
+import { useHouseholds, useHouseholdMembers, useCreateHousehold, useAddHouseholdMember, useDeleteHouseholdMember } from "@/modules/concierge/hooks/use-household";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Users, Home, Plus, Trash2, Shield, UserPlus } from "lucide-react";

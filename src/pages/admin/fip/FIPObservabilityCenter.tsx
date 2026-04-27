@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Activity, CheckCircle2, XCircle, Wrench, FileSearch, RotateCcw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useComplianceRecords, useFeatureSpecs } from "@/hooks/use-fip-data";
+import { useComplianceRecords, useFeatureSpecs } from "@/modules/business/hooks/use-fip-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const FIPObservabilityCenter = () => {
   const { data: compliance = [] } = useComplianceRecords();

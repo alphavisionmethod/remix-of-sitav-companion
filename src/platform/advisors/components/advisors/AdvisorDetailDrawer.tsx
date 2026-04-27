@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Brain, BookOpen, History, MessageSquare, ThumbsUp, ThumbsDown, Star, Sparkles, Upload, Trash2, RefreshCw, ImageIcon } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import type { AdvisorConfig } from "./AdvisorCouncilShell";
-import { useAdvisorPortraits } from "@/hooks/use-advisor-portraits";
+import { useAdvisorPortraits } from "@/platform/advisors/hooks/use-advisor-portraits";
 import { toast } from "sonner";
 
 interface AdvisorDetailDrawerProps {

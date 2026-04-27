@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { tierColors } from "./shared";
 import type { ComputeModelTier } from "@/lib/compute-governance";
-import { useMissionCostData } from "@/hooks/use-compute-governance";
+import { useMissionCostData } from "@/platform/governance/hooks/use-compute-governance";
 
 export const CG06MissionCostTab = () => {
   const { data: missions = [], isLoading } = useMissionCostData();

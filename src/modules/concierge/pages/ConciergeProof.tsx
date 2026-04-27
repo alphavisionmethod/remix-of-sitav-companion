@@ -14,7 +14,7 @@ import {
 } from "@/modules/concierge/components/concierge";
 import { Shield, CheckCircle, Clock, FileText, BadgeCheck } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
-import { useConciergeProofTrail } from "@/hooks/use-concierge-proof-trail";
+import { useConciergeProofTrail } from "@/modules/concierge/hooks/use-concierge-proof-trail";
 import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
 import type { ProofEntry } from "@/lib/trust";
 import { formatDistanceToNow } from "date-fns";

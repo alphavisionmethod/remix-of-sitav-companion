@@ -5,7 +5,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
-import { useAIHealth, type AIHealthStatus } from "@/hooks/use-ai-health";
+import { useAIHealth, type AIHealthStatus } from "@/platform/governance/hooks/use-ai-health";
 
 export interface CapabilityVerification {
   capability_key: string;

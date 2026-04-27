@@ -3,7 +3,7 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Eye, Keyboard, MousePointer, Volume2 } from "lucide-react";
-import { useSettingsValue } from "@/hooks/use-settings-value";
+import { useSettingsValue } from "@/platform/settings/hooks/use-settings-value";
 
 const AccessibilitySettings = () => {
   const [highContrast, setHighContrast] = useSettingsValue("accessibility.highContrast", false);

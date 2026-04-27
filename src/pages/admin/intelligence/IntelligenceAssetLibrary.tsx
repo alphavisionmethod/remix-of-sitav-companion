@@ -12,8 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Progress } from "@/components/ui/progress";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { SitaPageHeader } from "@/platform/sita/components/sita/SitaPageHeader";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useIntelligenceAssetLibrary, type IntelligenceAsset } from "@/hooks/use-intelligence-screen-data";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
+import { useIntelligenceAssetLibrary, type IntelligenceAsset } from "@/platform/personal-brain/hooks/use-intelligence-screen-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const verificationColors: Record<string, string> = {

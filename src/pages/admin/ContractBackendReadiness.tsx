@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
-import { useRealityClassifications } from "@/hooks/useRealityClassifications";
+import { useRealityClassifications } from "@/platform/runtime/hooks/useRealityClassifications";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { Server, FileCheck, AlertTriangle, Database } from "lucide-react";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

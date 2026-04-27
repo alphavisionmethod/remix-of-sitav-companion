@@ -10,7 +10,7 @@ import {
   Shield, Link2, CheckCircle, XCircle, AlertTriangle,
   ArrowUpCircle, RefreshCw, HardDrive, Mail, Calendar,
 } from "lucide-react";
-import { useGoogleProviderFamily } from "@/hooks/use-google-provider-family";
+import { useGoogleProviderFamily } from "@/platform/integration/hooks/use-google-provider-family";
 import { PermissionUpgradeDialog } from "@/platform/sita/components/sita/PermissionUpgradeDialog";
 import type { GoogleConnectorState } from "@/lib/services/google-provider-family/types";
 import type { GenericScopeTier } from "@/lib/services/provider-family/types";

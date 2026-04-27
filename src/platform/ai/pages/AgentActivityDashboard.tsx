@@ -6,7 +6,7 @@
 import { useState, useEffect, useMemo } from "react";
 import { useCompanion } from "@/hooks/use-companion";
 import { useAgentFleetLive } from "@/hooks/use-agent-fleet-live";
-import { useGraphNodes } from "@/hooks/use-cai-data";
+import { useGraphNodes } from "@/modules/business/hooks/use-cai-data";
 import { AgentActivityFeed } from "@/platform/sita/components/sita/AgentActivityFeed";
 import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";

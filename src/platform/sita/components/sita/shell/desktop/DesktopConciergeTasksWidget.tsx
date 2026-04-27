@@ -1,6 +1,6 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import { CheckSquare } from "lucide-react";
-import { useConciergeTasksData } from "@/hooks/useDesktopWidgetsData";
+import { useConciergeTasksData } from "@/platform/sita/hooks/useDesktopWidgetsData";
 
 interface Props { onLaunchApp?: (appId: string) => void; }
 

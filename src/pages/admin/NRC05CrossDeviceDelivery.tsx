@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MonitorSmartphone, Smartphone, Watch, Monitor, CheckCircle2, ArrowRight } from "lucide-react";
-import { useCrossDeviceSurfaces, useDeliveryRules, useHandoffFlows } from "@/hooks/use-notification-calm-data";
+import { useCrossDeviceSurfaces, useDeliveryRules, useHandoffFlows } from "@/platform/notifications/hooks/use-notification-calm-data";
 import NRCSubNav from "@/platform/admin/components/admin/NRCSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

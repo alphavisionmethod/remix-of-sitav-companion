@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { fromTable } from "@/lib/supabase-helpers";
 import { supabase } from "@/integrations/supabase/client";
-import { useTrustEmit } from "@/hooks/use-trust-emit";
+import { useTrustEmit } from "@/platform/trust/hooks/use-trust-emit";
 
 interface EscalationContext {
   entityType: "contact" | "company" | "deal";

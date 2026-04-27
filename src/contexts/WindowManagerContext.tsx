@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import type { useWindowManager } from "@/hooks/useWindowManager";
+import type { useWindowManager } from "@/platform/sita/hooks/useWindowManager";
 
 type WindowManagerContextType = ReturnType<typeof useWindowManager> | null;
 

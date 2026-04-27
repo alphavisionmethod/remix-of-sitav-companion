@@ -15,13 +15,13 @@ import AutopilotWizard from "@/platform/orchestration/components/autopilot/Autop
 import AutopilotCommandCenter from "@/platform/orchestration/components/autopilot/AutopilotCommandCenter";
 import { type AutopilotConfig } from "@/lib/domain-engines/autopilot-engine";
 import { SITA_TYPE } from "@/platform/design-system/sita-design-tokens";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import {
   useAutopilotConfig,
   useCompleteAutopilotWizard,
   useSaveAutopilotConfig,
   useSkipAutopilotWizard,
-} from "@/hooks/use-autopilot-config";
+} from "@/platform/orchestration/hooks/use-autopilot-config";
 import { Button } from "@/components/ui/button";
 import { AlertTriangle, Lock } from "lucide-react";
 

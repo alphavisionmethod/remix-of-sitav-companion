@@ -11,6 +11,6 @@ export { ModeResolutionBanner } from "@/platform/product/components/reality/Mode
 export { RealityStateBadge } from "@/platform/product/components/reality/RealityStateBadge";
 
 // Hooks
-export * from "@/hooks/useRealityClassifications";
-export * from "@/hooks/useRealityDetection";
+export * from "@/platform/runtime/hooks/useRealityClassifications";
+export * from "@/platform/runtime/hooks/useRealityDetection";
 export * from "@/hooks/useRealtimeBridge";

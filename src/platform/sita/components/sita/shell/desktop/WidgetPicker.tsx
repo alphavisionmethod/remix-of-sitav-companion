@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, Clock, LayoutGrid, Settings, Bell, CalendarDays, ArrowRight, BriefcaseBusiness, Plus, Minus, RotateCcw, TrendingUp, Users, UserCheck, Brain, Sparkles, DollarSign, CheckSquare, CloudSun, PieChart } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { WidgetInstance } from "@/hooks/useDesktopWidgets";
+import type { WidgetInstance } from "@/platform/sita/hooks/useDesktopWidgets";
 import { DesktopSeedSampleButton } from "@/platform/sita/components/sita/DesktopSeedSampleButton";
 
 const WIDGET_ICONS: Record<string, any> = {

@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useNavigate } from "react-router-dom";
-import { useMissionControlSummary, useTrustSummary, useFounderCostSummary, useRecoverySummary, useDiagnosticsSummary } from "@/hooks/use-mission-control-views";
+import { useMissionControlSummary, useTrustSummary, useFounderCostSummary, useRecoverySummary, useDiagnosticsSummary } from "@/platform/mission-control/hooks/use-mission-control-views";
 import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/platform/sita/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";

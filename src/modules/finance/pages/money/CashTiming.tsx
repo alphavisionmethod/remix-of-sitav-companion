@@ -7,7 +7,7 @@ import { SectionSkeleton } from "@/platform/sita/components/sita/SectionSkeleton
 import { CashFlowChart } from "@/platform/sita/components/sita/SitaCharts";
 import { AlertTriangle, DollarSign, TrendingDown, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import { useCashTimingWindows, useMoneyKPIs } from "@/hooks/use-domain-data";
+import { useCashTimingWindows, useMoneyKPIs } from "@/modules/business/hooks/use-domain-data";
 import { useCashflowAnalysis, useCashflowForecast, useSafeToSpend } from "@/hooks/use-backend-actions";
 
 const CashTiming = () => {

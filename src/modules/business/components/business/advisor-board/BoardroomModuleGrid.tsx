@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { TrendingUp, AlertTriangle, DollarSign, Users, Settings, Target, Lightbulb, ListChecks, Shield, Activity } from "lucide-react";
 import type { ProfitabilityBrief } from "@/domains/engines/business-profitability-engine";
-import type { AIRecommendation } from "@/hooks/useBusinessAdvisorBoard";
+import type { AIRecommendation } from "@/modules/business/hooks/useBusinessAdvisorBoard";
 import type { BusinessAction } from "@/domains/engines/business-action-pipeline";
 
 interface Props {

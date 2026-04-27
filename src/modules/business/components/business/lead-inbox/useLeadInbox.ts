@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
 import { toast } from "sonner";
 import { FALLBACK_INBOX_ITEMS, type InboxItem } from "./mock-inbox-data";

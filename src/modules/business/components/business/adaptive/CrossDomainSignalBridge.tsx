@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useEffect, useRef, useState } from "react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 
 /** Custom event carrying cross-domain signals from Business Profile */
 export interface BusinessProfileSignalEvent extends CustomEvent {

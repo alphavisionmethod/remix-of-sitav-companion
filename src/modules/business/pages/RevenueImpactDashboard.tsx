@@ -18,7 +18,7 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCard";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";

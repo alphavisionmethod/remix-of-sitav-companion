@@ -3,7 +3,7 @@ import { LineChart, TrendingUp, Target, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useTaskRequests } from "@/hooks/use-sag-data";
+import { useTaskRequests } from "@/modules/business/hooks/use-sag-data";
 import SAGSubNav from "@/platform/admin/components/admin/SAGSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { NeedsDataExplainer } from "@/platform/sita/components/sita/explainers/NeedsDataExplainer";

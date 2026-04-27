@@ -12,7 +12,7 @@ import {
   Wrench, CheckCircle, ArrowRight, Brain, TrendingDown, XCircle, Shield,
   Eye, BarChart3, RefreshCw, Package, Mail, Phone, Star, Heart
 } from "lucide-react";
-import { useRevenueRiskAreas } from "@/hooks/use-revenue-office";
+import { useRevenueRiskAreas } from "@/modules/business/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const FRAGILITY_MATRIX = [
   { system: "Lead Capture → Nurture", fragility: 32, bottleneck: "Form abandonment at 41%", resilience: "Backup: SMS opt-in added", status: "moderate" as const },

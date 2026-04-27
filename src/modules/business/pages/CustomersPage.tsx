@@ -15,7 +15,7 @@ import { SitaButton } from "@/platform/sita/components/sita/SitaCard";
 import { SectionSkeleton, KPISkeleton } from "@/platform/sita/components/sita/SectionSkeleton";
 import { useState, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { useAction } from "@/hooks/useAction";
 import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import {
@@ -23,7 +23,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import CustomerAutopilotPanel from "@/platform/orchestration/components/autopilot/CustomerAutopilotPanel";
-import { useCustomers } from "@/hooks/use-domain-data";
+import { useCustomers } from "@/modules/business/hooks/use-domain-data";
 import type { MockCustomer } from "@/data/repositories/business-data-service";
 import { useCRMSync } from "@/hooks/use-backend-actions";
 import { RefreshCw } from "lucide-react";

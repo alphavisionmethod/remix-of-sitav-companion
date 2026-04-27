@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useEffect, useRef } from "react";
-import { getWallpaperTheme, getWallpaperId } from "@/hooks/use-wallpaper";
+import { getWallpaperTheme, getWallpaperId } from "@/platform/sita/hooks/use-wallpaper";
 
 interface HSL { h: number; s: number; l: number }
 

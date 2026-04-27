@@ -10,8 +10,8 @@ import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 import { TrustBadge } from "@/platform/sita/components/sita/TrustBadge";
 import { useState } from "react";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { useBusinessDocuments, type BusinessDocumentVM } from "@/hooks/use-business-documents";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
+import { useBusinessDocuments, type BusinessDocumentVM } from "@/modules/business/hooks/use-business-documents";
 import { getModuleAdaptation } from "@/domains/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import {

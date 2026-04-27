@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useCRMOpportunities, useCRMPipelineStages, useCRMContacts, useCRMCompanies, useCreateOpportunity, useUpdateOpportunity } from "@/hooks/use-crm-data";
+import { useCRMOpportunities, useCRMPipelineStages, useCRMContacts, useCRMCompanies, useCreateOpportunity, useUpdateOpportunity } from "@/modules/business/hooks/use-crm-data";
 import {
   TrendingUp, Plus, DollarSign, Calendar, List, Columns3, ChevronRight,
   ChevronLeft, Trophy, XCircle, Target, BarChart3, User, Building2, ArrowRight, Clock,
@@ -16,7 +16,7 @@ import { CRMDealDetail } from "@/modules/business/components/business/crm/CRMDea
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { DealAdvisorSignal } from "@/modules/business/components/business/crm/CRMAdvisorInsight";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { ModuleAdvisorPanel } from "@/modules/business/components/business/advisor-board/ModuleAdvisorPanel";
 import { generateStagesAdvisors } from "@/domains/engines/business-advisor-engine";
 

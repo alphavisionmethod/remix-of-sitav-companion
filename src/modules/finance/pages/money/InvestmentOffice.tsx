@@ -22,7 +22,7 @@ const getExecutionIntents = () => [] as any[];
 const getOpportunityScores = () => [] as any[];
 const getAvailableTrustModes = () => [{ mode: "standard", label: "Standard", description: "Default trust mode" }];
 const getInvestmentTrustMode = () => "standard";
-import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investment-data";
+import { useCapitalBuckets, usePositions, useTheses } from "@/modules/finance/hooks/use-investment-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const INVESTMENT_POLICY_RULES: any[] = [];

@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Activity, TrendingUp, TrendingDown, Users, Star, Zap, Calendar, Package, AlertTriangle, CheckCircle, Pin, ListChecks, Filter } from "lucide-react";
-import { useCommercialMemoryEvents } from "@/hooks/use-revenue-office";
+import { useCommercialMemoryEvents } from "@/modules/business/hooks/use-revenue-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 const typeLabels: Record<string, string> = { campaign: "Campaign", reputation: "Reputation", crm: "CRM", booking: "Booking", advisor: "Advisor", funnel: "Funnel", membership: "Membership", offer: "Offer" };
 const allDomains = Object.keys(typeLabels);

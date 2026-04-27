@@ -1,8 +1,8 @@
 // truth-allow: ia-config
 import { useNavigate } from "react-router-dom";
 import { Brain, Target, AlertTriangle, TrendingUp, TrendingDown, Plus, ChevronRight, Calendar, Heart, Activity } from "lucide-react";
-import { SAMPLE_THESES, getInstrument } from "@/hooks/useInvestmentOfficeData";
-import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
+import { SAMPLE_THESES, getInstrument } from "@/modules/finance/hooks/useInvestmentOfficeData";
+import { useInvestmentThesisEntries } from "@/modules/finance/hooks/use-investment-office";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 export default function ThesisJournal() {
   const { data: liveData, isLoading } = useInvestmentThesisEntries();

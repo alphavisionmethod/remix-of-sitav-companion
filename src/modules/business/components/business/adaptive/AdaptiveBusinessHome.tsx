@@ -8,13 +8,13 @@ import {
   ClipboardList, Truck, AlertTriangle, Rocket, Brain, Pencil,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import { getTopWidgets, type HomeWidget } from "./BusinessHomeWidgetRegistry";
 import { getQuickActionsForProfile, getStatCardsForProfile } from "./AdaptiveCRMConfig";
 import { getIdentityLayer, getTimeAwareGreeting } from "@/domains/engines/business-identity-layers";
 import AdaptiveSmartSuggestions from "./AdaptiveSmartSuggestions";
-import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
+import { useBusinessOnboarding } from "@/modules/business/hooks/useBusinessOnboarding";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   TrendingUp, ShoppingCart, LineChart, Banknote, Target, Receipt,

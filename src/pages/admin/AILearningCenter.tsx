@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { TrendingUp, Brain, AlertTriangle, CheckCircle2, RotateCcw, Sparkles, Target, Users } from "lucide-react";
-import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
+import { useAIEngDomain } from "@/platform/governance/hooks/use-ai-engineering-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const PATTERNS: any[] = [];

@@ -6,9 +6,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 export * from "@/hooks/use-backend-actions";
-export * from "@/hooks/use-kernel-events";
-export * from "@/hooks/use-kernel-mutation";
-export * from "@/hooks/use-kernel-query";
-export * from "@/hooks/use-os-api";
-export * from "@/hooks/useOSOrchestration";
+export * from "@/platform/sita/hooks/use-kernel-events";
+export * from "@/platform/sita/hooks/use-kernel-mutation";
+export * from "@/platform/sita/hooks/use-kernel-query";
+export * from "@/platform/sita/hooks/use-os-api";
+export * from "@/platform/orchestration/hooks/useOSOrchestration";
 export * from "@/hooks/use-shell-indicators";

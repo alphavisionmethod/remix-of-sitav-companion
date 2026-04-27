@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Lock, Plus, Search, Eye, EyeOff, Copy, Shield, AlertTriangle, Key, Globe, CreditCard, Server, Smartphone } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { useVaultItems } from "@/hooks/use-apps-data";
+import { useVaultItems } from "@/platform/app-platform/hooks/use-apps-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 interface VaultEntry {
   id: string;

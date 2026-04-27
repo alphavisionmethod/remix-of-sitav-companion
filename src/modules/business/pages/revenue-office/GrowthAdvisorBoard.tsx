@@ -12,7 +12,7 @@ import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner
 import { PageShell } from "@/platform/sita/components/sita/PageShell";
 import { Typography } from "@/platform/sita/components/sita/Typography";
 import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
-import { useGrowthAdvisorBoard } from "@/hooks/use-growth-advisor-board";
+import { useGrowthAdvisorBoard } from "@/modules/business/hooks/use-growth-advisor-board";
 type AdvisorQueryType = "disagree" | "missing" | "break";
 
 interface AdvisorQueryResponse {

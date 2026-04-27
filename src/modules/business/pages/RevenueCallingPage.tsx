@@ -24,7 +24,7 @@ import {
 } from "lucide-react";
 
 import type { CallingContact as Contact, CallingCallLog as CallLog, CallingCallScript as CallScript } from "@/data/fixtures/mock-data/revenue-calling";
-import { useCallingContactsData } from "@/hooks/use-business-data";
+import { useCallingContactsData } from "@/modules/business/hooks/use-business-data";
 import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import { PageShell } from "@/platform/sita/components/sita/PageShell";

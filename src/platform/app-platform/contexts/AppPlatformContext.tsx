@@ -26,7 +26,7 @@ import {
   useAppPin,
   useAppFavorite,
   useSetAppPermissions,
-} from "@/hooks/use-app-platform";
+} from "@/platform/app-platform/hooks/use-app-platform";
 import type {
   AppDefinition, AppInstallStatus, AppInstallScope,
   AppSandboxLevel, AppSourceOrigin,

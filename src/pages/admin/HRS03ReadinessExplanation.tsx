@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Brain, ArrowRight, AlertTriangle, CheckCircle2, Loader2 } from "lucide-react";
-import { useReadinessStates } from "@/hooks/use-health-signal-data";
+import { useReadinessStates } from "@/modules/health/hooks/use-health-signal-data";
 import HRSSubNav from "@/platform/admin/components/admin/HRSSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

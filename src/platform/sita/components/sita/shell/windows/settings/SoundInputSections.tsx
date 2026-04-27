@@ -7,7 +7,7 @@ import { VStack, HStack, Divider } from "@/platform/nova-sdk/ui/layout";
 import {
   NovaCard, NovaToggle, NovaSlider, NovaBadge, NovaSectionLabel, NovaText,
 } from "@/platform/nova-sdk/ui/components";
-import { useSettingsValue } from "@/hooks/use-settings-value";
+import { useSettingsValue } from "@/platform/settings/hooks/use-settings-value";
 import { SettingRow, ResetSectionButton } from "./shared";
 import { cn } from "@/lib/utils";
 

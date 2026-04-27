@@ -3,7 +3,7 @@ import { ApprovalCard } from "@/platform/experience/components/mobile/ApprovalCa
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { useMobileApprovals } from "@/hooks/use-domain-data";
+import { useMobileApprovals } from "@/modules/business/hooks/use-domain-data";
 import { ClipboardCheck, AlertTriangle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 

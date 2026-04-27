@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Brain, Database, Eye, Lock, Trash2, GitBranch } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { useFeatureSpecs } from "@/hooks/use-fip-data";
+import { useFeatureSpecs } from "@/modules/business/hooks/use-fip-data";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 

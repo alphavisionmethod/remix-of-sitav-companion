@@ -16,7 +16,7 @@ import {
   useEcosystemContinuityEvents, useSeedEcosystemData,
   useAddEcosystemDevice, useRemoveEcosystemDevice, useUpdateDeviceTrust,
   useToggleHealthConsent, useUpdatePushRoute,
-} from "@/hooks/useEcosystemDevices";
+} from "@/platform/runtime/hooks/useEcosystemDevices";
 import ANDSubNav from "@/platform/admin/components/admin/ANDSubNav";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 

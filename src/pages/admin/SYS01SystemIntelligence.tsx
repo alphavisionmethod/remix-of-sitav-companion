@@ -24,7 +24,7 @@ import { getWifiDaemon } from "@/lib/os-services/wifid";
 import { getBluetoothDaemon } from "@/lib/os-services/btd";
 import { getPowerDaemon } from "@/lib/os-services/powerd";
 import { getAutomationDaemon } from "@/lib/os-services/automationd";
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
 import { PageSkeleton } from "@/platform/sita/components/sita/PageSkeleton";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };

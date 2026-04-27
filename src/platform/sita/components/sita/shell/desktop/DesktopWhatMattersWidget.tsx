@@ -1,6 +1,6 @@
 import { BriefcaseBusiness, Wallet, HeartHandshake, Inbox } from "lucide-react";
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
-import { useWhatMattersData } from "@/hooks/useDesktopWidgetsData";
+import { useWhatMattersData } from "@/platform/sita/hooks/useDesktopWidgetsData";
 
 const ICONS: Record<string, any> = {
   business: BriefcaseBusiness,

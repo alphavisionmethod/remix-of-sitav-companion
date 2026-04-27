@@ -14,7 +14,7 @@ import {
   Sigma, Equal, Copy, Trash2, MoreVertical, Maximize2, Minimize2,
   Save, X, PlusCircle, ArrowDown, ArrowUp
 } from "lucide-react";
-import { useSheets } from "@/hooks/use-domain-data";
+import { useSheets } from "@/modules/business/hooks/use-domain-data";
 import type { MockSheet } from "@/data/fixtures/mock-data/workspace";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";

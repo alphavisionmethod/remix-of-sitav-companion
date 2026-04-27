@@ -1,5 +1,5 @@
-import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useRequireAdminPermission } from "@/hooks/useRequireAdminPermission";
+import { useRequireAdmin } from "@/platform/auth/hooks/useRequireAdmin";
+import { useRequireAdminPermission } from "@/platform/auth/hooks/useRequireAdminPermission";
 import { ReactNode } from "react";
 
 interface AdminRouteProps {
