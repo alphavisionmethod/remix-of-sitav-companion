@@ -62,13 +62,91 @@ interface CRMConciergeLinkageProps {
 }
 
 export function CRMConciergeLinkage({ entityType, entityId, entityName }: CRMConciergeLinkageProps) {
-  const appointments = useMemo(() => generateDemoAppointments(entityName), [entityName]);
-  const obligations = useMemo(() => generateDemoObligations(entityName), [entityName]);
-  const errands = useMemo(() => generateDemoErrands(entityName), [entityName]);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
-  const upcomingApts = appointments.filter(a => a.status === "upcoming");
+  const linkColumn = entityType === "contact" ? "crm_contact_id" : "crm_company_id";
+
+  const apptQuery = useQuery<LinkedAppointment[]>({
+    queryKey: ["crm-concierge:appointments", entityType, entityId, user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await fromTable("appointments")
+        .select("id, title, appointment_date, location, status, prep_items, category")
+        .eq("user_id", user!.id)
+        .eq(linkColumn, entityId)
+        .order("appointment_date", { ascending: false })
+        .limit(20);
+      if (error) throw new Error(error.message);
+      return (data ?? []) as LinkedAppointment[];
+    },
+  });
+
+  const obligationsQuery = useQuery<LinkedObligation[]>({
+    queryKey: ["crm-concierge:obligations", entityType, entityId, user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await fromTable("concierge_recurring_obligations")
+        .select("id, title, frequency, next_due, status, category, automatable")
+        .eq("user_id", user!.id)
+        .eq(linkColumn, entityId)
+        .order("next_due", { ascending: true, nullsFirst: false })
+        .limit(20);
+      if (error) throw new Error(error.message);
+      return (data ?? []) as LinkedObligation[];
+    },
+  });
+
+  const errandsQuery = useQuery<LinkedErrand[]>({
+    queryKey: ["crm-concierge:errands", entityType, entityId, user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data, error } = await fromTable("errands")
+        .select("id, title, due_date, status, priority, estimated_minutes")
+        .eq("user_id", user!.id)
+        .eq(linkColumn, entityId)
+        .order("due_date", { ascending: true, nullsFirst: false })
+        .limit(20);
+      if (error) throw new Error(error.message);
+      return (data ?? []) as LinkedErrand[];
+    },
+  });
+
+  const appointments = apptQuery.data ?? [];
+  const obligations = obligationsQuery.data ?? [];
+  const errands = errandsQuery.data ?? [];
+
+  const isLoading = apptQuery.isLoading || obligationsQuery.isLoading || errandsQuery.isLoading;
+  const hasAny = appointments.length > 0 || obligations.length > 0 || errands.length > 0;
+
+  const handoff = (target: "/concierge/calendar" | "/concierge/recurring" | "/concierge/errands") => {
+    setLinkedContext({
+      entityType: entityType,
+      entityId,
+      entityLabel: entityName,
+    });
+    navigate(target);
+  };
+
+  const upcomingApts = appointments.filter(a => a.status === "upcoming" || a.status === "scheduled" || a.status === "confirmed");
   const overdueObligations = obligations.filter(o => o.status === "overdue" || (o.next_due && isPast(new Date(o.next_due))));
   const pendingErrands = errands.filter(e => e.status !== "completed");
+
+  if (!isLoading && !hasAny) {
+    return (
+      <PremiumEmptyState
+        variant="no-data"
+        icon={Calendar}
+        title="No concierge links yet"
+        description={`No appointments, obligations, or errands are linked to ${entityName}.`}
+        actions={[
+          { label: "Schedule appointment", onClick: () => handoff("/concierge/calendar") },
+          { label: "Add recurring task", onClick: () => handoff("/concierge/recurring") },
+        ]}
+        domain="business"
+      />
+    );
+  }
 
   return (
     <div className="space-y-4">
