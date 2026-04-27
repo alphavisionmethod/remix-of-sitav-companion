@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-27T17:26:07.868Z",
+  "generatedAt": "2026-04-27T17:26:22.765Z",
   "totals": {
     "descriptors": 118,
     "familyRoutes": 713,
     "uniqueFamilyRoutePaths": 710,
     "redirects": 52,
-    "orphanedRoutes": 9
+    "orphanedRoutes": 4
   },
   "pillars": {
     "business": {
@@ -2402,21 +2402,6 @@
   ],
   "orphanedRoutes": [
     {
-      "path": "/business",
-      "family": "business-routes.tsx",
-      "line": 9
-    },
-    {
-      "path": "/business/autopilot-hub",
-      "family": "business-routes.tsx",
-      "line": 27
-    },
-    {
-      "path": "/business/customers/:id",
-      "family": "business-routes.tsx",
-      "line": 13
-    },
-    {
       "path": "/business/files",
       "family": "business-routes.tsx",
       "line": 37
@@ -2425,16 +2410,6 @@
       "path": "/business/revenue-home",
       "family": "business-routes.tsx",
       "line": 20
-    },
-    {
-      "path": "/business/revenue-impact",
-      "family": "business-routes.tsx",
-      "line": 31
-    },
-    {
-      "path": "/concierge",
-      "family": "concierge-routes.tsx",
-      "line": 9
     },
     {
       "path": "/money/documents",
