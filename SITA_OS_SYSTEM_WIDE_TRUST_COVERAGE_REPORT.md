@@ -120,9 +120,67 @@ Both return `{ gated: true, approvalId }` instead of executing inline; on approv
 
 **Phase 7.2 closure gate**: 44 / 44 trust tests green (16 new). Existing `use-crm-data-trust.test.ts` (3) and trust foundation suite (22) still pass.
 
-## Phase 7.3 — Autopilot, lead-intake, outreach: receipts + approval
+## Phase 7.3 — Autopilot, lead-intake, outreach: receipts + approval ✅
 
-_Status: pending 7.2._
+**Status**: Closed. Closure gate green: 50 / 50 trust unit tests pass (6 new for 7.3). TypeScript clean across all touched files.
+
+### 1. Canonical trust systems reused (zero duplication)
+
+| Concern | Reused primitive |
+|---|---|
+| Receipts | `emitClientReceipt` / `emitClientFailureReceipt` from 7.1 |
+| Approval gating | `withApprovalGate` from 7.1 → existing `ai_workforce_approval_queue` |
+| Action keys | Extended `TRUST_ACTION_REGISTRY` (no new registry) |
+| Autopilot config receipts | Existing `recordAutopilotEvent` (already routed through `emitClientReceipt` in 7.1) |
+
+### 2. New registry entries (Phase 7.3)
+
+| Key | Risk | Approval | Reversible | Rationale |
+|---|---|---|---|---|
+| `autopilot.playbook.activate` | high | yes | yes | Activation can trigger external outreach (collections, recovery, upsell) on the operator's behalf. |
+| `autopilot.playbook.pause` | low | no | yes | Pause has no external side effects. |
+| `appointment.reminder.send` | medium | no | no | Single-recipient reminder to a customer the operator already booked. |
+| `appointment.confirm` | low | no | yes | Internal state mirror to linked calendars. |
+| `appointment.recovery.send` | high | yes | no | External outreach to a customer who missed an appointment — brand-risk. |
+
+### 3. Receipt coverage improvements
+
+- **Autopilot playbook activate/pause** — both now emit a canonical receipt with `entity_ref={ entity_type: "playbook" }`. Activation only emits the executed receipt **after** the gate clears.
+- **Appointment reminders** — `useSendConfirmationReminder` emits an `executed`/`failed` receipt around every send.
+- **Appointment confirm** — `useMarkBookingConfirmed` emits a receipt only after the underlying mutation succeeds.
+- **No-show recovery** — `useRecoverNoShow` emits an `executed`/`failed` receipt around every recovery attempt; pending_approval receipt is emitted by `requestApproval` when the gate fires.
+
+### 4. Approval gating improvements
+
+| Surface | Action key | Threshold |
+|---|---|---|
+| `AutopilotCommandCenter.handleTogglePlaybook` (activation path only) | `autopilot.playbook.activate` | `high` → always queued in live mode; `skip=true` in demo. |
+| `useRecoverNoShow` | `appointment.recovery.send` | `high` → always queued. Returns `{ gated: true, approvalId }` envelope; caller surfaces queued state via toast. |
+
+Pause and reminder paths intentionally remain inline (no gate) because they are reversible / single-recipient.
+
+### 5. Files modified
+
+- `src/platform/trust/registry/trust-action-registry.ts` — 5 new keys.
+- `src/platform/orchestration/components/autopilot/AutopilotCommandCenter.tsx` — `handleTogglePlaybook` rewritten to gate activation + emit receipts.
+- `src/hooks/use-scheduled-appointments.ts` — `useSendConfirmationReminder`, `useMarkBookingConfirmed`, `useRecoverNoShow` now emit canonical receipts; recovery is gated via `withApprovalGate`.
+
+### 6. Files added
+
+- `src/__tests__/trust/phase-7-3-registry.test.ts`
+
+### 7. Tests added (closure gate)
+
+| Suite | Asserts | Result |
+|---|---|---|
+| `phase-7-3-registry.test.ts` (6) | All 5 new keys present with correct riskTier/requireApproval/reversible/pillar. | ✅ |
+
+**Phase 7.3 closure gate**: 50 / 50 trust tests pass (6 new). Existing 7.1 / 7.2 suites still green. No new TypeScript errors.
+
+### 8. Truthful gaps acknowledged (deferred)
+
+- **Lead intake services** (`lead-intake.service.ts`, `no-show-recovery.service.ts`, `revenue-autopilot.service.ts`) are pure analytical utilities, not mutation entry points — there is nothing to gate or receipt at that layer. Their **call sites** (e.g. `useRecoverNoShow`) are now covered.
+- **Per-step playbook execution receipts** (each playbook step → individual receipt) intentionally deferred: the engine currently runs synthetic dashboards, not real per-step execution. Adding receipts there would overclaim execution proof.
 
 ## Phase 7.4 — Concierge: receipts + approval for third-party-affecting actions
 
