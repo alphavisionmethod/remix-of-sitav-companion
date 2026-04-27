@@ -44,6 +44,8 @@ describe("Phase 5 — support → health signal loop", () => {
       crm_company_id: null,
     });
     expect(result.ok).toBe(false);
-    if (!result.ok) expect(result.reason).toBe("no_crm_attribution");
+    if (result.ok === false) {
+      expect(result.reason).toBe("no_crm_attribution");
+    }
   });
 });
