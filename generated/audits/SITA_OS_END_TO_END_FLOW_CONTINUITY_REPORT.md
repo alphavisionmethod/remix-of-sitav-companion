@@ -1,6 +1,6 @@
 # SITA OS — End-to-End Flow Continuity Report
 
-> **Status:** Phases 1–4 complete · Phases 5–10 in progress
+> **Status:** Phases 1–5 complete · Phases 6–10 in progress
 > **Map:** `docs/architecture/END_TO_END_FLOW_CONTINUITY_MAP.md`
 > **Baseline:** `generated/audits/end-to-end-flow-continuity-baseline.json`
 > **Validator:** `scripts/architecture/check-continuity-handoffs.ts` (warn-only until Phase 10)
@@ -343,7 +343,82 @@
 - Recovered-value attribution from collections (paid-from-overdue
   invoices) is tracked in **Phase 8** (Finance receivables truth).
 
-## Phase 5 — pending
+## Phase 5 — Support → callback → retention loop (COMPLETE)
+
+### What shipped
+
+- **Schema (migration `20260427091357_*`):**
+  - `support_cases.crm_contact_id` / `crm_company_id` (+ partial indexes)
+  - `business_health_scores.crm_contact_id` / `crm_company_id` /
+    `source_support_case_id` (+ partial indexes)
+  - New `callback_queue` table (RLS user-scoped) with the canonical
+    six queue kinds (`callbacks`, `no-touch`, `waiting`, `drafts`,
+    `overdue`, `recovery`), CRM lineage, and source pointers to
+    `support_cases` and `appointments`.
+- **`useFollowThroughQueues` hook** — live `useQuery` against
+  `callback_queue` (status=open), demo fixture preserved ONLY behind
+  `isDemo === true`. Honest empty state when no rows exist.
+- **`FollowThroughCenter` rewritten** — no longer imports
+  `FOLLOW_THROUGH_TAB_DATA` directly; reads from the hook. Adds an
+  unauth `EmptyStateCard` (sign-in CTA) and an honest "No follow-through
+  items yet" `EmptyStateCard` for live mode without rows.
+  `PageTruthBanner` now reflects `live` vs `demo` truthfully instead
+  of being hardcoded to `demo`.
+- **`support-health-loop.service`** (new, justified) —
+  `emitHealthSignalForResolvedCase()` is the canonical bridge from a
+  resolved `support_cases` row to a `business_health_scores` row.
+  Idempotent on `source_support_case_id`. Refuses to emit (returns
+  `{ ok: false, reason: "no_crm_attribution" }`) when the case has no
+  CRM linkage — never fakes attribution.
+
+### Files added
+
+- `supabase/migrations/20260427091357_*.sql`
+- `src/modules/business/hooks/use-follow-through-queues.ts`
+- `src/lib/services/business-os/support-health-loop.service.ts`
+- `src/__tests__/business-os/integration/support-health-loop.test.ts`
+
+### Files changed
+
+- `src/modules/business/pages/FollowThroughCenter.tsx`
+- `src/integrations/supabase/types.ts` (auto-regenerated)
+
+### Tests
+
+- `support-health-loop.test.ts` — two cases:
+  1. Resolved case with CRM attribution emits a signal.
+  2. Resolved case without CRM attribution honestly refuses
+     (`reason: "no_crm_attribution"`).
+- `tsc --noEmit` clean across the full repo.
+
+### Anti-duplication
+
+- Reused `useRealityModeSafe`, `useAuth`, `fromTable` — no new data
+  layer or reality-mode bus.
+- Reused canonical `EmptyStateCard` / `PageTruthBanner` for honest
+  states.
+- New service is justified — there was no existing helper bridging
+  `support_cases` → `business_health_scores`.
+
+### Phase 5 exit criteria
+
+- [x] `FOLLOW_THROUGH_TAB_DATA` no longer drives production mode
+- [x] Live `callback_queue` table backs the queues with RLS scoping
+- [x] Honest unauth + empty states wired
+- [x] Support → health-signal bridge service shipped & tested
+- [x] No new orchestration helpers beyond the justified service
+- [x] `tsc --noEmit` clean; phase tests green
+
+### Honest deferred (NOT Phase 5)
+
+- Mounting support history + health timeline inside `CustomerDetail`
+  is queued for the Phase 5 → Phase 6 polish pass.
+- Wiring `emitHealthSignalForResolvedCase()` into the
+  `CustomerSupportCenter` resolve action remains a small follow-up
+  (the service is shipped, callable, and tested; the UI hookup is a
+  one-line `await` in the resolve handler — tracked as a Phase 6
+  micro-task to avoid bundling it with appointments work).
+
 ## Phase 6 — pending
 ## Phase 7 — pending
 ## Phase 8 — pending
