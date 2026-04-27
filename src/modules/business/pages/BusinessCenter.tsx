@@ -40,6 +40,10 @@ const subpageFromPath = (path: string): string => {
   if (path.includes("/revenue-forecast")) return "revenue-forecast";
   if (path.includes("/playbook-builder")) return "playbook-builder";
   if (path.includes("/revenue-impact")) return "revenue-impact";
+  // Phase 2 IA cleanup — order matters: longer/canonical slug must be tested
+  // before its prefix substring. /revenue-autopilot-console contains
+  // "/revenue-autopilot" as a substring, so check console first.
+  if (path.includes("/revenue-autopilot-console")) return "revenue-autopilot-console";
   if (path.includes("/autopilot-hub")) return "autopilot-hub";
   if (path.includes("/collections")) return "collections";
   if (path.includes("/revenue-autopilot")) return "revenue-autopilot";

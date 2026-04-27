@@ -43,17 +43,16 @@ import { useOnboardingBridge } from "@/modules/business/hooks/useOnboardingBridg
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
 import LeadsInbox from "@/pages/business/LeadsInbox";
-import OpportunitiesCenter from "@/pages/business/OpportunitiesCenter";
+import OpportunitiesWorkspace from "@/pages/business/OpportunitiesWorkspace";
 import QuotesWorkspace from "@/pages/business/QuotesWorkspace";
 import InvoicesCollections from "@/pages/business/InvoicesCollections";
-import CommunicationsCenter from "@/pages/business/CommunicationsCenter";
+import CommunicationsWorkspace from "@/pages/business/CommunicationsWorkspace";
 import BusinessBoardroom from "@/pages/business/BusinessBoardroom";
 import BusinessProof from "@/pages/business/BusinessProof";
 import CustomersPage from "@/pages/business/CustomersPage";
 import RevenueAutopilot from "@/pages/business/RevenueAutopilot";
-import AutopilotHub from "@/pages/business/AutopilotHub";
-import CollectionsCommandCenter from "@/pages/business/CollectionsCommandCenter";
-import RevenueImpactDashboard from "@/pages/business/RevenueImpactDashboard";
+import RevenueAutopilotConsole from "@/pages/business/RevenueAutopilotConsole";
+import CollectionsWorkspace from "@/pages/business/CollectionsWorkspace";
 import PlaybookBuilder from "@/pages/business/PlaybookBuilder";
 import RevenueForecast from "@/pages/business/RevenueForecast";
 import RevenueOpsHome from "@/modules/business/pages/RevenueOpsHome";
@@ -63,8 +62,8 @@ import ProposalsContracts from "@/pages/business/ProposalsContracts";
 import LeadRecovery from "@/pages/business/LeadRecovery";
 import SocialCommand from "@/pages/business/SocialCommand";
 import EcommerceManager from "@/pages/business/EcommerceManager";
-import FollowThroughCenter from "@/pages/business/FollowThroughCenter";
-import CustomerSupportCenter from "@/pages/business/CustomerSupportCenter";
+import FollowThroughWorkspace from "@/pages/business/FollowThroughWorkspace";
+import SupportWorkspace from "@/pages/business/SupportWorkspace";
 import AppointmentsScheduling from "@/pages/business/AppointmentsScheduling";
 import BusinessOperations from "@/pages/business/BusinessOperations";
 import BusinessDocuments from "@/pages/business/BusinessDocuments";
@@ -78,19 +77,19 @@ import CRMTasks from "@/pages/business/CRMTasks";
 import CRMNotes from "@/pages/business/CRMNotes";
 import CRMSegments from "@/pages/business/CRMSegments";
 import CRMAutomations from "@/pages/business/CRMAutomations";
-import CRMImportCenter from "@/pages/business/CRMImportCenter";
+import CRMImport from "@/pages/business/CRMImport";
 import CRMDuplicates from "@/pages/business/CRMDuplicates";
 import CRMAdvisorPage from "@/pages/business/CRMAdvisorPage";
 import CRMCustomFieldsPage from "@/pages/business/CRMCustomFieldsPage";
 import CRMCommunications from "@/pages/business/CRMCommunications";
-import CRMIntegrationHub from "@/pages/business/CRMIntegrationHub";
+import CRMIntegrations from "@/pages/business/CRMIntegrations";
 import CustomerHealthPage from "@/pages/CustomerHealthPage";
 import MorningBriefing from "@/pages/business/MorningBriefing";
 import EndOfDayClosure from "@/pages/business/EndOfDayClosure";
 import DealRoom from "@/pages/business/DealRoom";
 import StrategicAccountRoom from "@/pages/business/StrategicAccountRoom";
 import RelationshipDossier from "@/pages/business/RelationshipDossier";
-import BackgroundTaskCenter from "@/pages/business/BackgroundTaskCenter";
+import BackgroundTasks from "@/pages/business/BackgroundTasks";
 import BusinessAdvisorBoardPage from "@/pages/business/BusinessAdvisorBoardPage";
 import CustomerDetail from "@/pages/CustomerDetail";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -165,7 +164,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
     items: [
       { id: "revenue-home", label: "Revenue Home", icon: LayoutDashboard },
       { id: "revenue-autopilot", label: "Revenue Autopilot", icon: Zap },
-      { id: "autopilot-hub", label: "Autopilot Hub", icon: Bot },
+      { id: "revenue-autopilot-console", label: "Autopilot Console", icon: Bot },
       { id: "lead-recovery", label: "Lead Recovery", icon: RefreshCw, count: 5, countSeverity: "warning" },
       { id: "social", label: "Social", icon: Share2, count: 4 },
       { id: "ecommerce", label: "E-Commerce", icon: ShoppingCart, count: 2 },
@@ -176,7 +175,6 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
     label: "Intelligence",
     items: [
       { id: "advisor-board", label: "Advisor Board", icon: BrainCircuit },
-      { id: "revenue-impact", label: "Revenue Impact", icon: BarChart3 },
       { id: "kpi-dashboard", label: "KPI Dashboard", icon: Target },
       { id: "playbook-builder", label: "Builder", icon: BookOpen },
       { id: "revenue-forecast", label: "Forecast", icon: LineChart },
@@ -208,20 +206,26 @@ const pages: Record<string, React.ComponentType> = {
   overview: BusinessOverview,
   leads: LeadsInbox,
   customers: CustomersPage,
-  "follow-through": FollowThroughCenter,
-  support: CustomerSupportCenter,
+  "follow-through": FollowThroughWorkspace,
+  support: SupportWorkspace,
   appointments: AppointmentsScheduling,
   operations: BusinessOperations,
-  opportunities: OpportunitiesCenter,
+  opportunities: OpportunitiesWorkspace,
   quotes: QuotesWorkspace,
   invoices: InvoicesCollections,
-  collections: CollectionsCommandCenter,
-  communications: CommunicationsCenter,
+  collections: CollectionsWorkspace,
+  communications: CommunicationsWorkspace,
   "revenue-autopilot": RevenueAutopilot,
   boardroom: BusinessBoardroom,
   proof: BusinessProof,
-  "autopilot-hub": AutopilotHub,
-  "revenue-impact": RevenueImpactDashboard,
+  // Phase 2 IA cleanup — canonical control-plane slug.
+  "revenue-autopilot-console": RevenueAutopilotConsole,
+  // Legacy slug kept for in-shell compatibility (sidebar entry removed).
+  // The /business/autopilot-hub URL is redirected by user-redirect-map.
+  "autopilot-hub": RevenueAutopilotConsole,
+  // NOTE: revenue-impact has been demoted to an internal sub-tab of revenue-home
+  //       (Phase 3 surfaces it as a tab inside RevenueOpsHome). The legacy URL
+  //       /business/revenue-impact is redirected to /business/revenue.
   "playbook-builder": PlaybookBuilder,
   "revenue-forecast": RevenueForecast,
   "revenue-home": RevenueOpsHome,
@@ -241,12 +245,12 @@ const pages: Record<string, React.ComponentType> = {
   "crm-notes": CRMNotes,
   "crm-segments": CRMSegments,
   "crm-automations": CRMAutomations,
-  "crm-import": CRMImportCenter,
+  "crm-import": CRMImport,
   "crm-duplicates": CRMDuplicates,
   "crm-advisor": CRMAdvisorPage,
   "crm-fields": CRMCustomFieldsPage,
   "crm-communications": CRMCommunications,
-  integrations: CRMIntegrationHub,
+  integrations: CRMIntegrations,
   "customer-health": CustomerHealthPage,
   "adaptive-home": AdaptiveBusinessHome,
   "business-profile": BusinessProfileEditor,
@@ -261,7 +265,7 @@ const pages: Record<string, React.ComponentType> = {
   "deal-room": DealRoom,
   "strategic-accounts": StrategicAccountRoom,
   "relationship-dossier": RelationshipDossier,
-  "background-tasks": BackgroundTaskCenter,
+  "background-tasks": BackgroundTasks,
   "continuity-report": ContinuityReport,
   "advisor-board": BusinessAdvisorBoardPage,
 };
