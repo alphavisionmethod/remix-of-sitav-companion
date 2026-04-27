@@ -7,6 +7,8 @@ import { SitaCard, SitaCardTitle, SitaButton } from "@/platform/sita/components/
 import { EmptyState } from "@/platform/sita/components/sita/SitaComponents";
 import { DollarSign } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { setLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
 import {
   useGenerateInvoicePdf,
   useDownloadInvoicePdf,
@@ -55,6 +57,7 @@ export function InvoiceDetailPane({
   const requestSig = useRequestSignature();
   const resendSig = useResendSignatureLink();
   const dispatch = useDispatchComm();
+  const navigate = useNavigate();
   const [signerEmail, setSignerEmail] = useState("");
   const [signerOpen, setSignerOpen] = useState(false);
   const [resendConfirmId, setResendConfirmId] = useState<string | null>(null);
@@ -73,6 +76,9 @@ export function InvoiceDetailPane({
     invoice?.crm_contacts?.email ??
     invoice?.metadata?.recipient_email ??
     null;
+  const hasUpstreamLineage = Boolean(
+    invoice.source_quote_title || invoice.source_proposal_title || invoice.quote_id || invoice.proposal_id,
+  );
 
   return (
     <div className="space-y-4">
@@ -102,6 +108,42 @@ export function InvoiceDetailPane({
           )}
         </div>
       </SitaCard>
+
+      {hasUpstreamLineage && (
+        <div className="rounded-lg border border-border/40 bg-card/40 p-3 space-y-1.5">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Revenue Lineage</p>
+          {invoice.source_proposal_title && invoice.proposal_id && (
+            <button
+              onClick={() => {
+                setLinkedContext({
+                  entityType: "proposal",
+                  entityId: invoice.proposal_id,
+                  entityLabel: invoice.source_proposal_title,
+                });
+                navigate("/business/proposals");
+              }}
+              className="block text-[11px] text-primary hover:underline"
+            >
+              ← From proposal: {invoice.source_proposal_title}
+            </button>
+          )}
+          {invoice.source_quote_title && invoice.quote_id && (
+            <button
+              onClick={() => {
+                setLinkedContext({
+                  entityType: "quote",
+                  entityId: invoice.quote_id,
+                  entityLabel: invoice.source_quote_title,
+                });
+                navigate("/business/quotes");
+              }}
+              className="block text-[11px] text-primary hover:underline"
+            >
+              ← From quote: {invoice.source_quote_title}
+            </button>
+          )}
+        </div>
+      )}
 
       <div className="flex gap-2 flex-wrap">
         {invoice.status === "draft" && onMarkSent && (

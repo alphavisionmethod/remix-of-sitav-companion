@@ -1,7 +1,21 @@
 {
-  "generatedAt": "2026-04-27T03:03:36.595Z",
+  "generatedAt": "2026-04-27T07:45:21.288Z",
   "scannedFileCount": 5983,
   "setLinkedContextSites": [
+    {
+      "file": "src/modules/business/components/business/InvoiceDetailPane.tsx",
+      "line": 118,
+      "entityType": "proposal",
+      "targetRoute": "/business/proposals",
+      "snippet": "setLinkedContext({"
+    },
+    {
+      "file": "src/modules/business/components/business/InvoiceDetailPane.tsx",
+      "line": 133,
+      "entityType": "quote",
+      "targetRoute": "/business/quotes",
+      "snippet": "setLinkedContext({"
+    },
     {
       "file": "src/modules/business/components/business/crm/CRMFinanceLinkage.tsx",
       "line": 160,
@@ -484,7 +498,7 @@
     }
   ],
   "summary": {
-    "setLinkedTotal": 13,
+    "setLinkedTotal": 15,
     "consumeLinkedTotal": 6,
     "convertActionTotal": 4,
     "crossAppTargetTotal": 11,

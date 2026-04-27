@@ -92,6 +92,15 @@ After reading the actual repository, the **continuity infrastructure is already 
 
 ## PHASE 3 — Quote→Proposal→Invoice continuity hardening + PDF/e-sign visibility
 
+**STATUS: ✅ DONE (2026-04-27)**
+
+- Verified all three converters (`business.quote.convert-to-proposal`, `business.quote.convert-to-invoice`, `business.proposal.convert-to-invoice`) propagate full lineage and write back-link columns.
+- Conversion CTAs + `setLinkedContext` + `consumeLinkedContext` round-trip live on Quotes, Proposals, Invoices.
+- Added upstream lineage badges in `InvoiceDetailPane` ("← From proposal: …" / "← From quote: …") closing the bidirectional lineage loop.
+- PDF generate/download, e-sign request/resend/pending list, HTML preview, and email dispatch all wired against real edge functions.
+- Baseline delta: `setLinkedContext` 13 → 15. No new orchestration helpers introduced.
+- Honest deferred: Templates/Clauses/Win-Loss tabs remain `PremiumEmptyState` (out of scope); `opportunity` orphan handoff carried to Phase 4.
+
 **Goal:** The quote → proposal → invoice → collections lifecycle is technically wired, but UX continuity gaps remain. Close them.
 
 **Tasks:**
