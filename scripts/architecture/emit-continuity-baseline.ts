@@ -107,6 +107,12 @@ const SET_LINKED_RX =
 const NAVIGATE_AFTER_SET_RX =
   /navigate\(\s*["'`](\/[a-z0-9/_:-]+)["'`]/i;
 const CONSUME_LINKED_RX = /consumeLinkedContext\(\)/g;
+// Phase 10 — also recognise the canonical `useLinkedContext()` hook,
+// which is a thin wrapper that internally calls `consumeLinkedContext`.
+// Treating it as a consume site eliminates false-positive orphan
+// handoffs for pages that use the hook (LeadRecovery, RecoveredValuePage,
+// OpportunitiesCenter, etc.).
+const USE_LINKED_HOOK_RX = /useLinkedContext\(\)/g;
 const CONSUME_TYPE_GUARD_RX =
   /(?:linked|ctx)(?:Context)?\??\.entityType\s*(?:===|!==)\s*["'`]([a-z0-9_-]+)["'`]/gi;
 const USE_ACTION_RX =
@@ -164,6 +170,25 @@ function scan(): Baseline {
       let g: RegExpExecArray | null;
       CONSUME_TYPE_GUARD_RX.lastIndex = 0;
       while ((g = CONSUME_TYPE_GUARD_RX.exec(window)) !== null) {
+        accepted.push(g[1]);
+      }
+      consumeLinkedSites.push({
+        file: relPath,
+        line: lineNo,
+        acceptedEntityTypes: Array.from(new Set(accepted)),
+      });
+    }
+
+    // Phase 10 — useLinkedContext() hook call sites count as consumes.
+    // Scan the whole file for entityType === "..." guards so we capture
+    // accepted types that may live in effects far from the hook call.
+    USE_LINKED_HOOK_RX.lastIndex = 0;
+    while ((m = USE_LINKED_HOOK_RX.exec(text)) !== null) {
+      const lineNo = text.slice(0, m.index).split("\n").length;
+      const accepted: string[] = [];
+      let g: RegExpExecArray | null;
+      CONSUME_TYPE_GUARD_RX.lastIndex = 0;
+      while ((g = CONSUME_TYPE_GUARD_RX.exec(text)) !== null) {
         accepted.push(g[1]);
       }
       consumeLinkedSites.push({
