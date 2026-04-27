@@ -3,6 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   Bot, Phone, Mail, Linkedin, MessageSquare, Send, Clock, Target,
@@ -15,6 +16,8 @@ import { FAILURE_MODE_META, SUCCESS_BAND_META, RECOVERY_PATH_META } from "@/doma
 import { ModuleAdvisorPanel } from "@/modules/business/components/business/advisor-board/ModuleAdvisorPanel";
 import { EscalationPacketPreview } from "@/modules/business/components/business/advisor-board/EscalationPacketPreview";
 import { generateRecoveryAdvisors, buildEscalationPacket } from "@/domains/engines/business-advisor-engine";
+import { setLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
+import { toast } from "sonner";
 
 const CHANNEL_ICONS: Record<string, typeof Mail> = { email: Mail, phone: Phone, linkedin: Linkedin, sms: MessageSquare };
 const CHANNEL_LABELS: Record<string, string> = { email: "Email", phone: "Phone", linkedin: "LinkedIn", sms: "SMS" };
@@ -34,6 +37,7 @@ function SectionHeader({ icon: Icon, title, accent }: { icon: typeof Target; tit
 
 export function LeadRecoveryPane({ lead }: Props) {
   const [showEscalation, setShowEscalation] = useState(false);
+  const navigate = useNavigate();
   const recoveryAdvisors = useMemo(() => lead ? generateRecoveryAdvisors(lead) : [], [lead]);
 
   if (!lead) {
@@ -55,6 +59,21 @@ export function LeadRecoveryPane({ lead }: Props) {
   const urgencyColor = lead.urgency === "act_today" ? "hsl(0 70% 55%)" : lead.urgency === "this_week" ? "hsl(38 85% 58%)" : "hsl(0 0% 50%)";
   const sensitivityLabel = lead.relationshipSensitivity === "handle_carefully" ? "Handle Carefully" : lead.relationshipSensitivity === "standard" ? "Standard" : "Direct Approach";
   const sensitivityColor = lead.relationshipSensitivity === "handle_carefully" ? "hsl(0 70% 55%)" : lead.relationshipSensitivity === "standard" ? "hsl(152 55% 48%)" : "hsl(38 85% 58%)";
+
+  // ── Phase 4: forward continuity — successful recovery routes the operator
+  // to the Recovered Value ledger with the candidate's linked context so the
+  // outcome appears in lineage immediately. We don't fabricate a recovered
+  // amount; the candidate's `valueAtRisk` is the at-risk total and the
+  // ledger surface decides how to display it.
+  const handleRecoverySend = () => {
+    setLinkedContext({
+      entityType: "recovery_candidate",
+      entityId: lead.id,
+      entityLabel: `${lead.name} · ${lead.company}`,
+    });
+    toast.success("Recovery message sent — opening Recovered Value");
+    navigate("/business/recovered-value");
+  };
 
   return (
     <motion.div
@@ -178,7 +197,7 @@ export function LeadRecoveryPane({ lead }: Props) {
           "{lead.aiDraft}"
         </div>
         <div className="flex gap-2 mt-3">
-          <button className="text-[10px] bg-[hsl(265_55%_58%)] text-white px-3 py-1.5 rounded-lg font-medium hover:bg-[hsl(265_55%_50%)] transition-colors flex items-center gap-1">
+          <button onClick={handleRecoverySend} className="text-[10px] bg-[hsl(265_55%_58%)] text-white px-3 py-1.5 rounded-lg font-medium hover:bg-[hsl(265_55%_50%)] transition-colors flex items-center gap-1">
             <Send className="h-3 w-3" /> Send This
           </button>
           <button className="text-[10px] bg-[hsl(265_55%_58%/0.12)] text-[hsl(265_55%_70%)] px-3 py-1.5 rounded-lg font-medium hover:bg-[hsl(265_55%_58%/0.2)] transition-colors">
