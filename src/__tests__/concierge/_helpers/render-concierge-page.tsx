@@ -37,13 +37,17 @@ export function renderConciergePage(
     activeModule: options.activeModule ?? "overview",
     navigateTo: options.navigateTo ?? (() => {}),
   };
-  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+  // Wrap the UI itself in concierge-specific providers, then defer
+  // to the canonical render so the QueryClient + Router providers
+  // from test-utils are preserved (passing a custom `wrapper` would
+  // override AllProviders and lose QueryClient).
+  const wrapped = (
     <ConciergeNavigationContext.Provider value={navValue}>
-      <ConciergeDataProvider value={cai}>{children}</ConciergeDataProvider>
+      <ConciergeDataProvider value={cai}>{ui}</ConciergeDataProvider>
     </ConciergeNavigationContext.Provider>
   );
   const { initialRoute: _ignored, cai: _ignored2, activeModule: _ignored3, navigateTo: _ignored4, ...rest } = options;
-  return canonicalRender(ui, { wrapper: Wrapper, ...rest });
+  return canonicalRender(wrapped, rest);
 }
 
 export * from "@testing-library/react";

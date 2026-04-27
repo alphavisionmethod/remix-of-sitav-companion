@@ -5,26 +5,25 @@
 //   • the canonical PageTruthBanner
 //   • a recognizable header/title that proves the page mounted
 // without throwing.
-import { screen } from "@testing-library/react";
 import { expect } from "vitest";
 
 /**
- * Asserts the page rendered an honest state signal (heading, empty,
- * skeleton, or truth banner). Uses container scan because some
- * pages render skeletons via class names (animate-pulse) instead of
- * accessible roles.
+ * Asserts the page rendered an honest state signal: a recognizable
+ * heading/title, an empty/setup grammar marker, or a skeleton. We
+ * scan the rendered HTML directly because (a) many pages duplicate
+ * the heading text in tabs/breadcrumbs/labels (queryByText would
+ * throw on multiples) and (b) skeletons are class-based, not
+ * role-based.
  */
 export function expectHonestStateSignal(container: HTMLElement, headingText: string | RegExp) {
-  // 1) Heading or title: the page mounted at all
-  const heading = screen.queryByText(headingText);
-
-  // 2) Empty/loading grammar markers
   const html = container.innerHTML;
+  const re = headingText instanceof RegExp ? headingText : new RegExp(String(headingText), "i");
+  const headingMatched = re.test(html.replace(/<[^>]+>/g, " "));
   const hasEmptyOrLoading =
     /animate-pulse|SectionSkeleton|PremiumEmptyState|EmptyState|truthState=|PageTruthBanner|No\s+\w+|Sign in|Set up|Connect|Add a|Add your|Create/i.test(html);
 
   expect(
-    !!heading || hasEmptyOrLoading,
-    `Page must render heading "${headingText}" or an empty/loading grammar marker.`,
+    headingMatched || hasEmptyOrLoading,
+    `Page must render heading matching ${re} or an empty/loading grammar marker.`,
   ).toBe(true);
 }
