@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T15:42:34.019Z",
+  "generatedAt": "2026-04-27T15:42:59.455Z",
   "totalFunctions": 221,
   "withIndex": 221,
   "entries": [
@@ -156,7 +156,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": true,
         "usesServiceRole": true,
@@ -226,7 +226,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -261,7 +261,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -364,7 +364,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -570,7 +570,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -605,7 +605,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -640,7 +640,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -675,7 +675,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -1060,7 +1060,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -2343,7 +2343,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -2848,7 +2848,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -3993,7 +3993,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -4514,7 +4514,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -4724,7 +4724,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": true,
         "usesServiceRole": true,
@@ -5974,7 +5974,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -6114,7 +6114,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -6533,7 +6533,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -6875,7 +6875,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
@@ -7464,7 +7464,7 @@
       "auth": {
         "requireAuth": false,
         "requireAdmin": false,
-        "getUser": false,
+        "getUser": true,
         "getClaims": false,
         "hasRoleCheck": false,
         "usesServiceRole": true,
