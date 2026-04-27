@@ -1384,13 +1384,13 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
       {
         kind: "playwright-e2e",
         artifactRef:
-          "src/__tests__/business-os/integration/quote-proposal-invoice-lineage.test.ts",
+          "src/__tests__/business-os/integration/crm-finance-bridge.test.ts",
         owner: "business-team",
         lastGreenAt: null,
       },
       {
         kind: "receipt-emitted",
-        artifactRef: "src/lib/services/_shared/proof-receipts.ts",
+        artifactRef: "src/lib/services/business-os/lead-recovery.service.ts",
         owner: "business-team",
         lastGreenAt: null,
       },
