@@ -1,66 +1,51 @@
-// SITA OS — CRM Concierge Linkage Component
-// Cross-domain integration: CRM ↔ Concierge OS (appointments, obligations, errands)
+// SITA OS — CRM Concierge Linkage Component (Phase 2: live)
+// Cross-domain integration: CRM ↔ Concierge OS via real tables.
+// Reads `appointments`, `concierge_recurring_obligations`, `errands`
+// filtered by `crm_contact_id` / `crm_company_id`. Uses canonical
+// `setLinkedContext` for handoff to concierge surfaces.
 import React, { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 import {
   Calendar, Clock, MapPin, CheckCircle, AlertTriangle,
-  RotateCcw, Bell, User, Sparkles, ExternalLink, Plus,
-  ChevronRight, ListTodo, Timer, ArrowRight
+  RotateCcw, Sparkles, ExternalLink, Plus,
+  ChevronRight, ListTodo, Timer
 } from "lucide-react";
-import { format, formatDistanceToNow, isPast, isFuture, differenceInDays } from "date-fns";
+import { format, isPast, differenceInDays } from "date-fns";
+import { fromTable } from "@/lib/supabase-helpers";
+import { useAuth } from "@/contexts/AuthContext";
+import { setLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
+import { PremiumEmptyState } from "@/platform/sita/components/sita/PremiumEmptyState";
 
 interface LinkedAppointment {
   id: string;
   title: string;
-  date: string;
-  location?: string;
-  status: "upcoming" | "completed" | "cancelled" | "rescheduled";
-  prep_items: string[];
-  category: string;
+  appointment_date: string;
+  location: string | null;
+  status: string;
+  prep_items: string[] | null;
+  category: string | null;
 }
 
 interface LinkedObligation {
   id: string;
   title: string;
-  frequency: string;
-  next_due: string;
-  status: "active" | "overdue" | "completed";
-  category: string;
-  automatable: boolean;
+  frequency: string | null;
+  next_due: string | null;
+  status: string;
+  category: string | null;
+  automatable: boolean | null;
 }
 
 interface LinkedErrand {
   id: string;
   title: string;
-  due_date?: string;
-  status: "pending" | "in_progress" | "completed";
-  priority: string;
-  estimated_minutes: number;
-}
-
-function generateDemoAppointments(entityName: string): LinkedAppointment[] {
-  return [
-    { id: "apt-1", title: `Quarterly Review — ${entityName}`, date: "2026-04-22T14:00:00", location: "Virtual — Zoom", status: "upcoming", prep_items: ["Review Q1 metrics", "Prepare renewal proposal", "Check outstanding invoices"], category: "review" },
-    { id: "apt-2", title: `Contract Renewal Meeting — ${entityName}`, date: "2026-05-10T10:00:00", location: "Office — Room 3A", status: "upcoming", prep_items: ["Draft new terms", "Competitive analysis"], category: "negotiation" },
-    { id: "apt-3", title: `Onboarding Kickoff — ${entityName}`, date: "2026-01-15T09:00:00", location: "Virtual — Teams", status: "completed", prep_items: [], category: "onboarding" },
-  ];
-}
-
-function generateDemoObligations(entityName: string): LinkedObligation[] {
-  return [
-    { id: "obl-1", title: `Monthly status report — ${entityName}`, frequency: "monthly", next_due: "2026-04-30", status: "active", category: "reporting", automatable: true },
-    { id: "obl-2", title: `Quarterly business review prep`, frequency: "quarterly", next_due: "2026-04-20", status: "active", category: "review", automatable: false },
-    { id: "obl-3", title: `License renewal reminder`, frequency: "annually", next_due: "2026-09-15", status: "active", category: "admin", automatable: true },
-  ];
-}
-
-function generateDemoErrands(entityName: string): LinkedErrand[] {
-  return [
-    { id: "err-1", title: `Send updated proposal to ${entityName}`, due_date: "2026-04-18", status: "pending", priority: "high", estimated_minutes: 30 },
-    { id: "err-2", title: `Follow up on signed NDA`, due_date: "2026-04-20", status: "in_progress", priority: "medium", estimated_minutes: 10 },
-  ];
+  due_date: string | null;
+  status: string;
+  priority: string | null;
+  estimated_minutes: number | null;
 }
 
 const APT_STATUS: Record<string, { icon: React.ReactNode; className: string }> = {
