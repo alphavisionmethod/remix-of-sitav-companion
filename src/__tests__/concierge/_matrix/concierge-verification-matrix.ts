@@ -94,7 +94,7 @@ export const TRUST_SURFACES: SurfaceEntry[] = [
 // ── Cross-module integration ──────────────────────────────────
 export const INTEGRATION_SURFACES: SurfaceEntry[] = [
   { id: "int.concierge-business-linkage", kind: "integration", ref: "src/__tests__/business-os/integration/crm-concierge-linkage-live.test.tsx", tests: ["src/__tests__/business-os/integration/crm-concierge-linkage-live.test.tsx"], status: "behavioral", priority: "P0", notes: "live cross-domain query already covers concierge↔CRM seam" },
-  { id: "int.concierge-finance-linkage",  kind: "integration", ref: "src/lib/services/finance-os/recurring-obligation.service.ts",                tests: ["src/__tests__/finance/integration/concierge-finance-linkage.test.ts"],     status: "missing",    priority: "P1" },
+  { id: "int.concierge-finance-linkage",  kind: "integration", ref: "src/lib/services/finance-os/recurring-obligation.service.ts",                tests: ["src/__tests__/finance/integration/concierge-finance-linkage.test.ts"],     status: "behavioral", priority: "P1", notes: "Phase 7 — recurring obligation summary feeds Concierge.recurring + cross-OS link registry" },
 ];
 
 // ── Adaptive / persistence ────────────────────────────────────
