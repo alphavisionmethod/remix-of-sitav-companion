@@ -44,6 +44,17 @@ const tables = snapshot.tables as TableRow[];
 const orgIdTables = snapshot.orgIdTables as string[];
 const securityDefiners = snapshot.securityDefiners as SecurityDefiner[];
 
+// Tables that carry an org_id column but are intentionally scoped to
+// the row owner (user_id) only — strictly more restrictive than org
+// gating. Document each exemption inline; the allowlist is itself a
+// reviewable surface.
+const USER_ID_ONLY_EXEMPTIONS = new Set<string>([
+  // Personal AI plans — never shared to org peers, only the originating
+  // user can read/write/delete. The org_id column is captured for analytics
+  // bucketing but is not used by RLS.
+  "sita_agent_plans",
+]);
+
 describe("Phase 10 — Multi-Tenancy + RLS Behavioral E2E", () => {
   describe("snapshot freshness", () => {
     it("snapshot is non-empty and totals are coherent", () => {
@@ -112,6 +123,7 @@ describe("Phase 10 — Multi-Tenancy + RLS Behavioral E2E", () => {
     it("every org_id-bearing table has at least one is_org_member-gated policy", () => {
       const offenders: string[] = [];
       for (const table of orgIdTables) {
+        if (USER_ID_ONLY_EXEMPTIONS.has(table)) continue;
         const tablePolicies = policies.filter((p) => p.tablename === table);
         const hasOrgGate = tablePolicies.some(
           (p) => p.qual.includes("is_org_member") || p.with_check.includes("is_org_member"),
@@ -122,6 +134,29 @@ describe("Phase 10 — Multi-Tenancy + RLS Behavioral E2E", () => {
         offenders,
         `org_id tables without is_org_member gate: ${offenders.join(", ")}`,
       ).toEqual([]);
+    });
+
+    it("every USER_ID_ONLY exemption is gated strictly by auth.uid() = user_id", () => {
+      // The exemption is only safe if the table is gated by user_id on
+      // every CRUD command — that's strictly more restrictive than the
+      // canonical org-aware pattern. Verify the contract holds.
+      const violations: string[] = [];
+      for (const table of USER_ID_ONLY_EXEMPTIONS) {
+        const tablePolicies = policies.filter((p) => p.tablename === table);
+        if (tablePolicies.length === 0) {
+          violations.push(`${table}: exempted but has zero policies`);
+          continue;
+        }
+        const allUserIdGated = tablePolicies.every(
+          (p) =>
+            p.qual.includes("auth.uid() = user_id") ||
+            p.with_check.includes("auth.uid() = user_id"),
+        );
+        if (!allUserIdGated) {
+          violations.push(`${table}: not all policies gate by auth.uid()=user_id`);
+        }
+      }
+      expect(violations, `USER_ID_ONLY exemption violations: ${violations.join("; ")}`).toEqual([]);
     });
 
     it("every org_id-bearing table has SELECT, INSERT, UPDATE, DELETE policies", () => {
