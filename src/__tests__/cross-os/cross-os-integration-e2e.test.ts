@@ -386,12 +386,19 @@ describe("Phase 13 — Cross-OS Integration E2E", () => {
 
     it("event types in the union are exhaustive (no orphan emissions)", () => {
       // Every declared event type must round-trip through the bus.
+      // We bind to a concrete target ("finance") and emit a concrete
+      // event so the bus's `${target}:${type}` and `*:${type}` keys
+      // do NOT collide (which would deliver twice for wildcard listeners).
       for (const t of VALID_EVENT_TYPES) {
-        const listener = vi.fn();
-        const off = onCrossOSEvent("*", t, listener);
-        emitCrossOSEvent({ type: t, source: "business", target: "*", payload: {} });
-        expect(listener, `Event type ${t} not delivered`).toHaveBeenCalledTimes(1);
-        off();
+        const targeted = vi.fn();
+        const wildcard = vi.fn();
+        const offT = onCrossOSEvent("finance", t, targeted);
+        const offW = onCrossOSEvent("*", t, wildcard);
+        emitCrossOSEvent({ type: t, source: "business", target: "finance", payload: {} });
+        expect(targeted, `Event type ${t} not delivered to targeted listener`).toHaveBeenCalledTimes(1);
+        expect(wildcard, `Event type ${t} not delivered to wildcard listener`).toHaveBeenCalledTimes(1);
+        offT();
+        offW();
       }
     });
   });
