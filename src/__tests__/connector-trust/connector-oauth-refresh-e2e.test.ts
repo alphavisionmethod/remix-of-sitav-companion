@@ -258,14 +258,24 @@ describe("Phase 12 — Connector OAuth Refresh Behavioral E2E", () => {
       expect(nightly).not.toMatch(/"hubspot"|"linear"|"notion"/);
     });
 
-    it("nightly verifier uses the existing probe (no duplicate refresh implementation)", () => {
-      // Reuse contract: must call oauth-refresh-probe, NOT re-implement OAuth flows.
-      const reusesProbe = nightly.includes("oauth-refresh-probe") ||
-        nightly.includes("oauth_refresh_probe_results");
-      expect(reusesProbe).toBe(true);
-      // And must NOT redeclare token endpoints.
-      expect(nightly).not.toContain("https://oauth2.googleapis.com/token");
-      expect(nightly).not.toContain("https://slack.com/api/oauth.v2.access");
+    it("nightly verifier reuses the probe ledger for live_refresh evidence (no duplicate refresh storage)", () => {
+      // The live_refresh pillar MUST be sourced from the canonical
+      // ledger written by oauth-refresh-probe, not a parallel store.
+      expect(nightly).toContain("oauth_refresh_probe_results");
+      // And must NOT write to a parallel/private refresh ledger.
+      expect(nightly).not.toMatch(/from\(["']oauth_refresh_results["']\)/);
+      expect(nightly).not.toMatch(/from\(["']connector_token_probe_log["']\)/);
+    });
+
+    it("nightly verifier's expiry_pressure pillar uses real provider endpoints (sentinel-token contract)", () => {
+      // The expiry_pressure_synthetic pillar deliberately sends a
+      // sentinel invalid refresh token to each real provider to prove
+      // the classifier emits `reauth_required`. This is the ONLY
+      // legitimate reason for the verifier to know provider URLs.
+      expect(nightly).toContain("oauth2.googleapis.com");
+      expect(nightly).toContain("login.microsoftonline.com");
+      // And the classifier outcome must be checked, not stored as truth.
+      expect(nightly).toMatch(/reauth_required/);
     });
   });
 
