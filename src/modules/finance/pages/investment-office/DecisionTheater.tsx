@@ -332,7 +332,7 @@ export default function DecisionTheater() {
           <button className="rounded-xl bg-primary/10 px-5 py-3 text-sm font-medium text-primary hover:bg-primary/20 transition-colors">
             Simulate Again
           </button>
-          <button onClick={() => navigate("/investments/execute")}
+          <button onClick={() => navigate("/investment/execute")}
             className="rounded-xl bg-primary px-8 py-3 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors">
             Authorize Deployment →
           </button>

@@ -348,3 +348,21 @@ This plan touches code in every layer that owns the broken handoffs — services
 **Tests:** `src/__tests__/business-os/integration/background-task-routing.test.ts` (5 cases — entity preselect + fallback). All Phase 6 source-lineage tests still pass.
 
 **Verified:** `tsc --noEmit` clean.
+
+---
+
+## Phase 8 — Investment route consolidation ✅
+
+**Goal:** Eliminate the `/investments` (plural) ↔ `/investment` (singular) ambiguity so every in-app navigation reaches the canonical Investment Office shell directly — no extra redirect hop, no dropped `linkedContext`.
+
+**Landed:**
+- Swept all 16 files under `src/modules/finance/pages/investment-office/` to use the canonical singular `/investment/*` namespace (54 call-sites updated across `InvestmentGate`, `BeginnerMode`, `AdvancedMode`, `MarketExplorer`, `WatchlistsSignals`, `TradingFloor`, `ThesisJournal`, `StrategyStudio`, `PortfolioOffice`, `ExecutionDesk`, `OpportunityMap`, `KnowledgeGraph`, `EventMarketsWorkspace`, `InstrumentDetail`, `DecisionTheater`, `InvestmentBoardroom`).
+- The existing `USER_REDIRECTS` map in `App.tsx` continues to catch any inbound legacy `/investments/*` deep-link with a `<Navigate replace>`, so external bookmarks stay alive.
+- Added `src/__tests__/architecture/investment-plural-callsites.test.ts` — a guard test that fails CI if any production source under `src/` (outside the redirect map / registries / fixtures) navigates to `/investments/*`.
+
+**Concierge ↔ Finance direct linkage:**
+- Confirmed scope-deferral. `concierge_recurring_obligations` already carries `crm_company_id` / `crm_contact_id` lineage, but no UI currently surfaces it — there is no live surface to bridge into Money/bills, so the cross-app chip is parked until Phase 10 (Concierge surface revival).
+
+**Verified:**
+- `tsc --noEmit` clean
+- `investment-route-namespace` (4 tests) + `investment-shell-mount` (4 tests) + `investment-plural-callsites` (1 test) — all green.

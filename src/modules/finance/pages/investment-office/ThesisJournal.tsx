@@ -76,7 +76,7 @@ export default function ThesisJournal() {
                   </p>
                 </div>
                 {inst && (
-                  <button onClick={() => navigate(`/investments/instrument/${inst.id}`)}
+                  <button onClick={() => navigate(`/investment/instrument/${inst.id}`)}
                     className="rounded-lg bg-secondary px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
                     View {inst.symbol} <ChevronRight className="h-3 w-3 inline" />
                   </button>

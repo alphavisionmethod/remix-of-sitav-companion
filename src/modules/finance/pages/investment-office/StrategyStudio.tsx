@@ -182,7 +182,7 @@ export default function StrategyStudio() {
                   </span>
                 ))}
               </div>
-              <button onClick={() => navigate("/investments/journal")} className="text-[10px] text-primary hover:underline flex items-center gap-1 pt-1">
+              <button onClick={() => navigate("/investment/journal")} className="text-[10px] text-primary hover:underline flex items-center gap-1 pt-1">
                 Open thesis <ChevronRight className="h-3 w-3" />
               </button>
             </div>

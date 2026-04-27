@@ -57,7 +57,7 @@ export default function EventMarketsWorkspace() {
       {tab === "markets" && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {eventInstruments.map(inst => (
-            <button key={inst.id} onClick={() => navigate(`/investments/instrument/${inst.id}`)}
+            <button key={inst.id} onClick={() => navigate(`/investment/instrument/${inst.id}`)}
               className="rounded-2xl border border-border bg-card p-5 text-left hover:border-primary/20 transition-all space-y-3">
               <div className="flex items-start gap-3">
                 <span className="text-2xl">{inst.logoIcon}</span>

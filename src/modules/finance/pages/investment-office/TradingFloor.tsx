@@ -182,7 +182,7 @@ export default function TradingFloor() {
               <HeatmapBlock
                 key={inst.id}
                 instrument={inst}
-                onClick={() => navigate(`/investments/instrument/${inst.id}`)}
+                onClick={() => navigate(`/investment/instrument/${inst.id}`)}
               />
             ))}
           </div>

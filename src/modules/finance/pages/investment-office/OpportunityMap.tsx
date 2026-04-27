@@ -93,7 +93,7 @@ export default function OpportunityMap() {
               const inst = INSTRUMENTS.find(i => i.symbol === sym);
               if (!inst) return null;
               return (
-                <button key={sym} onClick={() => navigate(`/investments/instrument/${inst.id}`)}
+                <button key={sym} onClick={() => navigate(`/investment/instrument/${inst.id}`)}
                   className="rounded-xl border border-border bg-card p-3 flex items-center gap-3 hover:border-primary/20 transition-all group">
                   <span className="text-lg">{inst.logoIcon}</span>
                   <div className="flex-1 text-left">

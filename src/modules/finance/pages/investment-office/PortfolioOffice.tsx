@@ -140,7 +140,7 @@ export default function PortfolioOffice() {
                 const thesis = getConvictionBadge(h.instrumentId);
                 const riskLevel = h.weight > 15 ? "high" : h.weight > 8 ? "moderate" : "low";
                 return (
-                  <tr key={h.id} onClick={() => navigate(`/investments/instrument/${h.instrumentId}`)}
+                  <tr key={h.id} onClick={() => navigate(`/investment/instrument/${h.instrumentId}`)}
                     className="border-b border-border/50 hover:bg-secondary/30 cursor-pointer transition-colors">
                     <td className="px-5 py-3 flex items-center gap-2.5">
                       <span className="text-lg">{h.instrument.logoIcon}</span>

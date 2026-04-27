@@ -45,15 +45,15 @@ export default function InvestmentGate() {
             </p>
             <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35, duration: 0.4 }}
               className="flex flex-wrap gap-2 pt-2">
-              <button onClick={() => navigate("/investments/boardroom")}
+              <button onClick={() => navigate("/investment/boardroom")}
                 className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-2">
                 Enter Boardroom <ChevronRight className="h-4 w-4" />
               </button>
-              <button onClick={() => navigate("/investments/beginner")}
+              <button onClick={() => navigate("/investment/beginner")}
                 className="rounded-xl bg-secondary px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
                 <GraduationCap className="h-4 w-4" /> Guided Start
               </button>
-              <button onClick={() => navigate("/investments/advanced")}
+              <button onClick={() => navigate("/investment/advanced")}
                 className="rounded-xl bg-secondary px-5 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
                 <BarChart3 className="h-4 w-4" /> Advanced Desk
               </button>
@@ -83,7 +83,7 @@ export default function InvestmentGate() {
               <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">Platforms</p>
               <p className="text-sm text-foreground font-medium">{connected} connected · {PLATFORM_CONNECTIONS.length - connected} available</p>
               {!hasAccounts && (
-                <button onClick={() => navigate("/investments/platforms")}
+                <button onClick={() => navigate("/investment/platforms")}
                   className="mt-2 text-[10px] text-primary hover:underline flex items-center gap-1">
                   <Link2 className="h-3 w-3" /> Connect accounts
                 </button>
@@ -101,7 +101,7 @@ export default function InvestmentGate() {
             <motion.div key={adv.id} initial={{ opacity: 0, y: 12, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }}
               transition={{ delay: 0.15 + i * 0.08, duration: 0.4 }}
               className="rounded-2xl border border-border bg-card p-4 space-y-2 hover:border-primary/15 transition-all cursor-pointer"
-              onClick={() => navigate("/investments/advisors")}>
+              onClick={() => navigate("/investment/advisors")}>
               <div className="flex items-center gap-2">
                 <span className="text-xl">{adv.icon}</span>
                 <div className="flex-1 min-w-0">
@@ -118,7 +118,7 @@ export default function InvestmentGate() {
             </motion.div>
           ))}
         </div>
-        <button onClick={() => navigate("/investments/advisors")} className="text-[10px] text-primary hover:underline flex items-center gap-1">
+        <button onClick={() => navigate("/investment/advisors")} className="text-[10px] text-primary hover:underline flex items-center gap-1">
           Full advisor council <ChevronRight className="h-3 w-3" />
         </button>
       </div>
@@ -140,7 +140,7 @@ export default function InvestmentGate() {
           className="rounded-2xl border border-border bg-card p-5 space-y-2">
           <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Eye className="h-3 w-3" /> Watchlist Pulse</p>
           {WATCHLISTS[0].instruments.slice(0, 4).map(inst => (
-            <button key={inst.id} onClick={() => navigate(`/investments/instrument/${inst.id}`)}
+            <button key={inst.id} onClick={() => navigate(`/investment/instrument/${inst.id}`)}
               className="w-full flex items-center gap-2 text-left hover:bg-secondary/50 rounded-lg p-1.5 -mx-1.5 transition-colors">
               <span className="text-sm">{inst.logoIcon}</span>
               <span className="text-xs font-medium text-foreground flex-1">{inst.symbol}</span>
@@ -156,13 +156,13 @@ export default function InvestmentGate() {
       {/* Quick Links — Cascading Scale-In */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
         {[
-          { label: "Boardroom", icon: Briefcase, path: "/investments/boardroom" },
-          { label: "Markets", icon: Globe, path: "/investments/markets" },
-          { label: "Portfolio", icon: BarChart3, path: "/investments/portfolio" },
-          { label: "Strategy", icon: Compass, path: "/investments/strategy" },
-          { label: "Execute", icon: Zap, path: "/investments/execute" },
-          { label: "Risk", icon: Shield, path: "/investments/risk" },
-          { label: "Research", icon: Brain, path: "/investments/research" },
+          { label: "Boardroom", icon: Briefcase, path: "/investment/boardroom" },
+          { label: "Markets", icon: Globe, path: "/investment/markets" },
+          { label: "Portfolio", icon: BarChart3, path: "/investment/portfolio" },
+          { label: "Strategy", icon: Compass, path: "/investment/strategy" },
+          { label: "Execute", icon: Zap, path: "/investment/execute" },
+          { label: "Risk", icon: Shield, path: "/investment/risk" },
+          { label: "Research", icon: Brain, path: "/investment/research" },
         ].map((l, i) => (
           <motion.button key={l.path} onClick={() => navigate(l.path)}
             initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}

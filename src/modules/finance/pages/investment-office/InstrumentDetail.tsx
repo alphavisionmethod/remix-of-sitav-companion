@@ -66,7 +66,7 @@ export default function InstrumentDetail() {
           </div>
           <p className="text-sm text-muted-foreground mt-1">{inst.description}</p>
         </div>
-        <button onClick={() => navigate("/investments/execute")}
+        <button onClick={() => navigate("/investment/execute")}
           className="rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-2">
           <Target className="h-4 w-4" /> Prepare Trade
         </button>
@@ -171,12 +171,12 @@ export default function InstrumentDetail() {
                 <span className="rounded-full bg-primary/10 px-2 py-0.5 text-primary font-medium capitalize">Conviction: {thesis.conviction}</span>
                 <span className="rounded-full bg-secondary px-2 py-0.5 text-muted-foreground">{thesis.timeHorizon}</span>
               </div>
-              <button onClick={() => navigate("/investments/journal")} className="text-[10px] text-primary hover:underline flex items-center gap-1">
+              <button onClick={() => navigate("/investment/journal")} className="text-[10px] text-primary hover:underline flex items-center gap-1">
                 View thesis <ChevronRight className="h-3 w-3" />
               </button>
             </div>
           ) : (
-            <button onClick={() => navigate("/investments/journal")}
+            <button onClick={() => navigate("/investment/journal")}
               className="w-full rounded-2xl border border-dashed border-border bg-card p-5 text-center hover:border-primary/20 transition-colors">
               <Plus className="h-5 w-5 text-muted-foreground mx-auto mb-1" />
               <p className="text-xs font-medium text-muted-foreground">Create Investment Thesis</p>
@@ -214,7 +214,7 @@ export default function InstrumentDetail() {
       <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><BarChart3 className="h-4 w-4 text-primary" /> Scenario Preview</h3>
-          <button onClick={() => navigate("/investments/strategy")} className="text-[10px] text-primary hover:underline flex items-center gap-1">
+          <button onClick={() => navigate("/investment/strategy")} className="text-[10px] text-primary hover:underline flex items-center gap-1">
             Full simulator <ChevronRight className="h-3 w-3" />
           </button>
         </div>

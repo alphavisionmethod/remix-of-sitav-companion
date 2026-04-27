@@ -32,10 +32,10 @@ export default function AdvancedMode() {
         </div>
         <div className="flex gap-1.5">
           {[
-            { l: "Board", p: "/investments/boardroom" }, { l: "Mkts", p: "/investments/markets" },
-            { l: "Port", p: "/investments/portfolio" }, { l: "Strat", p: "/investments/strategy" },
-            { l: "Exec", p: "/investments/execute" }, { l: "Risk", p: "/investments/risk" },
-            { l: "Res", p: "/investments/research" }, { l: "Events", p: "/investments/events" },
+            { l: "Board", p: "/investment/boardroom" }, { l: "Mkts", p: "/investment/markets" },
+            { l: "Port", p: "/investment/portfolio" }, { l: "Strat", p: "/investment/strategy" },
+            { l: "Exec", p: "/investment/execute" }, { l: "Risk", p: "/investment/risk" },
+            { l: "Res", p: "/investment/research" }, { l: "Events", p: "/investment/events" },
           ].map(n => (
             <button key={n.p} onClick={() => navigate(n.p)}
               className="rounded-md bg-secondary px-2 py-1 text-[10px] font-medium text-muted-foreground hover:text-foreground transition-colors">{n.l}</button>
@@ -65,7 +65,7 @@ export default function AdvancedMode() {
         <div className="col-span-4 rounded-2xl border border-border bg-card p-4 space-y-2 max-h-[480px] overflow-y-auto scrollbar-thin">
           <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider sticky top-0 bg-card pb-1">Holdings</p>
           {p.holdings.sort((a, b) => b.currentValue - a.currentValue).map(h => (
-            <button key={h.id} onClick={() => navigate(`/investments/instrument/${h.instrumentId}`)}
+            <button key={h.id} onClick={() => navigate(`/investment/instrument/${h.instrumentId}`)}
               className="w-full flex items-center gap-2 text-left hover:bg-secondary/30 rounded-lg p-1.5 -mx-1.5 transition-colors">
               <span className="text-sm">{h.instrument.logoIcon}</span>
               <div className="flex-1 min-w-0">
@@ -86,7 +86,7 @@ export default function AdvancedMode() {
           <div className="rounded-2xl border border-border bg-card p-4 space-y-2">
             <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Movers</p>
             {topMovers.slice(0, 6).map(inst => (
-              <button key={inst.id} onClick={() => navigate(`/investments/instrument/${inst.id}`)}
+              <button key={inst.id} onClick={() => navigate(`/investment/instrument/${inst.id}`)}
                 className="w-full flex items-center gap-2 text-left hover:bg-secondary/30 rounded-lg p-1 transition-colors">
                 <span className="text-sm">{inst.logoIcon}</span>
                 <span className="text-[11px] font-medium text-foreground flex-1">{inst.symbol}</span>
@@ -152,7 +152,7 @@ export default function AdvancedMode() {
         <div className="rounded-2xl border border-border bg-card p-4 space-y-2">
           <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Active Theses</p>
           {SAMPLE_THESES.map(th => (
-            <button key={th.id} onClick={() => navigate("/investments/journal")}
+            <button key={th.id} onClick={() => navigate("/investment/journal")}
               className="w-full flex items-center gap-2 text-left hover:bg-secondary/30 rounded-lg p-1.5 transition-colors">
               <Brain className="h-3.5 w-3.5 text-primary shrink-0" />
               <span className="text-[11px] font-medium text-foreground flex-1 truncate">{th.title}</span>
@@ -163,7 +163,7 @@ export default function AdvancedMode() {
         <div className="rounded-2xl border border-border bg-card p-4 space-y-2">
           <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Pending Orders</p>
           {SAMPLE_ORDERS.map(ord => (
-            <button key={ord.id} onClick={() => navigate("/investments/execute")}
+            <button key={ord.id} onClick={() => navigate("/investment/execute")}
               className="w-full flex items-center gap-2 text-left hover:bg-secondary/30 rounded-lg p-1.5 transition-colors">
               <span className="text-sm">{ord.instrument.logoIcon}</span>
               <span className="text-[11px] font-medium text-foreground capitalize">{ord.action} {ord.instrument.symbol}</span>
