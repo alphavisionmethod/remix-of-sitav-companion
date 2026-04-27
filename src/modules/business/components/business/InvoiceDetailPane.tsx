@@ -9,6 +9,7 @@ import { DollarSign } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { setLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
+import { FinanceContactBackLink } from "@/modules/business/components/business/finance/FinanceContactBackLink";
 import {
   useGenerateInvoicePdf,
   useDownloadInvoicePdf,
@@ -144,6 +145,17 @@ export function InvoiceDetailPane({
           )}
         </div>
       )}
+
+      {/* Phase 2 — Cross-Module Integration Deepening: reverse navigation
+          Finance → CRM. Resolves the originating CRM entity through the
+          canonical crm_customer_link bridge. Renders nothing when no
+          link exists, so no "Empty-State Honesty" violation. */}
+      <FinanceContactBackLink
+        customerId={invoice.customer_id ?? null}
+        crmContactId={invoice.crm_contact_id ?? null}
+        crmCompanyId={invoice.crm_company_id ?? null}
+        variant="card"
+      />
 
       <div className="flex gap-2 flex-wrap">
         {invoice.status === "draft" && onMarkSent && (
