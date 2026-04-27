@@ -328,3 +328,23 @@ Before moving to the next phase, ALL of the following must hold:
 10. Per-phase commit notes in the continuity report
 
 This plan touches code in every layer that owns the broken handoffs — services, hooks, pages, DB schema, validators, tests, and docs — without creating any parallel continuity model.
+---
+
+## Phase 7 — BackgroundTaskCenter source-routing completeness ✅
+
+**Goal:** Every background-task row deep-links to the *originating entity* on the *correct app surface* — no orphan terminal screens.
+
+**Landed:**
+- Extended `BackgroundJobVM` with `linkedEntity` (lead | appointment | customer | opportunity | invoice | audit-subject) and `BackgroundJobNavigationTarget.entityType`.
+- `recoveryJobToVM` now forwards `lead_id` → `appointment_id` → `crm_contact_id` lineage (preserved via Phase 4 migration `20260427085843_*`).
+- `auditLogToVM` maps `subject_type`/`subject_id` → typed entity hints (lead, invoice, opportunity, customer, appointment).
+- `resolveTaskTarget` upgrades the destination per `linkedEntity`:
+  - recovery + lead → `/lead-recovery` w/ entity preselect
+  - recovery + appointment → `/appointments`
+  - audit + invoice → `/billing`
+  - … with safe fallbacks (`lead-recovery`, `proof`) when no lineage exists.
+- `BackgroundTaskCenter` click handler now calls `setLinkedContext({ entityType, entityId, entityLabel })` before `navigateTo(module)` so the destination's `useLinkedContext()` auto-selects the originating row.
+
+**Tests:** `src/__tests__/business-os/integration/background-task-routing.test.ts` (5 cases — entity preselect + fallback). All Phase 6 source-lineage tests still pass.
+
+**Verified:** `tsc --noEmit` clean.

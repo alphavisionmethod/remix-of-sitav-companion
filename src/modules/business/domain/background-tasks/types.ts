@@ -72,6 +72,17 @@ export interface BackgroundJobVM {
   navigationTarget?: BackgroundJobNavigationTarget;
   /** Optional deep-link to recovery surface for failed jobs. */
   recoveryHref?: string;
+  /**
+   * Phase 7: when this job has a meaningful originating entity
+   * (a lead, appointment, contact, opportunity, invoice…), the mapper
+   * populates this hint. The Background Task Center forwards it as
+   * `linkedContext` so the destination app can auto-select the entity.
+   */
+  linkedEntity?: {
+    type: "lead" | "appointment" | "customer" | "opportunity" | "invoice" | "audit-subject";
+    id: string;
+    label?: string;
+  };
 }
 
 /** Where clicking a job row should send the operator inside Business OS. */
@@ -82,6 +93,8 @@ export interface BackgroundJobNavigationTarget {
   entityId?: string;
   /** Human-readable label for the link (used as tooltip / aria-label). */
   label: string;
+  /** Optional entity type for the destination's `useLinkedContext` consumer. */
+  entityType?: "lead" | "appointment" | "customer" | "opportunity" | "invoice" | "audit-subject";
 }
 
 // ── Helpers ───────────────────────────────────────────────────
@@ -271,6 +284,15 @@ export function workflowRunToVM(row: WorkflowRunRow): BackgroundJobVM {
 export function recoveryJobToVM(row: RecoveryJobRow): BackgroundJobVM {
   const status = normalizeStatus(row.status);
   const pct = Math.max(0, Math.min(100, Number(row.progress ?? 0)));
+  // Phase 7 lineage: prefer lead → appointment → contact for the
+  // destination preselection. Only one is forwarded.
+  const linkedEntity: BackgroundJobVM["linkedEntity"] = row.lead_id
+    ? { type: "lead", id: row.lead_id, label: row.label ?? undefined }
+    : row.appointment_id
+      ? { type: "appointment", id: row.appointment_id, label: row.label ?? undefined }
+      : row.crm_contact_id
+        ? { type: "customer", id: row.crm_contact_id, label: row.label ?? undefined }
+        : undefined;
   return {
     id: `recovery:${row.id}`,
     kind: "recovery",
@@ -288,6 +310,7 @@ export function recoveryJobToVM(row: RecoveryJobRow): BackgroundJobVM {
     canCancel: status === "queued" || status === "running",
     retryUnavailableReason: status === "failed" ? undefined : "Only failed recovery jobs can be re-run.",
     recoveryHref: status === "failed" ? `/admin/ar07-retry-failure-center?source=recovery_jobs&id=${row.id}` : undefined,
+    linkedEntity,
   };
 }
 
@@ -296,6 +319,21 @@ export function recoveryJobToVM(row: RecoveryJobRow): BackgroundJobVM {
  * see the most recent meaningful events alongside live jobs.
  */
 export function auditLogToVM(row: AuditLogRow): BackgroundJobVM {
+  // Phase 7: forward the audit subject if it looks like a known entity type.
+  const subjectType = (row.subject_type ?? "").toLowerCase();
+  const mapped: BackgroundJobVM["linkedEntity"] = row.subject_id
+    ? subjectType.includes("lead")
+      ? { type: "lead", id: row.subject_id }
+      : subjectType.includes("appointment")
+        ? { type: "appointment", id: row.subject_id }
+        : subjectType.includes("invoice")
+          ? { type: "invoice", id: row.subject_id }
+          : subjectType.includes("opportunity")
+            ? { type: "opportunity", id: row.subject_id }
+            : subjectType.includes("contact") || subjectType.includes("customer")
+              ? { type: "customer", id: row.subject_id }
+              : { type: "audit-subject", id: row.subject_id, label: row.subject_type ?? undefined }
+    : undefined;
   return {
     id: `audit:${row.id}`,
     kind: "audit",
@@ -312,6 +350,7 @@ export function auditLogToVM(row: AuditLogRow): BackgroundJobVM {
     canRetry: false,
     canCancel: false,
     retryUnavailableReason: "Read-only audit entry · no retry path.",
+    linkedEntity: mapped,
   };
 }
 
