@@ -554,4 +554,111 @@
   `/recovered-value`) are explicitly tracked for Phase 10's flip of
   `check-continuity-handoffs.ts` from warn → enforce.
 
-## Phase 10 — pending
+## Phase 10 — Verification, golden paths, deployment readiness ✅
+
+### What shipped
+
+- **5 new Golden Paths** registered in `src/lib/operations/golden-path-registry.ts`
+  (and `GoldenPathId` union extended in `golden-path-types.ts`):
+  `GP-OPPORTUNITY-TO-PAID-INVOICE` (P0), `GP-LEAD-TO-RECOVERED-VALUE` (P1),
+  `GP-SUPPORT-TO-HEALTH-SIGNAL` (P1), `GP-CRM-CONCIERGE-LINKAGE` (P1),
+  `GP-BACKGROUND-TASK-SOURCE-NAV` (P2). All five resolve cleanly against
+  `BOUNDED_CONTEXT_REGISTRY`, `DB_SCHEMA_REGISTRY`, real on-disk artifacts,
+  and known release gates (`check-golden-path-coverage.ts` adds zero new
+  errors — the 7 pre-existing `runtime-probe` phantom artifacts are
+  carry-over baseline noise unrelated to Phase 10).
+- **Continuity validator flipped to ENFORCE** in
+  `scripts/architecture/check-continuity-handoffs.ts`:
+  - Orphan handoffs and silent drops are now blocking (exit 1).
+  - Fixture leaks remain advisory (owned by a separate validator).
+  - `CONTINUITY_HANDOFFS_ENFORCE=false` escape hatch preserved for
+    migration windows.
+  - Added `CROSS_MODULE_ROUTE_OWNERSHIP` map so top-level routes
+    (`/recovered-value`, `/lead-recovery`) are correctly attributed to
+    their owning module family.
+- **Baseline emitter upgraded** (`scripts/architecture/emit-continuity-baseline.ts`):
+  also recognises the canonical `useLinkedContext()` hook as a consume
+  site (previously only `consumeLinkedContext()` was counted), which
+  cleared the two persistent false-positive orphans (`recovery_candidate`,
+  `opportunity`) carried since Phase 4.
+- **CI gate added** to `.github/workflows/check-boundaries.yml`:
+  emit-baseline + check-continuity-handoffs runs on every PR/push to
+  `main` and `develop`, gated by `vars.CONTINUITY_HANDOFFS_ENFORCE`
+  (default `'true'`).
+- **Memory rule** committed at `mem/architecture/end-to-end-continuity.md`
+  codifying the canonical primitives, forbidden patterns, and enforcement
+  model.
+
+### Files changed
+
+- `scripts/architecture/check-continuity-handoffs.ts` — enforce mode
+- `scripts/architecture/emit-continuity-baseline.ts` — `useLinkedContext` hook detection
+- `src/lib/operations/golden-path-types.ts` — 5 new GP IDs
+- `src/lib/operations/golden-path-registry.ts` — 5 new GP entries
+- `.github/workflows/check-boundaries.yml` — new validator step
+- `generated/audits/end-to-end-flow-continuity-baseline.json` — regenerated
+
+### Files added
+
+- `mem/architecture/end-to-end-continuity.md`
+- `src/__tests__/business-os/integration/quote-proposal-invoice-lineage.test.ts`
+- `src/__tests__/business-os/integration/crm-concierge-linkage-live.test.tsx`
+
+### Verified
+
+- `tsc --noEmit` — clean (exit 0).
+- `check-continuity-handoffs.ts` (enforce mode) — exit 0; **0 orphan
+  handoffs, 0 silent drops** (down from 2 + 1 at Phase 9 close); 21
+  advisory fixture leaks unchanged (delegated to demo-data validator).
+- `check-golden-path-coverage.ts` — all 5 new GPs pass; 7 pre-existing
+  carry-over `runtime-probe` phantoms unchanged.
+- New tests: `quote-proposal-invoice-lineage` (4/4) and
+  `crm-concierge-linkage-live` (3/3) — both green.
+- Continuity baseline summary: `set=17, consume=12, convert=4,
+  crossApp=13, fixtureLeaks=42/21 unguarded, orphans=0`.
+
+### Anti-duplication
+
+- Reused `setLinkedContext` / `useLinkedContext` / `useAction` /
+  `fromTable` / `CrossAppAction` everywhere — no new orchestration
+  helpers introduced.
+- Reused existing tests (`crm-finance-bridge`, `lead-recovery-loop`,
+  `support-health-loop`, `background-task-routing`,
+  `appointment-noshow-recovery`, `autopilot-canonical-hierarchy`) as GP
+  verification artifacts where applicable; only added the two missing
+  tests required by the new GP entries.
+- Reused the canonical `DB_SCHEMA_REGISTRY` / `BOUNDED_CONTEXT_REGISTRY`
+  / `EDGE_FUNCTION_REGISTRY` for cross-resolution.
+
+### Honest deferred (NOT Phase 10)
+
+- 7 pre-existing `runtime-probe` phantom-artifact entries on legacy
+  Golden Paths (FIRST-BOOT, RESTORE, OAUTH-AND-SYNC, WORKFLOW-REPLAY,
+  MOBILE-APPROVAL, PUSH-TO-APPROVAL, ENV-RECOVERY) — owned by the
+  kernel/identity teams; tracked separately from continuity hardening.
+- 21 advisory fixture leaks — owned by the demo-data validator; the
+  continuity validator flags them informationally only.
+- Calendar OAuth (Google/Outlook) env-readiness — `CalendarSyncBadge`
+  continues to honestly render `setup-required` when env vars are absent
+  (Phase 6/9 truth posture preserved).
+- Concierge ↔ Finance UI bridge (paying a household provider) — DB
+  lineage exists on `concierge_recurring_obligations`; UI surface is not
+  yet built and is explicitly scoped out of this hardening pass.
+
+### Phase 10 exit criteria
+
+- [x] 5 new GP-* paths registered and resolved against all canonical registries
+- [x] `check-continuity-handoffs.ts` flipped to enforce; CI step wired
+- [x] Baseline regenerated; orphans = 0; silent drops = 0
+- [x] New tests green; `tsc --noEmit` clean
+- [x] Memory rule committed at `mem/architecture/end-to-end-continuity.md`
+- [x] Per-phase report entry appended (this section)
+
+---
+
+# 🎯 SITA OS End-to-End Flow Continuity Hardening — COMPLETE
+
+All 10 phases shipped. Cross-module entity handoffs are now governed by
+a single canonical pattern (`setLinkedContext` ↔ `useLinkedContext`),
+enforced in CI, covered by 5 new Golden Paths, and documented as a
+constraint memory rule.
