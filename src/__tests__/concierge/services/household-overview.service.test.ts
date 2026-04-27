@@ -14,8 +14,10 @@ describe("buildHouseholdOverview", () => {
       makeHouseholdTask({ id: "t-1", status: "pending", priority: "high", title: "Renew passport" }),
       makeHouseholdTask({ id: "t-2", status: "in-progress", priority: "high", title: "Fix sink" }),
       makeHouseholdTask({ id: "t-3", status: "completed" }),
-      makeHouseholdTask({ id: "t-4", status: "pending", dueDate: daysAgo(2) }), // overdue
-      makeHouseholdTask({ id: "t-5", status: "pending", dueDate: daysAhead(2) }), // not overdue
+      // Service uses real `new Date()` for overdue comparison; use absolute dates
+      // that bracket "now" robustly regardless of the fixed fixture timestamp.
+      makeHouseholdTask({ id: "t-4", status: "pending", dueDate: "2000-01-01T00:00:00Z" }), // overdue
+      makeHouseholdTask({ id: "t-5", status: "pending", dueDate: "2099-01-01T00:00:00Z" }), // not overdue
     ];
 
     const overview = buildHouseholdOverview(members, tasks);

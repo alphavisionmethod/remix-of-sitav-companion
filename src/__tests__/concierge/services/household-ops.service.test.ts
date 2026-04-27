@@ -3,7 +3,6 @@ import { computeHouseholdKpis } from "@/lib/services/concierge-os/household-ops.
 import {
   makeHouseholdMember,
   makeHouseholdTask,
-  daysAgo,
 } from "@/__tests__/concierge/_helpers/concierge-fixtures";
 
 describe("computeHouseholdKpis", () => {
@@ -15,7 +14,8 @@ describe("computeHouseholdKpis", () => {
       makeHouseholdTask({ id: "2", status: "completed", assignedTo: "ada" }),
       makeHouseholdTask({ id: "3", status: "pending", assignedTo: "ada", estimatedMinutes: 60 }),
       makeHouseholdTask({ id: "4", status: "pending", assignedTo: "grace", estimatedMinutes: 30 }),
-      makeHouseholdTask({ id: "5", status: "in-progress", assignedTo: "grace", dueDate: daysAgo(1) }),
+      // Real `new Date()` is used by the service for overdue checks.
+      makeHouseholdTask({ id: "5", status: "in-progress", assignedTo: "grace", dueDate: "2000-01-01T00:00:00Z" }),
     ];
 
     const kpis = computeHouseholdKpis([ada, grace], tasks);
