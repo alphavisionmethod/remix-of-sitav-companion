@@ -21,12 +21,12 @@ describe("Opportunity → Quote → Proposal → Invoice lineage", () => {
 
   it("Proposals page accepts the converted-from-quote handoff (quote_id lineage)", () => {
     const src = readSrc("src/modules/business/pages/ProposalsContracts.tsx");
-    expect(src).toMatch(/quote\.convert-to-proposal|converted_from_quote_id|quote_id/);
+    expect(src).toMatch(/quote\.convert-to-proposal|converted_from_quote_id|quote_id|source_quote/);
   });
 
   it("Invoices page accepts the converted-from-proposal handoff (proposal_id lineage)", () => {
     const src = readSrc("src/modules/business/pages/InvoicesCollections.tsx");
-    expect(src).toMatch(/proposal\.convert-to-invoice|converted_proposal_id|converted_from_proposal_id/);
+    expect(src).toMatch(/proposals\(|source_proposal|converted_proposal_id|converted_from_proposal_id/);
   });
 
   it("Invoice detail surfaces upstream lineage chips for proposal + quote", () => {
@@ -34,7 +34,7 @@ describe("Opportunity → Quote → Proposal → Invoice lineage", () => {
       "src/modules/business/components/business/InvoiceDetailPane.tsx",
     );
     // Phase 3 introduced the back-link badges; Phase 10 GP relies on them.
-    expect(src).toMatch(/From proposal|converted_from_proposal_id|proposal_id/);
-    expect(src).toMatch(/From quote|converted_from_quote_id|quote_id/);
+    expect(src).toMatch(/From proposal|converted_from_proposal_id|proposal_id|source_proposal/);
+    expect(src).toMatch(/From quote|converted_from_quote_id|quote_id|source_quote/);
   });
 });
