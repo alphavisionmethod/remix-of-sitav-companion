@@ -16,40 +16,28 @@ const containsResults: Row[][] = [];
 const likeResults: Row[][] = [];
 
 vi.mock("@/integrations/supabase/client", () => {
-  const containsChain = (rowsForCall: () => Row[]) => ({
-    contains: (_col: string, val: Record<string, unknown>) => {
-      containsCalls.push(val);
-      return containsChain(rowsForCall);
-    },
-    order: () => containsChain(rowsForCall),
-    limit: () => Promise.resolve({ data: rowsForCall(), error: null }),
-  });
-  const likeChain = (rowsForCall: () => Row[]) => ({
-    like: (_col: string, expr: string) => {
-      likeCalls.push(expr);
-      return likeChain(rowsForCall);
-    },
-    order: () => likeChain(rowsForCall),
-    limit: () => Promise.resolve({ data: rowsForCall(), error: null }),
+  // Each .select() begins a new query. Bind a single row-set per query
+  // when .like()/.contains() is first called so .order()/.limit() return
+  // the same rows.
+  const makeChain = (rows: Row[]): any => ({
+    contains: (_c: string, _v: Record<string, unknown>) => makeChain(rows),
+    like: (_c: string, _e: string) => makeChain(rows),
+    order: (_c: string, _o: unknown) => makeChain(rows),
+    limit: (_n: number) => Promise.resolve({ data: rows, error: null }),
   });
   return {
     supabase: {
       from: () => ({
-        select: () => {
-          // The first call from the hook either uses .like (domain mode) or
-          // .contains (entity mode). We expose both chains; whichever the
-          // hook calls first wins.
-          const wrapper: any = {};
-          wrapper.like = (col: string, expr: string) => {
-            const c = likeChain(() => likeResults.shift() ?? []);
-            return c.like(col, expr);
-          };
-          wrapper.contains = (col: string, v: Record<string, unknown>) => {
-            const c = containsChain(() => containsResults.shift() ?? []);
-            return c.contains(col, v);
-          };
-          return wrapper;
-        },
+        select: () => ({
+          like: (_c: string, expr: string) => {
+            likeCalls.push(expr);
+            return makeChain(likeResults.shift() ?? []);
+          },
+          contains: (_c: string, v: Record<string, unknown>) => {
+            containsCalls.push(v);
+            return makeChain(containsResults.shift() ?? []);
+          },
+        }),
       }),
     },
   };
