@@ -1316,7 +1316,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
         screenComponentRef: "src/modules/business/pages/QuotesWorkspace.tsx",
         edgeFunctionRefs: [],
         serviceRefs: ["business-os"],
-        tableRefs: ["quotes", "opportunities"],
+        tableRefs: ["quotes", "crm_opportunities"],
         policyRefs: [],
       },
       {
@@ -1390,7 +1390,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
       },
       {
         kind: "receipt-emitted",
-        artifactRef: "src/lib/services/business-os/lead-recovery.service.ts",
+        artifactRef: "src/lib/services/business-os/crm-finance-bridge.service.ts",
         owner: "business-team",
         lastGreenAt: null,
       },
@@ -1687,7 +1687,7 @@ export const GOLDEN_PATH_REGISTRY: readonly GoldenPathEntry[] = [
           "src/modules/business/pages/BackgroundTaskCenter.tsx",
         edgeFunctionRefs: [],
         serviceRefs: ["business-os"],
-        tableRefs: ["recovery_jobs", "audit_log"],
+        tableRefs: ["recovery_jobs", "audit_logs"],
         policyRefs: [],
       },
       {
