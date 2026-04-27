@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T09:40:24.636Z",
+  "generatedAt": "2026-04-27T12:01:56.944Z",
   "scannedFileCount": 5986,
   "setLinkedContextSites": [
     {
@@ -129,6 +129,20 @@
       "acceptedEntityTypes": []
     },
     {
+      "file": "src/hooks/useLinkedContext.ts",
+      "line": 22,
+      "acceptedEntityTypes": [
+        "invoice"
+      ]
+    },
+    {
+      "file": "src/hooks/useLinkedContext.ts",
+      "line": 30,
+      "acceptedEntityTypes": [
+        "invoice"
+      ]
+    },
+    {
       "file": "src/modules/business/pages/AppointmentsScheduling.tsx",
       "line": 232,
       "acceptedEntityTypes": [
@@ -136,10 +150,30 @@
       ]
     },
     {
+      "file": "src/modules/business/pages/BackgroundTaskCenter.tsx",
+      "line": 241,
+      "acceptedEntityTypes": []
+    },
+    {
       "file": "src/modules/business/pages/InvoicesCollections.tsx",
       "line": 90,
       "acceptedEntityTypes": [
         "invoice"
+      ]
+    },
+    {
+      "file": "src/modules/business/pages/LeadRecovery.tsx",
+      "line": 41,
+      "acceptedEntityTypes": [
+        "recovery_candidate",
+        "lead_inbox_item"
+      ]
+    },
+    {
+      "file": "src/modules/business/pages/OpportunitiesCenter.tsx",
+      "line": 58,
+      "acceptedEntityTypes": [
+        "opportunity"
       ]
     },
     {
@@ -155,6 +189,13 @@
       "acceptedEntityTypes": [
         "quote",
         "contact"
+      ]
+    },
+    {
+      "file": "src/modules/business/pages/RecoveredValuePage.tsx",
+      "line": 75,
+      "acceptedEntityTypes": [
+        "recovery_candidate"
       ]
     },
     {
@@ -392,7 +433,7 @@
     },
     {
       "file": "src/modules/business/pages/RevenueImpactDashboard.tsx",
-      "line": 39,
+      "line": 40,
       "fixtureModule": "@/data/fixtures/mock-data/revenue-impact-playbooks",
       "guarded": true
     },
@@ -525,14 +566,11 @@
   ],
   "summary": {
     "setLinkedTotal": 17,
-    "consumeLinkedTotal": 6,
+    "consumeLinkedTotal": 12,
     "convertActionTotal": 4,
     "crossAppTargetTotal": 13,
     "fixtureLeakTotal": 42,
     "fixtureLeakUnguarded": 21,
-    "orphanEntityTypes": [
-      "opportunity",
-      "recovery_candidate"
-    ]
+    "orphanEntityTypes": []
   }
 }
