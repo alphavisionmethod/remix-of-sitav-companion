@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   TrendingUp, DollarSign, Zap, CheckCircle2, Target, BarChart3,
-  Star, ArrowRight, Shield, Clock, Award,
+  Star, ArrowRight, Shield, Clock, Award, RotateCcw,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -17,6 +17,8 @@ import { useCountUpFormatted } from "@/hooks/useCountUp";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
 import { PageShell } from "@/platform/sita/components/sita/PageShell";
+import { useLinkedContext } from "@/hooks/useLinkedContext";
+import { CrossAppAction } from "@/platform/sita/components/sita/CrossAppAction";
 
 // ── Seed demo recovered values ─────────────────────────────────
 function useDemoRecoveries() {
@@ -68,6 +70,9 @@ const RecoveredKPI = ({ label, value, color, delay }: { label: string; value: st
 
 export default function RecoveredValuePage() {
   const { stats, rankings, ledger, outcomeSummary } = useDemoRecoveries();
+  // Phase 4: surface the candidate that just routed in from Lead Recovery
+  // so the operator visibly closes the loop they triggered.
+  const linked = useLinkedContext();
 
   const outcomeIcons: Record<string, typeof DollarSign> = {
     revenue_recovered: DollarSign, waste_removed: Zap, fee_avoided: Shield,
@@ -77,6 +82,31 @@ export default function RecoveredValuePage() {
   return (
     <div className="p-4 md:p-6 max-w-[1200px] mx-auto space-y-6">
       <HierarchyHint tier="result" surface="Recovered Value" description="Closed-loop revenue evidence" />
+      {linked?.entityType === "recovery_candidate" && (
+        <motion.div
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-xl border border-trust-safe/25 bg-trust-safe/5 p-3 flex items-center gap-3 justify-between"
+        >
+          <div className="flex items-center gap-2 min-w-0">
+            <RotateCcw className="h-4 w-4 text-trust-safe shrink-0" />
+            <div className="min-w-0">
+              <p className="text-xs font-semibold text-foreground truncate">
+                Recovery action recorded for {linked.entityLabel ?? "candidate"}
+              </p>
+              <p className="text-[10px] text-muted-foreground">
+                The outcome will appear below once the recovery completes and
+                a recovered-value entry is written.
+              </p>
+            </div>
+          </div>
+          <CrossAppAction
+            to="/business/lead-recovery"
+            label="Back to Recovery"
+            variant="chip"
+          />
+        </motion.div>
+      )}
       {/* Hero */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-sita-gold/15 bg-gradient-to-br from-sita-gold/5 via-card to-card p-6"
