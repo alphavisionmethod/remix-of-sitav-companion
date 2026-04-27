@@ -91,6 +91,22 @@ const APP_SHELL_CONTEXTS = new Set([
   "RuntimeProvider.tsx", "ThemeContext.tsx", "WindowManagerContext.tsx",
 ]);
 
+// Contexts that are explicitly module- or platform-owned and must NEVER be
+// auto-classified as app-shell. Filename hints below assign their owner.
+const FORCE_OWNED_CONTEXTS: Record<string, { pillar?: Pillar; platform?: PlatformSystem }> = {
+  "BusinessNavigationContext.tsx":  { pillar: "business" },
+  "BusinessProfileContext.tsx":     { pillar: "business" },
+  "RevenueOfficeModeContext.tsx":   { pillar: "business" },
+  "ConciergeDataContext.tsx":       { pillar: "concierge" },
+  "ConciergeNavigationContext.tsx": { pillar: "concierge" },
+  "FinanceNavigationContext.tsx":   { pillar: "finance" },
+  "SitaKernelContext.tsx":          { platform: "sita" },
+  "SitaOSContext.tsx":              { platform: "sita" },
+  "SitaVoiceContext.tsx":           { platform: "sita" },
+  "NovaSDKContext.tsx":             { platform: "nova-sdk" },
+  "AppPlatformContext.tsx":         { platform: "app-platform" },
+};
+
 const SHARED_HOOKS_ALLOWLIST = new Set([
   "use-toast.ts", "use-mobile.tsx", "use-action.ts", "useAction.ts",
   "use-confirmation.ts", "useDraftAutosave.ts", "use-reduced-motion.ts",
@@ -191,7 +207,20 @@ function classifyFile(file: string, kind: "hook" | "context"): OwnershipEntry {
   const byImports = classifyByImports(imports);
   const byName = classifyByName(fname);
 
-  // Allowlists
+  // Force-owned contexts override every other signal
+  if (kind === "context" && FORCE_OWNED_CONTEXTS[fname]) {
+    const o = FORCE_OWNED_CONTEXTS[fname];
+    if (o.pillar) {
+      return { path: rel, filename: fname, classification: `module:${o.pillar}`,
+        evidence: { imports: { pillars: byImports.pillar ? [byImports.pillar] : [], platforms: [...byImports.platforms] }, name: byName },
+        proposedTargetPath: `src/modules/${o.pillar}/contexts/${fname}`, status: "move" };
+    }
+    if (o.platform) {
+      return { path: rel, filename: fname, classification: `platform:${o.platform}`,
+        evidence: { imports: { pillars: [], platforms: [...byImports.platforms] }, name: byName },
+        proposedTargetPath: `src/platform/${o.platform}/contexts/${fname}`, status: "move" };
+    }
+  }
   if (kind === "context" && APP_SHELL_CONTEXTS.has(fname)) {
     return { path: rel, filename: fname, classification: "app-shell",
       evidence: { imports: { pillars: byImports.pillar ? [byImports.pillar] : [], platforms: [...byImports.platforms] }, name: byName },
