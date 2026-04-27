@@ -167,6 +167,42 @@ export async function recoverNoShow(
   });
   if (!result.ok) return result;
 
+  // Phase 6: bridge appointments → Follow-Through Center.
+  // Insert a `callback_queue` row so the no-show shows up in the
+  // "recovery" tab of the Follow-Through Center, with CRM lineage
+  // preserved from the source appointment. Best-effort: failure here
+  // does not block the recovery message preparation.
+  try {
+    const userId = await uid();
+    if (userId) {
+      const { data: appt } = await fromTable("appointments")
+        .select("title, customer_name, crm_contact_id, crm_company_id")
+        .eq("id", bookingId)
+        .eq("user_id", userId)
+        .maybeSingle();
+      if (appt) {
+        const a = appt as Record<string, unknown>;
+        await fromTable("callback_queue")
+          .insert({
+            user_id: userId,
+            queue_kind: "recovery",
+            contact_name: (a.customer_name as string) ?? (a.title as string) ?? "Customer",
+            company: null,
+            reason: "No-show recovery — appointment missed",
+            channel: channel === "phone" ? "phone" : channel === "sms" ? "sms" : "email",
+            urgency: "high",
+            days_stale: 0,
+            status: "open",
+            crm_contact_id: (a.crm_contact_id as string) ?? null,
+            crm_company_id: (a.crm_company_id as string) ?? null,
+            source_appointment_id: bookingId,
+          } as never);
+      }
+    }
+  } catch (err) {
+    console.warn("[business-scheduling] callback_queue insert (best-effort):", err);
+  }
+
   return {
     ok: true,
     message: {
