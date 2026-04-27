@@ -25,7 +25,7 @@ export type Priority = "P0" | "P1" | "P2";
 
 export interface SurfaceEntry {
   id: string;
-  kind: "page" | "service" | "route" | "trust" | "integration" | "adaptive" | "e2e";
+  kind: "page" | "service" | "route" | "trust" | "integration" | "adaptive" | "e2e" | "hook";
   /** Path of the implementation file or route (relative to repo root). */
   ref: string;
   /** Path(s) of the test file(s) that cover it (relative to repo root). */
@@ -108,6 +108,15 @@ export const E2E_SURFACES: SurfaceEntry[] = [
   { id: "e2e.household-reservation-flow",  kind: "e2e", ref: "/concierge/household → /concierge/recurring → linkage", tests: ["tests/e2e/concierge/household-reservation-flow.spec.ts"], status: "missing", priority: "P0" },
 ];
 
+// ── Data hooks (React Query gateways into the live backend) ───
+// Phase 6: each hook is exercised through `renderHook` against the
+// canonical Supabase mock to prove auth-gating, idle-when-disabled,
+// and resolve-to-empty behavior without throwing.
+export const HOOK_SURFACES: SurfaceEntry[] = [
+  { id: "hook.use-household",          kind: "hook", ref: "src/modules/concierge/hooks/use-household.ts",       tests: ["src/__tests__/concierge/hooks/use-household.hook.test.tsx"],       status: "behavioral", priority: "P0", notes: "Phase 6: auth-gated query + dependent householdId queries" },
+  { id: "hook.use-concierge-data",     kind: "hook", ref: "src/modules/concierge/hooks/use-concierge-data.ts",  tests: ["src/__tests__/concierge/hooks/use-concierge-data.hook.test.tsx"],  status: "behavioral", priority: "P0", notes: "Phase 6: cross-section of read hooks resolve cleanly under empty backend" },
+];
+
 export const ALL_SURFACES: SurfaceEntry[] = [
   ...PAGE_SURFACES,
   ...SERVICE_SURFACES,
@@ -116,6 +125,7 @@ export const ALL_SURFACES: SurfaceEntry[] = [
   ...INTEGRATION_SURFACES,
   ...ADAPTIVE_SURFACES,
   ...E2E_SURFACES,
+  ...HOOK_SURFACES,
 ];
 
 /** Pages explicitly excluded from per-page state-honesty tests, with a stable reason. */

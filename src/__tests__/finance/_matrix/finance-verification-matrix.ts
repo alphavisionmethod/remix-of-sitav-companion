@@ -18,7 +18,7 @@ export type Priority = "P0" | "P1" | "P2";
 
 export interface SurfaceEntry {
   id: string;
-  kind: "page" | "service" | "route" | "trust" | "integration" | "adaptive" | "e2e";
+  kind: "page" | "service" | "route" | "trust" | "integration" | "adaptive" | "e2e" | "hook";
   ref: string;
   tests: string[];
   status: CoverageStatus;
@@ -127,6 +127,16 @@ export const E2E_SURFACES: SurfaceEntry[] = [
   { id: "e2e.investment-route-continuity", kind: "e2e", ref: "/investment/* deep-link continuity",      tests: ["tests/e2e/finance/investment-route-continuity.spec.ts"],        status: "missing", priority: "P0" },
 ];
 
+// ── Data hooks (React Query gateways into the live backend) ───
+// Phase 6: each hook is exercised through `renderHook` against the
+// canonical Supabase mock to prove auth-gating, idle-when-disabled,
+// and resolve-to-empty behavior without throwing.
+export const HOOK_SURFACES: SurfaceEntry[] = [
+  { id: "hook.use-money-data",        kind: "hook", ref: "src/modules/finance/hooks/use-money-data.ts",        tests: ["src/__tests__/finance/hooks/use-money-data.hook.test.tsx"],        status: "behavioral", priority: "P0", notes: "Phase 6: 7 money read hooks gated by auth, idle when disabled" },
+  { id: "hook.use-investment-office", kind: "hook", ref: "src/modules/finance/hooks/use-investment-office.ts", tests: ["src/__tests__/finance/hooks/use-investment-office.hook.test.tsx"], status: "behavioral", priority: "P0", notes: "Phase 6: 9 investment-office read hooks gated by auth" },
+  { id: "hook.use-page-data",         kind: "hook", ref: "src/hooks/usePageData.ts",                           tests: ["src/__tests__/finance/hooks/use-page-data.canonical.test.tsx"],    status: "behavioral", priority: "P0", notes: "Phase 6: canonical loading→empty→ready→error transitions + custom emptyCheck" },
+];
+
 export const ALL_SURFACES: SurfaceEntry[] = [
   ...PAGE_SURFACES,
   ...SERVICE_SURFACES,
@@ -135,6 +145,7 @@ export const ALL_SURFACES: SurfaceEntry[] = [
   ...INTEGRATION_SURFACES,
   ...ADAPTIVE_SURFACES,
   ...E2E_SURFACES,
+  ...HOOK_SURFACES,
 ];
 
 /** Pages explicitly excluded from per-page state-honesty tests, with stable reason. */
