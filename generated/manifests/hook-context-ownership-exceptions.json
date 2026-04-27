@@ -6,5 +6,20 @@
     "expiry": "Every shim entry MUST carry an `expiry` phase tag. Shims with no remaining importers MUST be deleted in the next pass."
   },
   "shims": [],
-  "rationale": []
+  "rationale": [
+    {
+      "kind": "hook",
+      "path": "src/hooks/use-flagship-loop-proof.ts",
+      "heuristicClassification": "platform:trust",
+      "decision": "keep-shared",
+      "reason": "Records receipts for ALL flagship customer journeys (sign-in, files-ai-assist, boardroom, sync, admin-truth). Cross-cutting by definition; only matched 'trust' filename heuristic. No platform/trust import dependency."
+    },
+    {
+      "kind": "hook",
+      "path": "src/hooks/useRealityProvider.ts",
+      "heuristicClassification": "platform:runtime",
+      "decision": "keep-shared",
+      "reason": "Thin neutral wrapper around RealityModeContext exposing { mode, isDemo, isReal, scenarioKey }. Consumed across all modules + platform systems for demo/real switching. Owner-neutral primitive — must remain in src/hooks/."
+    }
+  ]
 }
