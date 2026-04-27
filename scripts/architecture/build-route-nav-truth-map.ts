@@ -104,7 +104,7 @@ function buildTruth(): {
   // Orphaned routes: declared in a family but no manifest descriptor and no redirect target.
   const redirectTargets = new Set(USER_REDIRECTS.map((r) => r.to.replace(/\/:[^/]+/g, "/:_")));
   const orphanedRoutes = familyRoutes
-    .filter((r) => !pillarOwnedRoute(r.path))
+    .filter((r) => pillarOwnedRoute(r.path))
     .filter((r) => !declaredRoutesFromManifest.has(r.path))
     .filter((r) => {
       const norm = r.path.replace(/\/:[^/]+/g, "/:_");
