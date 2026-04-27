@@ -1,0 +1,5215 @@
+{
+  "generatedAt": "2026-04-27T17:25:06.336Z",
+  "totals": {
+    "descriptors": 118,
+    "familyRoutes": 713,
+    "uniqueFamilyRoutePaths": 710,
+    "redirects": 52,
+    "orphanedRoutes": 562
+  },
+  "pillars": {
+    "business": {
+      "counts": {
+        "total": 60,
+        "internal": 11,
+        "boardroom": 2,
+        "workspace": 36,
+        "settings": 1,
+        "proof": 2,
+        "overview": 3,
+        "room": 2,
+        "engine": 2,
+        "control-plane": 1
+      },
+      "pages": [
+        {
+          "id": "adaptive-home",
+          "role": "internal",
+          "label": "Adaptive Home",
+          "component": "AdaptiveBusinessHome",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "advisor-board",
+          "role": "boardroom",
+          "label": "Advisor Board",
+          "component": "BusinessAdvisorBoardPage",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "In-shell only today; Phase 2 evaluates promoting to /business/advisor-board.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "appointments",
+          "role": "workspace",
+          "label": "Appointments",
+          "component": "AppointmentsScheduling",
+          "route": "/business/appointments",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "autopilot-hub",
+          "role": "internal",
+          "label": "Autopilot Hub (legacy)",
+          "component": "RevenueAutopilotConsole",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "legacy",
+          "replacedBy": "revenue-autopilot-console",
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Legacy slug — sidebar entry removed in Phase 2; in-shell only via PAGE map for backwards-compat deep-links; URL redirected by user-redirect-map. Reclassified as 'internal' under Phase 5 boundary rule (no public route shim allowed). Will be removed in Phase 8 once telemetry shows zero hits.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "background-tasks",
+          "role": "internal",
+          "label": "Tasks & Syncs",
+          "component": "BackgroundTasks",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (BackgroundTaskCenter → BackgroundTasks). Old class re-exported for backwards compat.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "boardroom",
+          "role": "boardroom",
+          "label": "Boardroom",
+          "component": "BusinessBoardroom",
+          "route": "/business/boardroom",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "boardroom-agenda",
+          "role": "internal",
+          "label": "Boardroom Agenda",
+          "component": "AdaptiveBoardroomAgenda",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "business-profile",
+          "role": "internal",
+          "label": "Business Profile",
+          "component": "BusinessProfileEditor",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "business-settings",
+          "role": "settings",
+          "label": "Settings",
+          "component": "BusinessSettingsPage",
+          "route": "/business/settings",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "collections",
+          "role": "workspace",
+          "label": "Collections",
+          "component": "CollectionsWorkspace",
+          "route": "/business/collections",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (CollectionsCommandCenter → CollectionsWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "communications",
+          "role": "workspace",
+          "label": "Comms",
+          "component": "CommunicationsWorkspace",
+          "route": "/business/communications",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (CommunicationsCenter → CommunicationsWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "continuity-report",
+          "role": "proof",
+          "label": "Continuity Report",
+          "component": "ContinuityReport",
+          "route": "/business/continuity-report",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-advisor",
+          "role": "workspace",
+          "label": "Advisor",
+          "component": "CRMAdvisorPage",
+          "route": "/business/crm-advisor",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-automations",
+          "role": "workspace",
+          "label": "Automations",
+          "component": "CRMAutomations",
+          "route": "/business/crm-automations",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-communications",
+          "role": "workspace",
+          "label": "Comms Queue",
+          "component": "CRMCommunications",
+          "route": "/business/crm-communications",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-companies",
+          "role": "workspace",
+          "label": "Companies",
+          "component": "CRMCompanies",
+          "route": "/business/crm-companies",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-contacts",
+          "role": "workspace",
+          "label": "Contacts",
+          "component": "CRMContacts",
+          "route": "/business/crm-contacts",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-duplicates",
+          "role": "workspace",
+          "label": "Duplicates",
+          "component": "CRMDuplicates",
+          "route": "/business/crm-duplicates",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-fields",
+          "role": "workspace",
+          "label": "Fields",
+          "component": "CRMCustomFieldsPage",
+          "route": "/business/crm-fields",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-health",
+          "role": "workspace",
+          "label": "Health",
+          "component": "CRMHealth",
+          "route": "/business/crm-health",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-home",
+          "role": "overview",
+          "label": "CRM Home",
+          "component": "CRMHome",
+          "route": "/business/crm-home",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-import",
+          "role": "workspace",
+          "label": "Import",
+          "component": "CRMImport",
+          "route": "/business/crm-import",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (CRMImportCenter → CRMImport). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-notes",
+          "role": "workspace",
+          "label": "Notes",
+          "component": "CRMNotes",
+          "route": "/business/crm-notes",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-pipeline",
+          "role": "workspace",
+          "label": "Pipeline",
+          "component": "CRMPipeline",
+          "route": "/business/crm-pipeline",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-segments",
+          "role": "workspace",
+          "label": "Segments",
+          "component": "CRMSegments",
+          "route": "/business/crm-segments",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-tasks",
+          "role": "workspace",
+          "label": "Tasks",
+          "component": "CRMTasks",
+          "route": "/business/crm-tasks",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "crm-timeline",
+          "role": "workspace",
+          "label": "Timeline",
+          "component": "CRMTimeline",
+          "route": "/business/crm-timeline",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "customer-health",
+          "role": "workspace",
+          "label": "Customer Health",
+          "component": "CustomerHealthPage",
+          "route": "/business/customer-health",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "customers",
+          "role": "workspace",
+          "label": "Customers",
+          "component": "CustomersPage",
+          "route": "/business/customers",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "deal-room",
+          "role": "room",
+          "label": "Deal Room",
+          "component": "DealRoom",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Entity-scoped room — opened from a Deal context inside the shell, not deep-linked from the URL bar. Phase 2 evaluates promoting to /business/deal-room/:dealId.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "documents",
+          "role": "workspace",
+          "label": "Documents",
+          "component": "BusinessDocuments",
+          "route": "/business/documents",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "ecommerce",
+          "role": "workspace",
+          "label": "E-Commerce",
+          "component": "EcommerceManager",
+          "route": "/business/ecommerce",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "end-of-day",
+          "role": "workspace",
+          "label": "End of Day",
+          "component": "EndOfDayClosure",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "In-shell daily-close ritual; no public deep-link by design.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "follow-through",
+          "role": "workspace",
+          "label": "Follow-Through",
+          "component": "FollowThroughWorkspace",
+          "route": "/business/follow-through",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (FollowThroughCenter → FollowThroughWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "integrations",
+          "role": "workspace",
+          "label": "Integrations",
+          "component": "CRMIntegrations",
+          "route": "/business/integrations",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (CRMIntegrationHub → CRMIntegrations). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "invoices",
+          "role": "workspace",
+          "label": "Invoices",
+          "component": "InvoicesCollections",
+          "route": "/business/invoices",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "kpi-dashboard",
+          "role": "internal",
+          "label": "KPI Dashboard",
+          "component": "AdaptiveKPIDashboard",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "lead-recovery",
+          "role": "engine",
+          "label": "Lead Recovery",
+          "component": "LeadRecovery",
+          "route": "/business/lead-recovery",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "leads",
+          "role": "workspace",
+          "label": "Leads",
+          "component": "LeadsInbox",
+          "route": "/business/leads",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "morning-briefing",
+          "role": "workspace",
+          "label": "Morning Brief",
+          "component": "MorningBriefing",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Sub-tab of overview today; shim added in Phase 2 if promoted.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "operations",
+          "role": "workspace",
+          "label": "Operations",
+          "component": "BusinessOperations",
+          "route": "/business/operations",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "opportunities",
+          "role": "workspace",
+          "label": "Opportunities",
+          "component": "OpportunitiesWorkspace",
+          "route": "/business/opportunities",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (OpportunitiesCenter → OpportunitiesWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "overview",
+          "role": "overview",
+          "label": "Overview",
+          "component": "BusinessOverview",
+          "route": "/business/overview",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "playbook-builder",
+          "role": "workspace",
+          "label": "Builder",
+          "component": "PlaybookBuilder",
+          "route": "/business/playbook-builder",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "profile-evolution",
+          "role": "internal",
+          "label": "Profile Evolution",
+          "component": "ProfileEvolutionPanel",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "profile-studio",
+          "role": "internal",
+          "label": "Profile Studio",
+          "component": "ProfileStudio",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "proof",
+          "role": "proof",
+          "label": "Proof",
+          "component": "BusinessProof",
+          "route": "/business/proof",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "proposals",
+          "role": "workspace",
+          "label": "Proposals",
+          "component": "ProposalsContracts",
+          "route": "/business/proposals",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "quotes",
+          "role": "workspace",
+          "label": "Quotes",
+          "component": "QuotesWorkspace",
+          "route": "/business/quotes",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "relationship-dossier",
+          "role": "internal",
+          "label": "Dossier",
+          "component": "RelationshipDossier",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "revenue-autopilot",
+          "role": "engine",
+          "label": "Revenue Autopilot",
+          "component": "RevenueAutopilot",
+          "route": "/business/revenue-autopilot",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Engine surface — live runs/status. Configured by revenue-autopilot-console (control-plane).",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "revenue-autopilot-console",
+          "role": "control-plane",
+          "label": "Autopilot Console",
+          "component": "RevenueAutopilotConsole",
+          "route": "/business/revenue-autopilot-console",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 canonical control-plane for the Revenue Autopilot engine. Replaces autopilot-hub.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": [
+            "/business/autopilot-hub"
+          ]
+        },
+        {
+          "id": "revenue-forecast",
+          "role": "workspace",
+          "label": "Forecast",
+          "component": "RevenueForecast",
+          "route": "/business/revenue-forecast",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "revenue-home",
+          "role": "overview",
+          "label": "Revenue Home",
+          "component": "RevenueOpsHome",
+          "route": "/business/revenue",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Sub-overview for Revenue Ops.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "revenue-impact",
+          "role": "internal",
+          "label": "Revenue Impact",
+          "component": "RevenueImpactDashboard",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "legacy",
+          "replacedBy": "revenue-home",
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Phase 2 demoted: removed from sidebar and page map; the legacy /business/revenue-impact URL is redirected to /business/revenue (Revenue Home). Phase 3 will surface this as a tab inside RevenueOpsHome.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "social",
+          "role": "workspace",
+          "label": "Social",
+          "component": "SocialCommand",
+          "route": "/business/social",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "strategic-accounts",
+          "role": "room",
+          "label": "Strategic Accounts",
+          "component": "StrategicAccountRoom",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Entity-scoped room — opened from a Customer/Account context inside the shell, not deep-linked from the URL bar. Phase 2 evaluates promoting to /business/strategic-accounts/:accountId.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "support",
+          "role": "workspace",
+          "label": "Support",
+          "component": "SupportWorkspace",
+          "route": "/business/support",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 2 rename complete (CustomerSupportCenter → SupportWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "website-builder",
+          "role": "workspace",
+          "label": "Website",
+          "component": "WebsiteBuilder",
+          "route": "/business/website-builder",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "business-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "workflow-templates",
+          "role": "internal",
+          "label": "Workflow Templates",
+          "component": "AdaptiveWorkflowTemplates",
+          "route": null,
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        }
+      ]
+    },
+    "concierge": {
+      "counts": {
+        "total": 22,
+        "workspace": 15,
+        "boardroom": 1,
+        "archived": 6,
+        "overview": 1,
+        "proof": 1,
+        "settings": 1
+      },
+      "pages": [
+        {
+          "id": "appointments",
+          "role": "workspace",
+          "label": "Appointments",
+          "component": "AppointmentsPrep",
+          "route": "/concierge/appointments",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "boardroom",
+          "role": "boardroom",
+          "label": "Boardroom",
+          "component": "FamilyBoardroom",
+          "route": "/concierge/boardroom",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 3 confirmed: canonical = FamilyBoardroom. Sibling ConciergeBoardroom alias archived (see concierge/boardroom-legacy descriptor).",
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "boardroom-legacy",
+          "role": "archived",
+          "label": "Concierge Boardroom (legacy)",
+          "component": "ConciergeBoardroom",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "archived",
+          "replacedBy": "boardroom",
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Unused alias of FamilyBoardroom. File retained for diff history; no shell mount, no route, no sidebar entry. Tests treat it as a covered alias.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "calendar",
+          "role": "workspace",
+          "label": "Calendar",
+          "component": "MonthGridCalendar",
+          "route": "/concierge/calendar",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "errands",
+          "role": "workspace",
+          "label": "Errands",
+          "component": "ErrandsLogistics",
+          "route": "/concierge/errands",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "events",
+          "role": "workspace",
+          "label": "Events & Gifts",
+          "component": "EventsGifts",
+          "route": "/concierge/events",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "files",
+          "role": "workspace",
+          "label": "Files",
+          "component": "ConciergeFiles",
+          "route": "/concierge/files",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "grocery",
+          "role": "workspace",
+          "label": "Grocery",
+          "component": "GroceryPlanning",
+          "route": "/concierge/grocery",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "household",
+          "role": "workspace",
+          "label": "Household",
+          "component": "HouseholdWorkspace",
+          "route": "/concierge/household",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 3 rename complete (HouseholdCommandCenter → HouseholdWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "life-admin",
+          "role": "workspace",
+          "label": "Life Admin",
+          "component": "LifeAdminWorkspace",
+          "route": "/concierge/life-admin",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 3 rename complete (LifeAdminCenter → LifeAdminWorkspace). Old class re-exported for backwards compat.",
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "life-dashboard",
+          "role": "archived",
+          "label": "Life Dashboard (legacy)",
+          "component": "LifeDashboard",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "archived",
+          "replacedBy": "overview",
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Orphan root-level /life surface. Phase 3 unmounts the route and redirects /life → /concierge/overview via user-redirect-map. File retained for diff history.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "overview",
+          "role": "overview",
+          "label": "Overview",
+          "component": "ConciergeOverview",
+          "route": "/concierge/overview",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "personal-life-workspace",
+          "role": "archived",
+          "label": "Personal Life Workspace (legacy)",
+          "component": "PersonalLifeWorkspace",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "archived",
+          "replacedBy": "overview",
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Orphan root-level /personal-life surface. Phase 3 unmounts the route and redirects /personal-life → /concierge/overview via user-redirect-map. File retained for diff history.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "proof",
+          "role": "proof",
+          "label": "Proof",
+          "component": "ConciergeProof",
+          "route": "/concierge/proof",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "providers",
+          "role": "workspace",
+          "label": "Providers",
+          "component": "ServiceProviders",
+          "route": "/concierge/providers",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "recurring",
+          "role": "workspace",
+          "label": "Recurring",
+          "component": "RecurringObligations",
+          "route": "/concierge/recurring",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "school",
+          "role": "workspace",
+          "label": "School",
+          "component": "SchoolActivities",
+          "route": "/concierge/school",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "settings",
+          "role": "settings",
+          "label": "Settings",
+          "component": "ConciergeSettings",
+          "route": "/concierge/settings",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "tasks",
+          "role": "workspace",
+          "label": "Tasks",
+          "component": "HouseholdTasks",
+          "route": "/concierge/tasks",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "travel",
+          "role": "workspace",
+          "label": "Travel",
+          "component": "TravelPlanning",
+          "route": "/concierge/travel",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "upcoming",
+          "role": "workspace",
+          "label": "Upcoming",
+          "component": "UpcomingNeeds",
+          "route": "/concierge/upcoming",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "workflows",
+          "role": "workspace",
+          "label": "Automations",
+          "component": "ConciergeWorkflows",
+          "route": "/concierge/workflows",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "concierge-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        }
+      ]
+    },
+    "finance": {
+      "counts": {
+        "total": 36,
+        "boardroom": 2,
+        "workspace": 29,
+        "engine": 1,
+        "overview": 1,
+        "proof": 1,
+        "settings": 1,
+        "archived": 2
+      },
+      "pages": [
+        {
+          "id": "advisors",
+          "role": "boardroom",
+          "label": "Advisors",
+          "component": "MoneyAdvisorBoard",
+          "route": "/money/advisors",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "allocator",
+          "role": "workspace",
+          "label": "Allocator",
+          "component": "CashAllocator",
+          "route": "/money/allocator",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "approvals",
+          "role": "workspace",
+          "label": "Approvals",
+          "component": "MoneyApprovals",
+          "route": "/money/approvals",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "automations",
+          "role": "workspace",
+          "label": "Automations",
+          "component": "FinanceAutomations",
+          "route": "/money/automations",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "bills",
+          "role": "workspace",
+          "label": "Bills",
+          "component": "BillsWorkspace",
+          "route": "/money/bills",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "boardroom",
+          "role": "boardroom",
+          "label": "Boardroom",
+          "component": "MoneyBoardroom",
+          "route": "/money/boardroom",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "boundaries",
+          "role": "workspace",
+          "label": "Boundaries",
+          "component": "FinancialBoundaryMonitor",
+          "route": "/money/boundaries",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "budgets",
+          "role": "workspace",
+          "label": "Budgets",
+          "component": "BudgetEnvelopeOffice",
+          "route": "/money/budgets",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Office suffix kept — wealth-management term.",
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "capital-allocation",
+          "role": "workspace",
+          "label": "Capital Allocation",
+          "component": "CapitalAllocationPage",
+          "route": "/capital-allocation",
+          "sidebarVisible": false,
+          "status": "legacy",
+          "replacedBy": "allocator",
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Phase 4: legacy root-level slug retained — referenced by capital-allocation service. Hidden from Money sidebar; will be folded into Money Allocator in a follow-up.",
+          "routeFamilies": [
+            "os-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "cash-timing",
+          "role": "workspace",
+          "label": "Cash Timing",
+          "component": "CashTiming",
+          "route": "/money/cash-timing",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "debt-credit",
+          "role": "workspace",
+          "label": "Debt & Credit",
+          "component": "DebtCreditOffice",
+          "route": "/money/debt-credit",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Office suffix kept — wealth-management industry term.",
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "files",
+          "role": "workspace",
+          "label": "Documents",
+          "component": "MoneyDocuments",
+          "route": "/money/files",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "health",
+          "role": "workspace",
+          "label": "Health Pulse",
+          "component": "FinancialHealthPulse",
+          "route": "/money/health",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "household",
+          "role": "workspace",
+          "label": "Household",
+          "component": "HouseholdMoneyOffice",
+          "route": "/money/household",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Office suffix kept — wealth-management industry term (HouseholdMoneyOffice).",
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "investment-office",
+          "role": "workspace",
+          "label": "Investments",
+          "component": "InvestmentOffice",
+          "route": "/money/investment-office",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "InvestmentOffice (industry term). Distinct from /investment/* canonical app.",
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "life-impact",
+          "role": "engine",
+          "label": "Life Impact",
+          "component": "LifeMoneyEngine",
+          "route": "/money/life-impact",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "modes",
+          "role": "workspace",
+          "label": "Modes",
+          "component": "MoneyModes",
+          "route": "/money/modes",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "money-onboarding",
+          "role": "workspace",
+          "label": "Money Onboarding",
+          "component": "MoneyOnboarding",
+          "route": "/money/onboarding",
+          "sidebarVisible": false,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": "Phase 4: first-use only — reachable via /money/onboarding flow, intentionally not in the Money sidebar.",
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "net-worth",
+          "role": "workspace",
+          "label": "Net Worth",
+          "component": "NetWorthOffice",
+          "route": "/money/net-worth",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Office suffix kept — wealth-management term.",
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "opportunity-cost",
+          "role": "workspace",
+          "label": "Opportunity Cost",
+          "component": "OpportunityCost",
+          "route": "/money/opportunity-cost",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "overview",
+          "role": "overview",
+          "label": "Overview",
+          "component": "MoneyOverview",
+          "route": "/money/overview",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "peace-score",
+          "role": "workspace",
+          "label": "Peace Score",
+          "component": "PeaceScore",
+          "route": "/money/peace-score",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "proof",
+          "role": "proof",
+          "label": "Proof",
+          "component": "MoneyProof",
+          "route": "/money/proof",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "receivables",
+          "role": "workspace",
+          "label": "Receivables",
+          "component": "ReceivablesObligations",
+          "route": "/money/receivables",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "reconciliation",
+          "role": "workspace",
+          "label": "Reconciliation",
+          "component": "ReconciliationReview",
+          "route": "/money/reconciliation",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "reserves",
+          "role": "workspace",
+          "label": "Reserves",
+          "component": "ReservesSavings",
+          "route": "/money/reserves",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "rituals",
+          "role": "workspace",
+          "label": "Rituals",
+          "component": "MoneyRituals",
+          "route": "/money/rituals",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "scenarios",
+          "role": "workspace",
+          "label": "Scenarios",
+          "component": "ScenarioPlanner",
+          "route": "/money/scenarios",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "settings",
+          "role": "settings",
+          "label": "Settings",
+          "component": "MoneySettings",
+          "route": "/money/settings",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "spending-pulse",
+          "role": "workspace",
+          "label": "Spending Pulse",
+          "component": "SpendingPulse",
+          "route": "/money/spending-pulse",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "stress-radar",
+          "role": "workspace",
+          "label": "Stress Radar",
+          "component": "StressRadar",
+          "route": "/money/stress-radar",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "subscriptions",
+          "role": "workspace",
+          "label": "Subscriptions",
+          "component": "SubscriptionsWaste",
+          "route": "/money/subscriptions",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "tax",
+          "role": "workspace",
+          "label": "Tax",
+          "component": "TaxEstimator",
+          "route": "/money/tax",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "transactions",
+          "role": "workspace",
+          "label": "Transactions",
+          "component": "TransactionIntelligence",
+          "route": "/money/transactions",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "trust-graph",
+          "role": "workspace",
+          "label": "Trust Graph",
+          "component": "TrustGraph",
+          "route": "/money/trust-graph",
+          "sidebarVisible": true,
+          "status": "ga",
+          "replacedBy": null,
+          "legacyNameAllowed": false,
+          "featureFlag": null,
+          "notes": null,
+          "routeFamilies": [
+            "money-routes.tsx"
+          ],
+          "routeShimPresent": true,
+          "absorbedSlugs": []
+        },
+        {
+          "id": "wealth-command",
+          "role": "archived",
+          "label": "Wealth Command (legacy)",
+          "component": "WealthCommandCenter",
+          "route": null,
+          "sidebarVisible": false,
+          "status": "archived",
+          "replacedBy": "overview",
+          "legacyNameAllowed": true,
+          "featureFlag": null,
+          "notes": "Phase 4: archived — orphan root-level cinematic dashboard duplicating MoneyOverview. Route /wealth-command removed. File kept on disk for diff history; no shell mount, no sidebar, no public route.",
+          "routeFamilies": [],
+          "routeShimPresent": null,
+          "absorbedSlugs": []
+        }
+      ]
+    }
+  },
+  "redirects": [
+    {
+      "from": "/board",
+      "to": "/boardroom",
+      "reason": "legacy-path"
+    },
+    {
+      "from": "/business/autopilot-hub",
+      "to": "/business/revenue-autopilot-console",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/business/revenue-impact",
+      "to": "/business/revenue",
+      "reason": "shell-consolidation"
+    },
+    {
+      "from": "/file",
+      "to": "/files",
+      "reason": "legacy-path"
+    },
+    {
+      "from": "/finance",
+      "to": "/money",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/finance/bills",
+      "to": "/money/bills",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/finance/overview",
+      "to": "/money/overview",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments",
+      "to": "/investment",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/advanced",
+      "to": "/investment/advanced",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/advisors",
+      "to": "/investment/advisors",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/beginner",
+      "to": "/investment/beginner",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/behavioral",
+      "to": "/investment/behavioral",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/boardroom",
+      "to": "/investment/boardroom",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/capital-purpose",
+      "to": "/investment/capital-purpose",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/capital-twin",
+      "to": "/investment/capital-twin",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/catalysts",
+      "to": "/investment/catalysts",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/constitution",
+      "to": "/investment/constitution",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/conviction",
+      "to": "/investment/conviction",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/cross-asset",
+      "to": "/investment/cross-asset",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/decision-theater",
+      "to": "/investment/decision-theater",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/disagreements",
+      "to": "/investment/disagreements",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/dossier",
+      "to": "/investment/dossier",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/events",
+      "to": "/investment/events",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/execute",
+      "to": "/investment/execute",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/family-office",
+      "to": "/investment/family-office",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/instrument/:instrumentId",
+      "to": "/investment/instrument/:instrumentId",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/journal",
+      "to": "/investment/journal",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/knowledge-graph",
+      "to": "/investment/knowledge-graph",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/markets",
+      "to": "/investment/markets",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/memory",
+      "to": "/investment/memory",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/modes",
+      "to": "/investment/modes",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/opportunity-map",
+      "to": "/investment/opportunity-map",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/platforms",
+      "to": "/investment/platforms",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/portfolio",
+      "to": "/investment/portfolio",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/post-trade",
+      "to": "/investment/post-trade",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/probability-lab",
+      "to": "/investment/probability-lab",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/readiness",
+      "to": "/investment/readiness",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/receipts",
+      "to": "/investment/receipts",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/research",
+      "to": "/investment/research",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/risk",
+      "to": "/investment/risk",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/sizing",
+      "to": "/investment/sizing",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/strategy",
+      "to": "/investment/strategy",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/strategy-dna",
+      "to": "/investment/strategy-dna",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/time-machine",
+      "to": "/investment/time-machine",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/trading-floor",
+      "to": "/investment/trading-floor",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/war-room",
+      "to": "/investment/war-room",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/watchlists",
+      "to": "/investment/watchlists",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/investments/what-would-break",
+      "to": "/investment/what-would-break",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/life",
+      "to": "/concierge/overview",
+      "reason": "shell-consolidation"
+    },
+    {
+      "from": "/money/investments",
+      "to": "/investment",
+      "reason": "shell-consolidation"
+    },
+    {
+      "from": "/personal-life",
+      "to": "/concierge/overview",
+      "reason": "shell-consolidation"
+    },
+    {
+      "from": "/wealth-command",
+      "to": "/money/overview",
+      "reason": "shell-consolidation"
+    }
+  ],
+  "orphanedRoutes": [
+    {
+      "path": "/achievements",
+      "family": "os-routes.tsx",
+      "line": 113
+    },
+    {
+      "path": "/activity",
+      "family": "os-routes.tsx",
+      "line": 126
+    },
+    {
+      "path": "/admin",
+      "family": "admin-routes.tsx",
+      "line": 312
+    },
+    {
+      "path": "/admin/advisor-board/actions",
+      "family": "admin-routes.tsx",
+      "line": 510
+    },
+    {
+      "path": "/admin/advisor-board/autonomy",
+      "family": "admin-routes.tsx",
+      "line": 512
+    },
+    {
+      "path": "/admin/advisor-board/catalog",
+      "family": "admin-routes.tsx",
+      "line": 508
+    },
+    {
+      "path": "/admin/advisor-board/memory",
+      "family": "admin-routes.tsx",
+      "line": 511
+    },
+    {
+      "path": "/admin/advisor-board/profitability",
+      "family": "admin-routes.tsx",
+      "line": 513
+    },
+    {
+      "path": "/admin/advisor-board/recommendations",
+      "family": "admin-routes.tsx",
+      "line": 509
+    },
+    {
+      "path": "/admin/ai-gateway/budget",
+      "family": "admin-routes.tsx",
+      "line": 400
+    },
+    {
+      "path": "/admin/ai-gateway/diagnostics",
+      "family": "admin-routes.tsx",
+      "line": 404
+    },
+    {
+      "path": "/admin/ai-gateway/honesty",
+      "family": "admin-routes.tsx",
+      "line": 402
+    },
+    {
+      "path": "/admin/ai-gateway/launch-truth",
+      "family": "admin-routes.tsx",
+      "line": 403
+    },
+    {
+      "path": "/admin/ai-gateway/models",
+      "family": "admin-routes.tsx",
+      "line": 398
+    },
+    {
+      "path": "/admin/ai-gateway/providers",
+      "family": "admin-routes.tsx",
+      "line": 397
+    },
+    {
+      "path": "/admin/ai-gateway/receipts",
+      "family": "admin-routes.tsx",
+      "line": 401
+    },
+    {
+      "path": "/admin/ai-gateway/routing",
+      "family": "admin-routes.tsx",
+      "line": 399
+    },
+    {
+      "path": "/admin/ai-gateway/verification",
+      "family": "admin-routes.tsx",
+      "line": 405
+    },
+    {
+      "path": "/admin/ai-governance",
+      "family": "admin-routes.tsx",
+      "line": 517
+    },
+    {
+      "path": "/admin/ai-runtime",
+      "family": "admin-routes.tsx",
+      "line": 288
+    },
+    {
+      "path": "/admin/ai-runtime/assurance",
+      "family": "admin-routes.tsx",
+      "line": 303
+    },
+    {
+      "path": "/admin/ai-runtime/boardroom-sla",
+      "family": "admin-routes.tsx",
+      "line": 301
+    },
+    {
+      "path": "/admin/ai-runtime/compliance",
+      "family": "admin-routes.tsx",
+      "line": 307
+    },
+    {
+      "path": "/admin/ai-runtime/costs",
+      "family": "admin-routes.tsx",
+      "line": 325
+    },
+    {
+      "path": "/admin/ai-runtime/cross-council",
+      "family": "admin-routes.tsx",
+      "line": 296
+    },
+    {
+      "path": "/admin/ai-runtime/dependency-findings",
+      "family": "admin-routes.tsx",
+      "line": 293
+    },
+    {
+      "path": "/admin/ai-runtime/external-api",
+      "family": "admin-routes.tsx",
+      "line": 304
+    },
+    {
+      "path": "/admin/ai-runtime/federation",
+      "family": "admin-routes.tsx",
+      "line": 305
+    },
+    {
+      "path": "/admin/ai-runtime/intelligence/efficiency",
+      "family": "admin-routes.tsx",
+      "line": 319
+    },
+    {
+      "path": "/admin/ai-runtime/internal-agent-intents",
+      "family": "admin-routes.tsx",
+      "line": 289
+    },
+    {
+      "path": "/admin/ai-runtime/launch-attestation",
+      "family": "admin-routes.tsx",
+      "line": 300
+    },
+    {
+      "path": "/admin/ai-runtime/observatory",
+      "family": "admin-routes.tsx",
+      "line": 297
+    },
+    {
+      "path": "/admin/ai-runtime/owner-copilot",
+      "family": "admin-routes.tsx",
+      "line": 298
+    },
+    {
+      "path": "/admin/ai-runtime/owner-copilot-sessions",
+      "family": "admin-routes.tsx",
+      "line": 299
+    },
+    {
+      "path": "/admin/ai-runtime/policy-drafts",
+      "family": "admin-routes.tsx",
+      "line": 294
+    },
+    {
+      "path": "/admin/ai-runtime/reflection-board",
+      "family": "admin-routes.tsx",
+      "line": 290
+    },
+    {
+      "path": "/admin/ai-runtime/sovereign-dr",
+      "family": "admin-routes.tsx",
+      "line": 306
+    },
+    {
+      "path": "/admin/ai-runtime/suggestions",
+      "family": "admin-routes.tsx",
+      "line": 291
+    },
+    {
+      "path": "/admin/ai-runtime/tenant-federation",
+      "family": "admin-routes.tsx",
+      "line": 302
+    },
+    {
+      "path": "/admin/ai-runtime/trust-ladder",
+      "family": "admin-routes.tsx",
+      "line": 295
+    },
+    {
+      "path": "/admin/ai-runtime/weekly-digest",
+      "family": "admin-routes.tsx",
+      "line": 292
+    },
+    {
+      "path": "/admin/ai-team/activity",
+      "family": "admin-routes.tsx",
+      "line": 376
+    },
+    {
+      "path": "/admin/ai-team/approval-queue",
+      "family": "admin-routes.tsx",
+      "line": 381
+    },
+    {
+      "path": "/admin/ai-team/approvals",
+      "family": "admin-routes.tsx",
+      "line": 379
+    },
+    {
+      "path": "/admin/ai-team/cost",
+      "family": "admin-routes.tsx",
+      "line": 377
+    },
+    {
+      "path": "/admin/ai-team/invoke",
+      "family": "admin-routes.tsx",
+      "line": 375
+    },
+    {
+      "path": "/admin/ai-team/launch-truth",
+      "family": "admin-routes.tsx",
+      "line": 380
+    },
+    {
+      "path": "/admin/ai-team/overview",
+      "family": "admin-routes.tsx",
+      "line": 373
+    },
+    {
+      "path": "/admin/ai-team/recommendations",
+      "family": "admin-routes.tsx",
+      "line": 378
+    },
+    {
+      "path": "/admin/ai-team/roles",
+      "family": "admin-routes.tsx",
+      "line": 374
+    },
+    {
+      "path": "/admin/ai-team/setup-checklist",
+      "family": "admin-routes.tsx",
+      "line": 382
+    },
+    {
+      "path": "/admin/ai-tokens",
+      "family": "admin-routes.tsx",
+      "line": 369
+    },
+    {
+      "path": "/admin/alerts",
+      "family": "admin-routes.tsx",
+      "line": 276
+    },
+    {
+      "path": "/admin/alerts/simulation",
+      "family": "admin-routes.tsx",
+      "line": 277
+    },
+    {
+      "path": "/admin/appliance/deployability",
+      "family": "admin-routes.tsx",
+      "line": 527
+    },
+    {
+      "path": "/admin/approvals",
+      "family": "admin-routes.tsx",
+      "line": 278
+    },
+    {
+      "path": "/admin/architecture/ai-orchestration",
+      "family": "admin-routes.tsx",
+      "line": 496
+    },
+    {
+      "path": "/admin/architecture/federation",
+      "family": "admin-routes.tsx",
+      "line": 500
+    },
+    {
+      "path": "/admin/architecture/knowledge-spine",
+      "family": "admin-routes.tsx",
+      "line": 497
+    },
+    {
+      "path": "/admin/architecture/live-cortex",
+      "family": "admin-routes.tsx",
+      "line": 499
+    },
+    {
+      "path": "/admin/architecture/modules",
+      "family": "admin-routes.tsx",
+      "line": 495
+    },
+    {
+      "path": "/admin/architecture/semantic-spine",
+      "family": "admin-routes.tsx",
+      "line": 498
+    },
+    {
+      "path": "/admin/automation/kill-switches",
+      "family": "admin-routes.tsx",
+      "line": 531
+    },
+    {
+      "path": "/admin/autonomy",
+      "family": "os-routes.tsx",
+      "line": 184
+    },
+    {
+      "path": "/admin/backend-api/deployability",
+      "family": "admin-routes.tsx",
+      "line": 528
+    },
+    {
+      "path": "/admin/backend-topology",
+      "family": "admin-routes.tsx",
+      "line": 520
+    },
+    {
+      "path": "/admin/cai/attention",
+      "family": "admin-routes.tsx",
+      "line": 422
+    },
+    {
+      "path": "/admin/cai/boundaries",
+      "family": "admin-routes.tsx",
+      "line": 433
+    },
+    {
+      "path": "/admin/cai/chief-of-staff",
+      "family": "admin-routes.tsx",
+      "line": 425
+    },
+    {
+      "path": "/admin/cai/continuity",
+      "family": "admin-routes.tsx",
+      "line": 423
+    },
+    {
+      "path": "/admin/cai/digest",
+      "family": "admin-routes.tsx",
+      "line": 428
+    },
+    {
+      "path": "/admin/cai/graph",
+      "family": "admin-routes.tsx",
+      "line": 420
+    },
+    {
+      "path": "/admin/cai/intent",
+      "family": "admin-routes.tsx",
+      "line": 421
+    },
+    {
+      "path": "/admin/cai/interface",
+      "family": "admin-routes.tsx",
+      "line": 430
+    },
+    {
+      "path": "/admin/cai/memory",
+      "family": "admin-routes.tsx",
+      "line": 432
+    },
+    {
+      "path": "/admin/cai/modes",
+      "family": "admin-routes.tsx",
+      "line": 429
+    },
+    {
+      "path": "/admin/cai/opportunities",
+      "family": "admin-routes.tsx",
+      "line": 431
+    },
+    {
+      "path": "/admin/cai/relationships",
+      "family": "admin-routes.tsx",
+      "line": 427
+    },
+    {
+      "path": "/admin/cai/signature",
+      "family": "admin-routes.tsx",
+      "line": 434
+    },
+    {
+      "path": "/admin/cai/timing",
+      "family": "admin-routes.tsx",
+      "line": 426
+    },
+    {
+      "path": "/admin/cai/trust-actions",
+      "family": "admin-routes.tsx",
+      "line": 424
+    },
+    {
+      "path": "/admin/ci/umbrella",
+      "family": "admin-routes.tsx",
+      "line": 360
+    },
+    {
+      "path": "/admin/cloud-backbone",
+      "family": "admin-routes.tsx",
+      "line": 444
+    },
+    {
+      "path": "/admin/communication-hub",
+      "family": "admin-routes.tsx",
+      "line": 446
+    },
+    {
+      "path": "/admin/config",
+      "family": "admin-routes.tsx",
+      "line": 310
+    },
+    {
+      "path": "/admin/consolidation",
+      "family": "admin-routes.tsx",
+      "line": 279
+    },
+    {
+      "path": "/admin/dashboard",
+      "family": "admin-routes.tsx",
+      "line": 365
+    },
+    {
+      "path": "/admin/data-retention",
+      "family": "admin-routes.tsx",
+      "line": 343
+    },
+    {
+      "path": "/admin/data-source-debug",
+      "family": "admin-routes.tsx",
+      "line": 281
+    },
+    {
+      "path": "/admin/db-truth-explorer",
+      "family": "admin-routes.tsx",
+      "line": 521
+    },
+    {
+      "path": "/admin/desktop/deployability",
+      "family": "admin-routes.tsx",
+      "line": 526
+    },
+    {
+      "path": "/admin/ecosystem/command",
+      "family": "admin-routes.tsx",
+      "line": 436
+    },
+    {
+      "path": "/admin/edge-functions/health",
+      "family": "admin-routes.tsx",
+      "line": 529
+    },
+    {
+      "path": "/admin/engineering/builder-critic",
+      "family": "admin-routes.tsx",
+      "line": 464
+    },
+    {
+      "path": "/admin/engineering/chaos",
+      "family": "admin-routes.tsx",
+      "line": 467
+    },
+    {
+      "path": "/admin/engineering/optimization",
+      "family": "admin-routes.tsx",
+      "line": 470
+    },
+    {
+      "path": "/admin/engineering/rollback",
+      "family": "admin-routes.tsx",
+      "line": 468
+    },
+    {
+      "path": "/admin/engineering/simulation",
+      "family": "admin-routes.tsx",
+      "line": 465
+    },
+    {
+      "path": "/admin/engineering/standards",
+      "family": "admin-routes.tsx",
+      "line": 466
+    },
+    {
+      "path": "/admin/engineering/validation",
+      "family": "admin-routes.tsx",
+      "line": 463
+    },
+    {
+      "path": "/admin/engineering/version-intel",
+      "family": "admin-routes.tsx",
+      "line": 469
+    },
+    {
+      "path": "/admin/environments",
+      "family": "admin-routes.tsx",
+      "line": 282
+    },
+    {
+      "path": "/admin/environments/devices",
+      "family": "admin-routes.tsx",
+      "line": 327
+    },
+    {
+      "path": "/admin/environments/integration-state",
+      "family": "admin-routes.tsx",
+      "line": 328
+    },
+    {
+      "path": "/admin/environments/users",
+      "family": "admin-routes.tsx",
+      "line": 326
+    },
+    {
+      "path": "/admin/environments/workflow-state",
+      "family": "admin-routes.tsx",
+      "line": 329
+    },
+    {
+      "path": "/admin/fleet-health",
+      "family": "admin-routes.tsx",
+      "line": 364
+    },
+    {
+      "path": "/admin/founder/cicd",
+      "family": "admin-routes.tsx",
+      "line": 450
+    },
+    {
+      "path": "/admin/founder/command",
+      "family": "admin-routes.tsx",
+      "line": 448
+    },
+    {
+      "path": "/admin/founder/cost",
+      "family": "admin-routes.tsx",
+      "line": 456
+    },
+    {
+      "path": "/admin/founder/dashboard",
+      "family": "admin-routes.tsx",
+      "line": 454
+    },
+    {
+      "path": "/admin/founder/incidents",
+      "family": "admin-routes.tsx",
+      "line": 460
+    },
+    {
+      "path": "/admin/founder/knowledge",
+      "family": "admin-routes.tsx",
+      "line": 461
+    },
+    {
+      "path": "/admin/founder/oversight",
+      "family": "admin-routes.tsx",
+      "line": 459
+    },
+    {
+      "path": "/admin/founder/programs",
+      "family": "admin-routes.tsx",
+      "line": 455
+    },
+    {
+      "path": "/admin/founder/runbooks",
+      "family": "admin-routes.tsx",
+      "line": 451
+    },
+    {
+      "path": "/admin/founder/security",
+      "family": "admin-routes.tsx",
+      "line": 458
+    },
+    {
+      "path": "/admin/founder/sync-ops",
+      "family": "admin-routes.tsx",
+      "line": 457
+    },
+    {
+      "path": "/admin/founder/tasks",
+      "family": "admin-routes.tsx",
+      "line": 449
+    },
+    {
+      "path": "/admin/generated-truth",
+      "family": "admin-routes.tsx",
+      "line": 362
+    },
+    {
+      "path": "/admin/graph-intelligence",
+      "family": "admin-routes.tsx",
+      "line": 516
+    },
+    {
+      "path": "/admin/health",
+      "family": "admin-routes.tsx",
+      "line": 285
+    },
+    {
+      "path": "/admin/health/cost-spotlight",
+      "family": "admin-routes.tsx",
+      "line": 323
+    },
+    {
+      "path": "/admin/health/error-patrol",
+      "family": "admin-routes.tsx",
+      "line": 316
+    },
+    {
+      "path": "/admin/health/incidents",
+      "family": "admin-routes.tsx",
+      "line": 315
+    },
+    {
+      "path": "/admin/incidents/dashboard",
+      "family": "admin-routes.tsx",
+      "line": 348
+    },
+    {
+      "path": "/admin/integrations",
+      "family": "admin-routes.tsx",
+      "line": 309
+    },
+    {
+      "path": "/admin/intelligence-efficiency",
+      "family": "admin-routes.tsx",
+      "line": 370
+    },
+    {
+      "path": "/admin/intelligence/assets",
+      "family": "admin-routes.tsx",
+      "line": 385
+    },
+    {
+      "path": "/admin/intelligence/cross-tenant",
+      "family": "admin-routes.tsx",
+      "line": 394
+    },
+    {
+      "path": "/admin/intelligence/differential",
+      "family": "admin-routes.tsx",
+      "line": 386
+    },
+    {
+      "path": "/admin/intelligence/digests",
+      "family": "admin-routes.tsx",
+      "line": 393
+    },
+    {
+      "path": "/admin/intelligence/efficiency",
+      "family": "admin-routes.tsx",
+      "line": 388
+    },
+    {
+      "path": "/admin/intelligence/escalation",
+      "family": "admin-routes.tsx",
+      "line": 390
+    },
+    {
+      "path": "/admin/intelligence/layer",
+      "family": "admin-routes.tsx",
+      "line": 395
+    },
+    {
+      "path": "/admin/intelligence/outcomes",
+      "family": "admin-routes.tsx",
+      "line": 389
+    },
+    {
+      "path": "/admin/intelligence/packets",
+      "family": "admin-routes.tsx",
+      "line": 387
+    },
+    {
+      "path": "/admin/intelligence/patterns",
+      "family": "admin-routes.tsx",
+      "line": 391
+    },
+    {
+      "path": "/admin/intelligence/prompts",
+      "family": "admin-routes.tsx",
+      "line": 392
+    },
+    {
+      "path": "/admin/intelligence/reuse",
+      "family": "admin-routes.tsx",
+      "line": 384
+    },
+    {
+      "path": "/admin/mc/ai-control",
+      "family": "admin-routes.tsx",
+      "line": 480
+    },
+    {
+      "path": "/admin/mc/approval-flow",
+      "family": "admin-routes.tsx",
+      "line": 503
+    },
+    {
+      "path": "/admin/mc/architecture",
+      "family": "admin-routes.tsx",
+      "line": 494
+    },
+    {
+      "path": "/admin/mc/architecture-tests",
+      "family": "admin-routes.tsx",
+      "line": 506
+    },
+    {
+      "path": "/admin/mc/authority-matrix",
+      "family": "admin-routes.tsx",
+      "line": 488
+    },
+    {
+      "path": "/admin/mc/command-routing",
+      "family": "admin-routes.tsx",
+      "line": 502
+    },
+    {
+      "path": "/admin/mc/control-receipts",
+      "family": "admin-routes.tsx",
+      "line": 489
+    },
+    {
+      "path": "/admin/mc/costs",
+      "family": "admin-routes.tsx",
+      "line": 483
+    },
+    {
+      "path": "/admin/mc/devices",
+      "family": "admin-routes.tsx",
+      "line": 472
+    },
+    {
+      "path": "/admin/mc/emergency",
+      "family": "admin-routes.tsx",
+      "line": 490
+    },
+    {
+      "path": "/admin/mc/event-routing",
+      "family": "admin-routes.tsx",
+      "line": 505
+    },
+    {
+      "path": "/admin/mc/failure-recovery",
+      "family": "admin-routes.tsx",
+      "line": 504
+    },
+    {
+      "path": "/admin/mc/feature-ownership",
+      "family": "admin-routes.tsx",
+      "line": 501
+    },
+    {
+      "path": "/admin/mc/incidents",
+      "family": "admin-routes.tsx",
+      "line": 481
+    },
+    {
+      "path": "/admin/mc/jobs",
+      "family": "admin-routes.tsx",
+      "line": 477
+    },
+    {
+      "path": "/admin/mc/knowledge",
+      "family": "admin-routes.tsx",
+      "line": 486
+    },
+    {
+      "path": "/admin/mc/logs",
+      "family": "admin-routes.tsx",
+      "line": 484
+    },
+    {
+      "path": "/admin/mc/platform-adaptation",
+      "family": "admin-routes.tsx",
+      "line": 491
+    },
+    {
+      "path": "/admin/mc/policies",
+      "family": "admin-routes.tsx",
+      "line": 482
+    },
+    {
+      "path": "/admin/mc/releases",
+      "family": "admin-routes.tsx",
+      "line": 479
+    },
+    {
+      "path": "/admin/mc/state-authority",
+      "family": "admin-routes.tsx",
+      "line": 492
+    },
+    {
+      "path": "/admin/mc/storage",
+      "family": "admin-routes.tsx",
+      "line": 473
+    },
+    {
+      "path": "/admin/mc/support",
+      "family": "admin-routes.tsx",
+      "line": 485
+    },
+    {
+      "path": "/admin/mc/sync-cloud",
+      "family": "admin-routes.tsx",
+      "line": 476
+    },
+    {
+      "path": "/admin/mc/system-health",
+      "family": "admin-routes.tsx",
+      "line": 487
+    },
+    {
+      "path": "/admin/mc/trust-security",
+      "family": "admin-routes.tsx",
+      "line": 478
+    },
+    {
+      "path": "/admin/mc/users",
+      "family": "admin-routes.tsx",
+      "line": 474
+    },
+    {
+      "path": "/admin/mc/workspaces",
+      "family": "admin-routes.tsx",
+      "line": 475
+    },
+    {
+      "path": "/admin/meta-arch",
+      "family": "admin-routes.tsx",
+      "line": 352
+    },
+    {
+      "path": "/admin/meta-arch/atlas",
+      "family": "admin-routes.tsx",
+      "line": 353
+    },
+    {
+      "path": "/admin/meta-arch/control-plane",
+      "family": "admin-routes.tsx",
+      "line": 354
+    },
+    {
+      "path": "/admin/meta-arch/golden-paths",
+      "family": "admin-routes.tsx",
+      "line": 355
+    },
+    {
+      "path": "/admin/meta/completeness",
+      "family": "admin-routes.tsx",
+      "line": 357
+    },
+    {
+      "path": "/admin/meta/reality",
+      "family": "admin-routes.tsx",
+      "line": 356
+    },
+    {
+      "path": "/admin/mobile-parity",
+      "family": "admin-routes.tsx",
+      "line": 523
+    },
+    {
+      "path": "/admin/mobile/store-readiness",
+      "family": "admin-routes.tsx",
+      "line": 524
+    },
+    {
+      "path": "/admin/os-platform",
+      "family": "admin-routes.tsx",
+      "line": 443
+    },
+    {
+      "path": "/admin/overview",
+      "family": "admin-routes.tsx",
+      "line": 275
+    },
+    {
+      "path": "/admin/overview/generated-truth",
+      "family": "admin-routes.tsx",
+      "line": 318
+    },
+    {
+      "path": "/admin/performance",
+      "family": "admin-routes.tsx",
+      "line": 280
+    },
+    {
+      "path": "/admin/readiness",
+      "family": "admin-routes.tsx",
+      "line": 347
+    },
+    {
+      "path": "/admin/release-engineering",
+      "family": "admin-routes.tsx",
+      "line": 515
+    },
+    {
+      "path": "/admin/releases",
+      "family": "admin-routes.tsx",
+      "line": 283
+    },
+    {
+      "path": "/admin/releases/deployment-rings",
+      "family": "admin-routes.tsx",
+      "line": 336
+    },
+    {
+      "path": "/admin/releases/env-config",
+      "family": "admin-routes.tsx",
+      "line": 334
+    },
+    {
+      "path": "/admin/releases/launch-readiness",
+      "family": "admin-routes.tsx",
+      "line": 317
+    },
+    {
+      "path": "/admin/releases/mobile-parity",
+      "family": "admin-routes.tsx",
+      "line": 335
+    },
+    {
+      "path": "/admin/releases/rollback",
+      "family": "admin-routes.tsx",
+      "line": 337
+    },
+    {
+      "path": "/admin/releases/sbom-history",
+      "family": "admin-routes.tsx",
+      "line": 324
+    },
+    {
+      "path": "/admin/runtime-tier-governance",
+      "family": "admin-routes.tsx",
+      "line": 363
+    },
+    {
+      "path": "/admin/security/command-center",
+      "family": "admin-routes.tsx",
+      "line": 440
+    },
+    {
+      "path": "/admin/security/foundation",
+      "family": "admin-routes.tsx",
+      "line": 439
+    },
+    {
+      "path": "/admin/security/sessions",
+      "family": "admin-routes.tsx",
+      "line": 438
+    },
+    {
+      "path": "/admin/simulation-center",
+      "family": "admin-routes.tsx",
+      "line": 518
+    },
+    {
+      "path": "/admin/sla-monitoring",
+      "family": "admin-routes.tsx",
+      "line": 349
+    },
+    {
+      "path": "/admin/strategic/benchmark",
+      "family": "admin-routes.tsx",
+      "line": 416
+    },
+    {
+      "path": "/admin/strategic/capital",
+      "family": "admin-routes.tsx",
+      "line": 407
+    },
+    {
+      "path": "/admin/strategic/cost-confidence",
+      "family": "admin-routes.tsx",
+      "line": 408
+    },
+    {
+      "path": "/admin/strategic/decay",
+      "family": "admin-routes.tsx",
+      "line": 414
+    },
+    {
+      "path": "/admin/strategic/insurance",
+      "family": "admin-routes.tsx",
+      "line": 410
+    },
+    {
+      "path": "/admin/strategic/market",
+      "family": "admin-routes.tsx",
+      "line": 411
+    },
+    {
+      "path": "/admin/strategic/operator-taste",
+      "family": "admin-routes.tsx",
+      "line": 418
+    },
+    {
+      "path": "/admin/strategic/portfolio",
+      "family": "admin-routes.tsx",
+      "line": 415
+    },
+    {
+      "path": "/admin/strategic/quality-floor",
+      "family": "admin-routes.tsx",
+      "line": 409
+    },
+    {
+      "path": "/admin/strategic/reasoning-replay",
+      "family": "admin-routes.tsx",
+      "line": 413
+    },
+    {
+      "path": "/admin/strategic/time-to-truth",
+      "family": "admin-routes.tsx",
+      "line": 412
+    },
+    {
+      "path": "/admin/strategic/value-risk",
+      "family": "admin-routes.tsx",
+      "line": 417
+    },
+    {
+      "path": "/admin/support",
+      "family": "admin-routes.tsx",
+      "line": 284
+    },
+    {
+      "path": "/admin/support/cases",
+      "family": "admin-routes.tsx",
+      "line": 330
+    },
+    {
+      "path": "/admin/support/recovery",
+      "family": "admin-routes.tsx",
+      "line": 332
+    },
+    {
+      "path": "/admin/support/recovery-ops",
+      "family": "admin-routes.tsx",
+      "line": 333
+    },
+    {
+      "path": "/admin/support/replay",
+      "family": "admin-routes.tsx",
+      "line": 331
+    },
+    {
+      "path": "/admin/support/runbooks",
+      "family": "admin-routes.tsx",
+      "line": 452
+    },
+    {
+      "path": "/admin/support/runbooks/:id",
+      "family": "admin-routes.tsx",
+      "line": 453
+    },
+    {
+      "path": "/admin/system",
+      "family": "admin-routes.tsx",
+      "line": 367
+    },
+    {
+      "path": "/admin/system-intelligence",
+      "family": "admin-routes.tsx",
+      "line": 442
+    },
+    {
+      "path": "/admin/team",
+      "family": "admin-routes.tsx",
+      "line": 366
+    },
+    {
+      "path": "/admin/tenant-console",
+      "family": "admin-routes.tsx",
+      "line": 308
+    },
+    {
+      "path": "/admin/trust-security",
+      "family": "admin-routes.tsx",
+      "line": 286
+    },
+    {
+      "path": "/admin/trust-security/audit",
+      "family": "admin-routes.tsx",
+      "line": 342
+    },
+    {
+      "path": "/admin/trust-security/permissions",
+      "family": "admin-routes.tsx",
+      "line": 340
+    },
+    {
+      "path": "/admin/trust-security/policies",
+      "family": "admin-routes.tsx",
+      "line": 338
+    },
+    {
+      "path": "/admin/trust-security/proofs",
+      "family": "admin-routes.tsx",
+      "line": 339
+    },
+    {
+      "path": "/admin/trust-security/sensitive-actions",
+      "family": "admin-routes.tsx",
+      "line": 341
+    },
+    {
+      "path": "/admin/truth-indices",
+      "family": "admin-routes.tsx",
+      "line": 371
+    },
+    {
+      "path": "/admin/user-seed-health",
+      "family": "admin-routes.tsx",
+      "line": 344
+    },
+    {
+      "path": "/admin/users",
+      "family": "admin-routes.tsx",
+      "line": 368
+    },
+    {
+      "path": "/admin/verification",
+      "family": "admin-routes.tsx",
+      "line": 287
+    },
+    {
+      "path": "/admin/verification/cross-domain-coherence",
+      "family": "admin-routes.tsx",
+      "line": 321
+    },
+    {
+      "path": "/admin/verification/launch-honesty",
+      "family": "admin-routes.tsx",
+      "line": 320
+    },
+    {
+      "path": "/admin/verification/self-heal",
+      "family": "admin-routes.tsx",
+      "line": 322
+    },
+    {
+      "path": "/admin/web/deployability",
+      "family": "admin-routes.tsx",
+      "line": 525
+    },
+    {
+      "path": "/advisors",
+      "family": "advisor-routes.tsx",
+      "line": 14
+    },
+    {
+      "path": "/advisors/:advisorId",
+      "family": "advisor-routes.tsx",
+      "line": 24
+    },
+    {
+      "path": "/advisors/approvals",
+      "family": "advisor-routes.tsx",
+      "line": 21
+    },
+    {
+      "path": "/advisors/chat",
+      "family": "advisor-routes.tsx",
+      "line": 16
+    },
+    {
+      "path": "/advisors/compare",
+      "family": "advisor-routes.tsx",
+      "line": 19
+    },
+    {
+      "path": "/advisors/council-dashboard",
+      "family": "advisor-routes.tsx",
+      "line": 17
+    },
+    {
+      "path": "/advisors/memory",
+      "family": "advisor-routes.tsx",
+      "line": 23
+    },
+    {
+      "path": "/advisors/overview",
+      "family": "advisor-routes.tsx",
+      "line": 18
+    },
+    {
+      "path": "/advisors/proof",
+      "family": "advisor-routes.tsx",
+      "line": 22
+    },
+    {
+      "path": "/advisors/registry",
+      "family": "advisor-routes.tsx",
+      "line": 25
+    },
+    {
+      "path": "/advisors/showcase",
+      "family": "advisor-routes.tsx",
+      "line": 15
+    },
+    {
+      "path": "/advisors/simulations",
+      "family": "advisor-routes.tsx",
+      "line": 20
+    },
+    {
+      "path": "/agent-activity",
+      "family": "advisor-routes.tsx",
+      "line": 26
+    },
+    {
+      "path": "/ai-economics",
+      "family": "experimental-routes.tsx",
+      "line": 208
+    },
+    {
+      "path": "/ai-workforce",
+      "family": "os-routes.tsx",
+      "line": 130
+    },
+    {
+      "path": "/app-store/*",
+      "family": "experimental-routes.tsx",
+      "line": 200
+    },
+    {
+      "path": "/approval-chamber",
+      "family": "boardroom-routes.tsx",
+      "line": 46
+    },
+    {
+      "path": "/approvals",
+      "family": "boardroom-routes.tsx",
+      "line": 42
+    },
+    {
+      "path": "/approvals/history",
+      "family": "boardroom-routes.tsx",
+      "line": 45
+    },
+    {
+      "path": "/approvals/pending",
+      "family": "boardroom-routes.tsx",
+      "line": 43
+    },
+    {
+      "path": "/approvals/simulated",
+      "family": "boardroom-routes.tsx",
+      "line": 44
+    },
+    {
+      "path": "/apps/email",
+      "family": "os-routes.tsx",
+      "line": 239
+    },
+    {
+      "path": "/apps/gallery",
+      "family": "os-routes.tsx",
+      "line": 243
+    },
+    {
+      "path": "/apps/health",
+      "family": "os-routes.tsx",
+      "line": 242
+    },
+    {
+      "path": "/apps/messenger",
+      "family": "os-routes.tsx",
+      "line": 240
+    },
+    {
+      "path": "/apps/vault",
+      "family": "os-routes.tsx",
+      "line": 241
+    },
+    {
+      "path": "/apps/weather-news",
+      "family": "os-routes.tsx",
+      "line": 244
+    },
+    {
+      "path": "/automation",
+      "family": "os-routes.tsx",
+      "line": 166
+    },
+    {
+      "path": "/automation/delegations",
+      "family": "os-routes.tsx",
+      "line": 169
+    },
+    {
+      "path": "/automation/rules",
+      "family": "os-routes.tsx",
+      "line": 167
+    },
+    {
+      "path": "/automation/trust",
+      "family": "os-routes.tsx",
+      "line": 168
+    },
+    {
+      "path": "/boardroom/business",
+      "family": "boardroom-routes.tsx",
+      "line": 17
+    },
+    {
+      "path": "/boardroom/family",
+      "family": "boardroom-routes.tsx",
+      "line": 19
+    },
+    {
+      "path": "/boardroom/finance",
+      "family": "boardroom-routes.tsx",
+      "line": 18
+    },
+    {
+      "path": "/boardroom/history",
+      "family": "boardroom-routes.tsx",
+      "line": 25
+    },
+    {
+      "path": "/boardroom/incidents",
+      "family": "boardroom-routes.tsx",
+      "line": 23
+    },
+    {
+      "path": "/boardroom/morning",
+      "family": "boardroom-routes.tsx",
+      "line": 21
+    },
+    {
+      "path": "/boardroom/opportunity",
+      "family": "boardroom-routes.tsx",
+      "line": 20
+    },
+    {
+      "path": "/boardroom/replay",
+      "family": "boardroom-routes.tsx",
+      "line": 24
+    },
+    {
+      "path": "/boardroom/weekly",
+      "family": "boardroom-routes.tsx",
+      "line": 22
+    },
+    {
+      "path": "/boardroom/weekly-review",
+      "family": "boardroom-routes.tsx",
+      "line": 26
+    },
+    {
+      "path": "/business-advisors",
+      "family": "business-advisor-routes.tsx",
+      "line": 12
+    },
+    {
+      "path": "/business-advisors/:advisorId",
+      "family": "business-advisor-routes.tsx",
+      "line": 13
+    },
+    {
+      "path": "/calendar",
+      "family": "os-routes.tsx",
+      "line": 225
+    },
+    {
+      "path": "/clipboard-history",
+      "family": "os-routes.tsx",
+      "line": 198
+    },
+    {
+      "path": "/command-history",
+      "family": "os-routes.tsx",
+      "line": 192
+    },
+    {
+      "path": "/communication-inbox",
+      "family": "os-routes.tsx",
+      "line": 191
+    },
+    {
+      "path": "/control-center/autonomy",
+      "family": "os-routes.tsx",
+      "line": 185
+    },
+    {
+      "path": "/daily-pulse",
+      "family": "os-routes.tsx",
+      "line": 107
+    },
+    {
+      "path": "/desktop",
+      "family": "os-routes.tsx",
+      "line": 103
+    },
+    {
+      "path": "/digital-presence",
+      "family": "experimental-routes.tsx",
+      "line": 165
+    },
+    {
+      "path": "/digital-presence/ai-team",
+      "family": "experimental-routes.tsx",
+      "line": 174
+    },
+    {
+      "path": "/digital-presence/analytics",
+      "family": "experimental-routes.tsx",
+      "line": 181
+    },
+    {
+      "path": "/digital-presence/app-studio",
+      "family": "experimental-routes.tsx",
+      "line": 180
+    },
+    {
+      "path": "/digital-presence/boardroom",
+      "family": "experimental-routes.tsx",
+      "line": 166
+    },
+    {
+      "path": "/digital-presence/brand-studio",
+      "family": "experimental-routes.tsx",
+      "line": 169
+    },
+    {
+      "path": "/digital-presence/builder",
+      "family": "experimental-routes.tsx",
+      "line": 168
+    },
+    {
+      "path": "/digital-presence/connected-sites",
+      "family": "experimental-routes.tsx",
+      "line": 170
+    },
+    {
+      "path": "/digital-presence/content-freshness",
+      "family": "experimental-routes.tsx",
+      "line": 176
+    },
+    {
+      "path": "/digital-presence/cro",
+      "family": "experimental-routes.tsx",
+      "line": 171
+    },
+    {
+      "path": "/digital-presence/domains",
+      "family": "experimental-routes.tsx",
+      "line": 182
+    },
+    {
+      "path": "/digital-presence/ecommerce",
+      "family": "experimental-routes.tsx",
+      "line": 172
+    },
+    {
+      "path": "/digital-presence/launch",
+      "family": "experimental-routes.tsx",
+      "line": 177
+    },
+    {
+      "path": "/digital-presence/onboarding",
+      "family": "experimental-routes.tsx",
+      "line": 183
+    },
+    {
+      "path": "/digital-presence/promotions",
+      "family": "experimental-routes.tsx",
+      "line": 173
+    },
+    {
+      "path": "/digital-presence/radar",
+      "family": "experimental-routes.tsx",
+      "line": 175
+    },
+    {
+      "path": "/digital-presence/self-healing",
+      "family": "experimental-routes.tsx",
+      "line": 179
+    },
+    {
+      "path": "/digital-presence/time-machine",
+      "family": "experimental-routes.tsx",
+      "line": 178
+    },
+    {
+      "path": "/digital-presence/twin",
+      "family": "experimental-routes.tsx",
+      "line": 167
+    },
+    {
+      "path": "/digital-twins",
+      "family": "experimental-routes.tsx",
+      "line": 203
+    },
+    {
+      "path": "/digital-twins/business",
+      "family": "experimental-routes.tsx",
+      "line": 204
+    },
+    {
+      "path": "/digital-twins/household",
+      "family": "experimental-routes.tsx",
+      "line": 206
+    },
+    {
+      "path": "/digital-twins/money",
+      "family": "experimental-routes.tsx",
+      "line": 205
+    },
+    {
+      "path": "/display-modes",
+      "family": "os-routes.tsx",
+      "line": 188
+    },
+    {
+      "path": "/download",
+      "family": "os-routes.tsx",
+      "line": 111
+    },
+    {
+      "path": "/downloads",
+      "family": "os-routes.tsx",
+      "line": 110
+    },
+    {
+      "path": "/editor",
+      "family": "os-routes.tsx",
+      "line": 230
+    },
+    {
+      "path": "/environment-switcher",
+      "family": "os-routes.tsx",
+      "line": 193
+    },
+    {
+      "path": "/files/all",
+      "family": "files-routes.tsx",
+      "line": 13
+    },
+    {
+      "path": "/files/explorer",
+      "family": "files-routes.tsx",
+      "line": 12
+    },
+    {
+      "path": "/files/memory",
+      "family": "files-routes.tsx",
+      "line": 17
+    },
+    {
+      "path": "/files/memory-review",
+      "family": "files-routes.tsx",
+      "line": 18
+    },
+    {
+      "path": "/files/overview",
+      "family": "files-routes.tsx",
+      "line": 11
+    },
+    {
+      "path": "/files/pdf-viewer",
+      "family": "os-routes.tsx",
+      "line": 235
+    },
+    {
+      "path": "/files/processing",
+      "family": "files-routes.tsx",
+      "line": 14
+    },
+    {
+      "path": "/files/review",
+      "family": "files-routes.tsx",
+      "line": 15
+    },
+    {
+      "path": "/files/search",
+      "family": "files-routes.tsx",
+      "line": 16
+    },
+    {
+      "path": "/files/sensitive",
+      "family": "files-routes.tsx",
+      "line": 19
+    },
+    {
+      "path": "/files/settings",
+      "family": "files-routes.tsx",
+      "line": 20
+    },
+    {
+      "path": "/first-boot",
+      "family": "os-routes.tsx",
+      "line": 195
+    },
+    {
+      "path": "/health",
+      "family": "health-routes.tsx",
+      "line": 18
+    },
+    {
+      "path": "/health/fitness",
+      "family": "health-routes.tsx",
+      "line": 22
+    },
+    {
+      "path": "/health/medical",
+      "family": "health-routes.tsx",
+      "line": 21
+    },
+    {
+      "path": "/health/nutrition",
+      "family": "health-routes.tsx",
+      "line": 19
+    },
+    {
+      "path": "/health/recovery",
+      "family": "health-routes.tsx",
+      "line": 23
+    },
+    {
+      "path": "/health/reminders",
+      "family": "health-routes.tsx",
+      "line": 24
+    },
+    {
+      "path": "/health/wearables",
+      "family": "health-routes.tsx",
+      "line": 20
+    },
+    {
+      "path": "/home",
+      "family": "os-routes.tsx",
+      "line": 102
+    },
+    {
+      "path": "/import-export",
+      "family": "os-routes.tsx",
+      "line": 234
+    },
+    {
+      "path": "/inbox",
+      "family": "os-routes.tsx",
+      "line": 122
+    },
+    {
+      "path": "/inbox/capture",
+      "family": "os-routes.tsx",
+      "line": 123
+    },
+    {
+      "path": "/inbox/processed",
+      "family": "os-routes.tsx",
+      "line": 124
+    },
+    {
+      "path": "/inbox/review",
+      "family": "os-routes.tsx",
+      "line": 125
+    },
+    {
+      "path": "/intelligence",
+      "family": "os-routes.tsx",
+      "line": 247
+    },
+    {
+      "path": "/intelligence/dashboard",
+      "family": "os-routes.tsx",
+      "line": 248
+    },
+    {
+      "path": "/intelligence/device-mesh",
+      "family": "os-routes.tsx",
+      "line": 249
+    },
+    {
+      "path": "/intelligence/privacy",
+      "family": "os-routes.tsx",
+      "line": 250
+    },
+    {
+      "path": "/life-simulator",
+      "family": "os-routes.tsx",
+      "line": 109
+    },
+    {
+      "path": "/media",
+      "family": "os-routes.tsx",
+      "line": 232
+    },
+    {
+      "path": "/memory",
+      "family": "os-routes.tsx",
+      "line": 157
+    },
+    {
+      "path": "/memory/business",
+      "family": "os-routes.tsx",
+      "line": 159
+    },
+    {
+      "path": "/memory/household",
+      "family": "os-routes.tsx",
+      "line": 161
+    },
+    {
+      "path": "/memory/money",
+      "family": "os-routes.tsx",
+      "line": 160
+    },
+    {
+      "path": "/memory/preferences",
+      "family": "os-routes.tsx",
+      "line": 163
+    },
+    {
+      "path": "/memory/profile",
+      "family": "os-routes.tsx",
+      "line": 158
+    },
+    {
+      "path": "/memory/workflows",
+      "family": "os-routes.tsx",
+      "line": 162
+    },
+    {
+      "path": "/mission-control",
+      "family": "os-routes.tsx",
+      "line": 183
+    },
+    {
+      "path": "/mobile",
+      "family": "mobile-routes.tsx",
+      "line": 32
+    },
+    {
+      "path": "/mobile/ai-chat",
+      "family": "mobile-routes.tsx",
+      "line": 51
+    },
+    {
+      "path": "/mobile/alerts",
+      "family": "mobile-routes.tsx",
+      "line": 38
+    },
+    {
+      "path": "/mobile/approval/:id",
+      "family": "mobile-routes.tsx",
+      "line": 42
+    },
+    {
+      "path": "/mobile/approvals",
+      "family": "mobile-routes.tsx",
+      "line": 36
+    },
+    {
+      "path": "/mobile/boardroom",
+      "family": "mobile-routes.tsx",
+      "line": 39
+    },
+    {
+      "path": "/mobile/business",
+      "family": "mobile-routes.tsx",
+      "line": 33
+    },
+    {
+      "path": "/mobile/business-advisors",
+      "family": "business-advisor-routes.tsx",
+      "line": 14
+    },
+    {
+      "path": "/mobile/business-advisors/:advisorId",
+      "family": "business-advisor-routes.tsx",
+      "line": 15
+    },
+    {
+      "path": "/mobile/capture",
+      "family": "mobile-routes.tsx",
+      "line": 46
+    },
+    {
+      "path": "/mobile/command",
+      "family": "mobile-routes.tsx",
+      "line": 50
+    },
+    {
+      "path": "/mobile/concierge",
+      "family": "mobile-routes.tsx",
+      "line": 35
+    },
+    {
+      "path": "/mobile/device-trust",
+      "family": "mobile-routes.tsx",
+      "line": 44
+    },
+    {
+      "path": "/mobile/emergency",
+      "family": "mobile-routes.tsx",
+      "line": 45
+    },
+    {
+      "path": "/mobile/files",
+      "family": "mobile-routes.tsx",
+      "line": 49
+    },
+    {
+      "path": "/mobile/inbox",
+      "family": "mobile-routes.tsx",
+      "line": 56
+    },
+    {
+      "path": "/mobile/investment",
+      "family": "mobile-routes.tsx",
+      "line": 48
+    },
+    {
+      "path": "/mobile/money",
+      "family": "mobile-routes.tsx",
+      "line": 34
+    },
+    {
+      "path": "/mobile/more",
+      "family": "mobile-routes.tsx",
+      "line": 47
+    },
+    {
+      "path": "/mobile/notifications",
+      "family": "mobile-routes.tsx",
+      "line": 54
+    },
+    {
+      "path": "/mobile/proof",
+      "family": "mobile-routes.tsx",
+      "line": 37
+    },
+    {
+      "path": "/mobile/receipt/:id",
+      "family": "mobile-routes.tsx",
+      "line": 41
+    },
+    {
+      "path": "/mobile/settings",
+      "family": "mobile-routes.tsx",
+      "line": 43
+    },
+    {
+      "path": "/mobile/sync",
+      "family": "mobile-routes.tsx",
+      "line": 53
+    },
+    {
+      "path": "/mobile/system-monitor",
+      "family": "mobile-routes.tsx",
+      "line": 52
+    },
+    {
+      "path": "/mobile/timeline",
+      "family": "mobile-routes.tsx",
+      "line": 55
+    },
+    {
+      "path": "/mobile/workflow/:id",
+      "family": "mobile-routes.tsx",
+      "line": 40
+    },
+    {
+      "path": "/my-activity",
+      "family": "os-routes.tsx",
+      "line": 118
+    },
+    {
+      "path": "/network",
+      "family": "os-routes.tsx",
+      "line": 116
+    },
+    {
+      "path": "/notes",
+      "family": "os-routes.tsx",
+      "line": 227
+    },
+    {
+      "path": "/notifications",
+      "family": "os-routes.tsx",
+      "line": 135
+    },
+    {
+      "path": "/notifications/settings",
+      "family": "os-routes.tsx",
+      "line": 133
+    },
+    {
+      "path": "/opportunities",
+      "family": "os-routes.tsx",
+      "line": 127
+    },
+    {
+      "path": "/outcomes",
+      "family": "os-routes.tsx",
+      "line": 128
+    },
+    {
+      "path": "/owner",
+      "family": "owner-routes.tsx",
+      "line": 17
+    },
+    {
+      "path": "/owner-mode",
+      "family": "owner-routes.tsx",
+      "line": 52
+    },
+    {
+      "path": "/owner-mode/home",
+      "family": "owner-routes.tsx",
+      "line": 53
+    },
+    {
+      "path": "/owner/advisors",
+      "family": "owner-routes.tsx",
+      "line": 49
+    },
+    {
+      "path": "/owner/ai-team",
+      "family": "owner-routes.tsx",
+      "line": 23
+    },
+    {
+      "path": "/owner/ai-team/updates",
+      "family": "owner-routes.tsx",
+      "line": 24
+    },
+    {
+      "path": "/owner/approvals",
+      "family": "owner-routes.tsx",
+      "line": 22
+    },
+    {
+      "path": "/owner/audit",
+      "family": "owner-routes.tsx",
+      "line": 30
+    },
+    {
+      "path": "/owner/autopilot",
+      "family": "owner-routes.tsx",
+      "line": 37
+    },
+    {
+      "path": "/owner/billing",
+      "family": "owner-routes.tsx",
+      "line": 38
+    },
+    {
+      "path": "/owner/change-review",
+      "family": "owner-routes.tsx",
+      "line": 44
+    },
+    {
+      "path": "/owner/connector-health",
+      "family": "owner-routes.tsx",
+      "line": 31
+    },
+    {
+      "path": "/owner/connectors",
+      "family": "owner-routes.tsx",
+      "line": 32
+    },
+    {
+      "path": "/owner/constitution",
+      "family": "owner-routes.tsx",
+      "line": 51
+    },
+    {
+      "path": "/owner/costs",
+      "family": "owner-routes.tsx",
+      "line": 33
+    },
+    {
+      "path": "/owner/council",
+      "family": "owner-routes.tsx",
+      "line": 29
+    },
+    {
+      "path": "/owner/fleet",
+      "family": "owner-routes.tsx",
+      "line": 28
+    },
+    {
+      "path": "/owner/governance",
+      "family": "owner-routes.tsx",
+      "line": 46
+    },
+    {
+      "path": "/owner/health",
+      "family": "owner-routes.tsx",
+      "line": 19
+    },
+    {
+      "path": "/owner/home",
+      "family": "owner-routes.tsx",
+      "line": 18
+    },
+    {
+      "path": "/owner/incidents",
+      "family": "owner-routes.tsx",
+      "line": 25
+    },
+    {
+      "path": "/owner/intelligence",
+      "family": "owner-routes.tsx",
+      "line": 26
+    },
+    {
+      "path": "/owner/internal-agents",
+      "family": "owner-routes.tsx",
+      "line": 34
+    },
+    {
+      "path": "/owner/knowledge",
+      "family": "owner-routes.tsx",
+      "line": 42
+    },
+    {
+      "path": "/owner/leases",
+      "family": "owner-routes.tsx",
+      "line": 50
+    },
+    {
+      "path": "/owner/model-routing",
+      "family": "owner-routes.tsx",
+      "line": 40
+    },
+    {
+      "path": "/owner/packs",
+      "family": "owner-routes.tsx",
+      "line": 48
+    },
+    {
+      "path": "/owner/policies",
+      "family": "owner-routes.tsx",
+      "line": 27
+    },
+    {
+      "path": "/owner/pricing",
+      "family": "owner-routes.tsx",
+      "line": 47
+    },
+    {
+      "path": "/owner/pulse",
+      "family": "owner-routes.tsx",
+      "line": 20
+    },
+    {
+      "path": "/owner/releases",
+      "family": "owner-routes.tsx",
+      "line": 39
+    },
+    {
+      "path": "/owner/rollback-center",
+      "family": "owner-routes.tsx",
+      "line": 45
+    },
+    {
+      "path": "/owner/support",
+      "family": "owner-routes.tsx",
+      "line": 43
+    },
+    {
+      "path": "/owner/system-map",
+      "family": "owner-routes.tsx",
+      "line": 41
+    },
+    {
+      "path": "/owner/trust",
+      "family": "owner-routes.tsx",
+      "line": 21
+    },
+    {
+      "path": "/owner/trust-center",
+      "family": "owner-routes.tsx",
+      "line": 36
+    },
+    {
+      "path": "/owner/workflow-control",
+      "family": "owner-routes.tsx",
+      "line": 35
+    },
+    {
+      "path": "/people",
+      "family": "os-routes.tsx",
+      "line": 228
+    },
+    {
+      "path": "/personal-brain",
+      "family": "os-routes.tsx",
+      "line": 203
+    },
+    {
+      "path": "/personal-brain/c/:chatId",
+      "family": "os-routes.tsx",
+      "line": 205
+    },
+    {
+      "path": "/personal-brain/command-center",
+      "family": "os-routes.tsx",
+      "line": 207
+    },
+    {
+      "path": "/personal-brain/invite/:token",
+      "family": "os-routes.tsx",
+      "line": 222
+    },
+    {
+      "path": "/personal-brain/settings",
+      "family": "os-routes.tsx",
+      "line": 209
+    },
+    {
+      "path": "/personal-brain/settings/data",
+      "family": "os-routes.tsx",
+      "line": 213
+    },
+    {
+      "path": "/personal-brain/settings/files",
+      "family": "os-routes.tsx",
+      "line": 218
+    },
+    {
+      "path": "/personal-brain/settings/labs",
+      "family": "os-routes.tsx",
+      "line": 220
+    },
+    {
+      "path": "/personal-brain/settings/learning",
+      "family": "os-routes.tsx",
+      "line": 211
+    },
+    {
+      "path": "/personal-brain/settings/memory",
+      "family": "os-routes.tsx",
+      "line": 215
+    },
+    {
+      "path": "/personal-brain/settings/modes",
+      "family": "os-routes.tsx",
+      "line": 216
+    },
+    {
+      "path": "/personal-brain/settings/notifications",
+      "family": "os-routes.tsx",
+      "line": 219
+    },
+    {
+      "path": "/personal-brain/settings/profile",
+      "family": "os-routes.tsx",
+      "line": 214
+    },
+    {
+      "path": "/personal-brain/settings/retention",
+      "family": "os-routes.tsx",
+      "line": 212
+    },
+    {
+      "path": "/personal-brain/settings/security",
+      "family": "os-routes.tsx",
+      "line": 210
+    },
+    {
+      "path": "/personal-brain/settings/workspaces",
+      "family": "os-routes.tsx",
+      "line": 217
+    },
+    {
+      "path": "/personal-brain/snapshot",
+      "family": "os-routes.tsx",
+      "line": 206
+    },
+    {
+      "path": "/personal-brain/tools",
+      "family": "os-routes.tsx",
+      "line": 221
+    },
+    {
+      "path": "/personal-brain/voice-settings",
+      "family": "os-routes.tsx",
+      "line": 208
+    },
+    {
+      "path": "/personal-brain/w/:workspaceId",
+      "family": "os-routes.tsx",
+      "line": 204
+    },
+    {
+      "path": "/personalization",
+      "family": "os-routes.tsx",
+      "line": 149
+    },
+    {
+      "path": "/personalization/automation",
+      "family": "os-routes.tsx",
+      "line": 153
+    },
+    {
+      "path": "/personalization/boardroom",
+      "family": "os-routes.tsx",
+      "line": 154
+    },
+    {
+      "path": "/personalization/memory",
+      "family": "os-routes.tsx",
+      "line": 152
+    },
+    {
+      "path": "/personalization/preferences",
+      "family": "os-routes.tsx",
+      "line": 151
+    },
+    {
+      "path": "/personalization/profile",
+      "family": "os-routes.tsx",
+      "line": 150
+    },
+    {
+      "path": "/planning-canvas",
+      "family": "os-routes.tsx",
+      "line": 117
+    },
+    {
+      "path": "/print-scan",
+      "family": "os-routes.tsx",
+      "line": 199
+    },
+    {
+      "path": "/profile",
+      "family": "os-routes.tsx",
+      "line": 108
+    },
+    {
+      "path": "/proof",
+      "family": "boardroom-routes.tsx",
+      "line": 29
+    },
+    {
+      "path": "/proof/executions",
+      "family": "boardroom-routes.tsx",
+      "line": 31
+    },
+    {
+      "path": "/proof/receipts",
+      "family": "boardroom-routes.tsx",
+      "line": 30
+    },
+    {
+      "path": "/proof/rollbacks",
+      "family": "boardroom-routes.tsx",
+      "line": 33
+    },
+    {
+      "path": "/proof/verifications",
+      "family": "boardroom-routes.tsx",
+      "line": 32
+    },
+    {
+      "path": "/pulse",
+      "family": "os-routes.tsx",
+      "line": 106
+    },
+    {
+      "path": "/recovered-value",
+      "family": "experimental-routes.tsx",
+      "line": 209
+    },
+    {
+      "path": "/recovery",
+      "family": "os-routes.tsx",
+      "line": 200
+    },
+    {
+      "path": "/reporting",
+      "family": "os-routes.tsx",
+      "line": 231
+    },
+    {
+      "path": "/revenue-office",
+      "family": "experimental-routes.tsx",
+      "line": 123
+    },
+    {
+      "path": "/revenue-office/advisors",
+      "family": "experimental-routes.tsx",
+      "line": 134
+    },
+    {
+      "path": "/revenue-office/automation",
+      "family": "experimental-routes.tsx",
+      "line": 152
+    },
+    {
+      "path": "/revenue-office/automation/builder",
+      "family": "experimental-routes.tsx",
+      "line": 153
+    },
+    {
+      "path": "/revenue-office/automation/health",
+      "family": "experimental-routes.tsx",
+      "line": 156
+    },
+    {
+      "path": "/revenue-office/automation/policy",
+      "family": "experimental-routes.tsx",
+      "line": 158
+    },
+    {
+      "path": "/revenue-office/automation/receipts",
+      "family": "experimental-routes.tsx",
+      "line": 157
+    },
+    {
+      "path": "/revenue-office/automation/simulation",
+      "family": "experimental-routes.tsx",
+      "line": 155
+    },
+    {
+      "path": "/revenue-office/automation/templates",
+      "family": "experimental-routes.tsx",
+      "line": 154
+    },
+    {
+      "path": "/revenue-office/boardroom",
+      "family": "experimental-routes.tsx",
+      "line": 124
+    },
+    {
+      "path": "/revenue-office/bookings",
+      "family": "experimental-routes.tsx",
+      "line": 129
+    },
+    {
+      "path": "/revenue-office/calls",
+      "family": "experimental-routes.tsx",
+      "line": 160
+    },
+    {
+      "path": "/revenue-office/campaigns",
+      "family": "experimental-routes.tsx",
+      "line": 128
+    },
+    {
+      "path": "/revenue-office/client-onboarding",
+      "family": "experimental-routes.tsx",
+      "line": 151
+    },
+    {
+      "path": "/revenue-office/conversion-lab",
+      "family": "experimental-routes.tsx",
+      "line": 137
+    },
+    {
+      "path": "/revenue-office/decision-theater",
+      "family": "experimental-routes.tsx",
+      "line": 143
+    },
+    {
+      "path": "/revenue-office/forms",
+      "family": "experimental-routes.tsx",
+      "line": 149
+    },
+    {
+      "path": "/revenue-office/funnels",
+      "family": "experimental-routes.tsx",
+      "line": 127
+    },
+    {
+      "path": "/revenue-office/growth-dna",
+      "family": "experimental-routes.tsx",
+      "line": 145
+    },
+    {
+      "path": "/revenue-office/intelligence",
+      "family": "experimental-routes.tsx",
+      "line": 132
+    },
+    {
+      "path": "/revenue-office/journey-twin",
+      "family": "experimental-routes.tsx",
+      "line": 135
+    },
+    {
+      "path": "/revenue-office/leaks",
+      "family": "experimental-routes.tsx",
+      "line": 136
+    },
+    {
+      "path": "/revenue-office/memberships",
+      "family": "experimental-routes.tsx",
+      "line": 138
+    },
+    {
+      "path": "/revenue-office/memory-feed",
+      "family": "experimental-routes.tsx",
+      "line": 148
+    },
+    {
+      "path": "/revenue-office/offers",
+      "family": "experimental-routes.tsx",
+      "line": 130
+    },
+    {
+      "path": "/revenue-office/onboarding",
+      "family": "experimental-routes.tsx",
+      "line": 161
+    },
+    {
+      "path": "/revenue-office/operating-modes",
+      "family": "experimental-routes.tsx",
+      "line": 146
+    },
+    {
+      "path": "/revenue-office/opportunities",
+      "family": "experimental-routes.tsx",
+      "line": 139
+    },
+    {
+      "path": "/revenue-office/pipeline",
+      "family": "experimental-routes.tsx",
+      "line": 126
+    },
+    {
+      "path": "/revenue-office/quotes",
+      "family": "experimental-routes.tsx",
+      "line": 159
+    },
+    {
+      "path": "/revenue-office/relationships",
+      "family": "experimental-routes.tsx",
+      "line": 125
+    },
+    {
+      "path": "/revenue-office/reputation",
+      "family": "experimental-routes.tsx",
+      "line": 131
+    },
+    {
+      "path": "/revenue-office/retention",
+      "family": "experimental-routes.tsx",
+      "line": 133
+    },
+    {
+      "path": "/revenue-office/segmentation",
+      "family": "experimental-routes.tsx",
+      "line": 150
+    },
+    {
+      "path": "/revenue-office/synthesis",
+      "family": "experimental-routes.tsx",
+      "line": 147
+    },
+    {
+      "path": "/revenue-office/time-machine",
+      "family": "experimental-routes.tsx",
+      "line": 142
+    },
+    {
+      "path": "/revenue-office/trust-pulse",
+      "family": "experimental-routes.tsx",
+      "line": 140
+    },
+    {
+      "path": "/revenue-office/what-breaks",
+      "family": "experimental-routes.tsx",
+      "line": 144
+    },
+    {
+      "path": "/revenue-office/white-label",
+      "family": "experimental-routes.tsx",
+      "line": 141
+    },
+    {
+      "path": "/scenario-lab",
+      "family": "experimental-routes.tsx",
+      "line": 207
+    },
+    {
+      "path": "/search",
+      "family": "os-routes.tsx",
+      "line": 119
+    },
+    {
+      "path": "/settings/accessibility",
+      "family": "os-routes.tsx",
+      "line": 142
+    },
+    {
+      "path": "/settings/appearance",
+      "family": "os-routes.tsx",
+      "line": 140
+    },
+    {
+      "path": "/settings/billing",
+      "family": "os-routes.tsx",
+      "line": 138
+    },
+    {
+      "path": "/settings/device",
+      "family": "os-routes.tsx",
+      "line": 143
+    },
+    {
+      "path": "/settings/mfa",
+      "family": "os-routes.tsx",
+      "line": 145
+    },
+    {
+      "path": "/settings/notifications",
+      "family": "os-routes.tsx",
+      "line": 134
+    },
+    {
+      "path": "/settings/passkey",
+      "family": "os-routes.tsx",
+      "line": 146
+    },
+    {
+      "path": "/settings/plan-usage",
+      "family": "os-routes.tsx",
+      "line": 141
+    },
+    {
+      "path": "/settings/privacy",
+      "family": "os-routes.tsx",
+      "line": 139
+    },
+    {
+      "path": "/settings/trusted-devices",
+      "family": "os-routes.tsx",
+      "line": 144
+    },
+    {
+      "path": "/simulation-engine",
+      "family": "os-routes.tsx",
+      "line": 114
+    },
+    {
+      "path": "/sita",
+      "family": "os-routes.tsx",
+      "line": 104
+    },
+    {
+      "path": "/sita/entity/:nodeId",
+      "family": "os-routes.tsx",
+      "line": 105
+    },
+    {
+      "path": "/sovereign-export",
+      "family": "os-routes.tsx",
+      "line": 132
+    },
+    {
+      "path": "/spillovers",
+      "family": "os-routes.tsx",
+      "line": 129
+    },
+    {
+      "path": "/storage",
+      "family": "os-routes.tsx",
+      "line": 115
+    },
+    {
+      "path": "/store",
+      "family": "experimental-routes.tsx",
+      "line": 186
+    },
+    {
+      "path": "/store/:segment",
+      "family": "experimental-routes.tsx",
+      "line": 197
+    },
+    {
+      "path": "/store/analytics",
+      "family": "experimental-routes.tsx",
+      "line": 189
+    },
+    {
+      "path": "/store/apps/:appId",
+      "family": "experimental-routes.tsx",
+      "line": 191
+    },
+    {
+      "path": "/store/connectors",
+      "family": "experimental-routes.tsx",
+      "line": 195
+    },
+    {
+      "path": "/store/families",
+      "family": "experimental-routes.tsx",
+      "line": 193
+    },
+    {
+      "path": "/store/featured",
+      "family": "experimental-routes.tsx",
+      "line": 187
+    },
+    {
+      "path": "/store/finance",
+      "family": "experimental-routes.tsx",
+      "line": 194
+    },
+    {
+      "path": "/store/founders",
+      "family": "experimental-routes.tsx",
+      "line": 192
+    },
+    {
+      "path": "/store/installed",
+      "family": "experimental-routes.tsx",
+      "line": 188
+    },
+    {
+      "path": "/store/packs/:packId",
+      "family": "experimental-routes.tsx",
+      "line": 190
+    },
+    {
+      "path": "/store/surfaces",
+      "family": "experimental-routes.tsx",
+      "line": 196
+    },
+    {
+      "path": "/system",
+      "family": "os-routes.tsx",
+      "line": 172
+    },
+    {
+      "path": "/system/connectors",
+      "family": "os-routes.tsx",
+      "line": 175
+    },
+    {
+      "path": "/system/fleet",
+      "family": "os-routes.tsx",
+      "line": 180
+    },
+    {
+      "path": "/system/health",
+      "family": "os-routes.tsx",
+      "line": 174
+    },
+    {
+      "path": "/system/history",
+      "family": "os-routes.tsx",
+      "line": 176
+    },
+    {
+      "path": "/system/incidents",
+      "family": "os-routes.tsx",
+      "line": 179
+    },
+    {
+      "path": "/system/self-healing",
+      "family": "os-routes.tsx",
+      "line": 178
+    },
+    {
+      "path": "/system/slos",
+      "family": "os-routes.tsx",
+      "line": 177
+    },
+    {
+      "path": "/system/trust",
+      "family": "os-routes.tsx",
+      "line": 173
+    },
+    {
+      "path": "/tasks",
+      "family": "os-routes.tsx",
+      "line": 226
+    },
+    {
+      "path": "/team",
+      "family": "os-routes.tsx",
+      "line": 229
+    },
+    {
+      "path": "/templates",
+      "family": "os-routes.tsx",
+      "line": 233
+    },
+    {
+      "path": "/time-machine",
+      "family": "os-routes.tsx",
+      "line": 112
+    },
+    {
+      "path": "/trust",
+      "family": "files-routes.tsx",
+      "line": 23
+    },
+    {
+      "path": "/trust",
+      "family": "trust-routes.tsx",
+      "line": 21
+    },
+    {
+      "path": "/trust/approvals",
+      "family": "trust-routes.tsx",
+      "line": 23
+    },
+    {
+      "path": "/trust/audit",
+      "family": "files-routes.tsx",
+      "line": 28
+    },
+    {
+      "path": "/trust/audit",
+      "family": "trust-routes.tsx",
+      "line": 26
+    },
+    {
+      "path": "/trust/automation-authority",
+      "family": "trust-routes.tsx",
+      "line": 25
+    },
+    {
+      "path": "/trust/autonomy",
+      "family": "files-routes.tsx",
+      "line": 24
+    },
+    {
+      "path": "/trust/coverage",
+      "family": "trust-routes.tsx",
+      "line": 28
+    },
+    {
+      "path": "/trust/decisions",
+      "family": "trust-routes.tsx",
+      "line": 27
+    },
+    {
+      "path": "/trust/devices",
+      "family": "files-routes.tsx",
+      "line": 25
+    },
+    {
+      "path": "/trust/permissions",
+      "family": "files-routes.tsx",
+      "line": 26
+    },
+    {
+      "path": "/trust/permissions",
+      "family": "trust-routes.tsx",
+      "line": 24
+    },
+    {
+      "path": "/trust/proof",
+      "family": "files-routes.tsx",
+      "line": 27
+    },
+    {
+      "path": "/trust/receipts",
+      "family": "trust-routes.tsx",
+      "line": 22
+    },
+    {
+      "path": "/trust/settings",
+      "family": "files-routes.tsx",
+      "line": 29
+    },
+    {
+      "path": "/update-center",
+      "family": "os-routes.tsx",
+      "line": 194
+    },
+    {
+      "path": "/workflows",
+      "family": "boardroom-routes.tsx",
+      "line": 36
+    },
+    {
+      "path": "/workflows/active",
+      "family": "boardroom-routes.tsx",
+      "line": 37
+    },
+    {
+      "path": "/workflows/history",
+      "family": "boardroom-routes.tsx",
+      "line": 38
+    },
+    {
+      "path": "/workflows/templates",
+      "family": "boardroom-routes.tsx",
+      "line": 39
+    },
+    {
+      "path": "/workspace/data-grid",
+      "family": "os-routes.tsx",
+      "line": 236
+    }
+  ]
+}
