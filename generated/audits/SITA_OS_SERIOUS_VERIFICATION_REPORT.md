@@ -286,3 +286,67 @@ Test Files  4 passed (4)
 - Receipt emitter assertions read the canonical shared helper (`supabase/functions/_shared/receipt-emitter.ts`) — the only authority for `ai_action_receipts` writes.
 
 Phase 7 closes the cross-domain trust lineage: every Finance-side action that crosses into Business or Concierge is now provably bound to (a) the real service contract, (b) the canonical navigation seam, and (c) the canonical receipt row.
+
+---
+
+## Phase 8 — Concierge↔Business Linkage + Edge Receipt Binding
+
+**Status:** ✅ COMPLETE — 100% pass, ready for deployment.
+
+### Surfaces verified / added
+
+| Matrix ID | Kind | Status | Test file |
+|---|---|---|---|
+| `int.concierge-business-linkage` (business matrix) | integration | **NEW — `behavioral`** | `src/__tests__/business-os/integration/concierge-business-linkage.test.ts` |
+| `trust.edge-receipt-binding` (business matrix) | trust | **NEW — `behavioral`** | `src/__tests__/business-os/trust/edge-receipt-binding.test.ts` |
+| `svc.support-health-loop` (business matrix) | service | **NEW — `behavioral`** (drift fix) | `src/__tests__/business-os/integration/support-health-loop.test.ts` |
+
+`int.concierge-business-linkage` already existed in the Concierge matrix pointing at the live CRM→Concierge query test — Phase 8 adds the symmetric **Business-side** registration with a second test file (no duplicate test, both files now share the row).
+
+### What the Phase 8 tests prove
+
+**`int.concierge-business-linkage` (9 tests)**
+- `CROSS_OS_LINKS` exposes every canonical Business↔Concierge seam (`biz-to-appointments`, `biz-to-errands`, `biz-to-travel`, `con-to-support`, `con-to-operations`).
+- Archetype filtering is honest:
+  - `appointment-based` → only `biz-to-appointments` (no errands/travel leak).
+  - `brick-and-mortar` → both scheduling AND errands.
+  - `service` / `agency` → travel seam, no brick-and-mortar errands leak.
+- Every business→concierge link routes at the correct concierge module.
+- Concierge→Business reverse seams route at correct business modules.
+- `getCrossOSLinks('concierge')` only returns links rooted at the concierge app.
+- Every Business↔Concierge seam is well-formed (label, icon, target module, valid category) — no half-wired seams.
+
+**`trust.edge-receipt-binding` (7 tests)**
+- The canonical `emitActionReceipt` helper exists, writes every required lineage column (`user_id`, `action_type`, `recommendation_summary`, `status`, `receipt_id`), and is fail-safe (try/catch + return null on error).
+- The single declared additional writer (`internal-agent-execute-action/index.ts`) carries the same lineage columns on its inline insert (no lossy receipts).
+- The 5 reader functions (`external-workforce-api`, `sita-reflection-loop`, `sita-briefings-generate`, `internal-agent-slo-evaluator`, `ai-receipt-completeness-snapshot`) only SELECT — they never silently mutate the receipt ledger.
+- **Drift gate**: walks every `supabase/functions/<name>/index.ts` and fails if any new function writes to `ai_action_receipts` without being declared in `KNOWN_WRITERS` and verified to carry the lineage columns. This is the deployment gate for any new edge writer.
+- Writer-count gate: locks the current writer count at 1 (excluding the helper itself) — any new writer triggers an explicit, intentional registration.
+
+### Drift fix
+
+The matrix integrity test caught that `support-health-loop.service.ts` was on disk with an orphaned test (`src/__tests__/business-os/integration/support-health-loop.test.ts`) but missing from `SERVICE_SURFACES`. Phase 8 registered it as `svc.support-health-loop`.
+
+### Verification
+
+```
+✓ src/__tests__/business-os/trust/edge-receipt-binding.test.ts            (7 tests)
+✓ src/__tests__/business-os/_matrix/matrix.test.ts                        (6 tests)
+✓ src/__tests__/finance/_matrix/matrix.test.ts                            (6 tests)
+✓ src/__tests__/concierge/_matrix/matrix.test.ts                          (6 tests)
+✓ src/__tests__/business-os/integration/concierge-business-linkage.test.ts (9 tests)
+
+Test Files  5 passed (5)
+     Tests  34 passed (34)
+```
+
+`tsc --noEmit` clean.
+
+### No-duplication guarantees
+- Reused the real `CROSS_OS_LINKS` registry and `getCrossOSLinks` exports — no parallel cross-OS catalogue.
+- Reused the canonical `emitActionReceipt` helper — no rewrite, no fork.
+- Reused the existing `support-health-loop.test.ts` — no second test created; the matrix row simply now points at it.
+- The new `int.concierge-business-linkage` row in the **business** matrix shares the live CRM→Concierge test with the **concierge** matrix — single test file referenced from both sides, no fork.
+- The drift gate in `edge-receipt-binding.test.ts` will catch (and refuse to ship) any future edge function that bypasses the canonical helper without explicit declaration.
+
+Phase 8 closes the cross-domain trust lineage from the Business side and converts the receipt ledger contract from "documented" to "machine-enforced at deploy time."
