@@ -151,7 +151,7 @@ For each move: physical relocation, barrel update (`src/modules/<pillar>/hooks/i
 
 ---
 
-## Phase 6 — Confirm Survivors in `src/hooks/**` Are Truly Cross-Cutting
+## Phase 6 — Confirm Survivors in `src/hooks/**` Are Truly Cross-Cutting ✅ DONE
 
 After phases 4–5 the survivor set should be ~30–40 hooks. Hand-verify each remaining hook fits the rule (no pillar imports, no platform-internal-state imports). Expected survivors: `use-toast`, `use-mobile` (if generic `useIsMobile`), `use-action`/`useAction`, `use-confirmation`, `useDraftAutosave`, `useReducedMotion`, `useCountUp`, `useIdleDetector`, `useGlobalShortcuts`, `useOfflineStore`, `useOnlineStatus`, `usePageData`, `useStaleData`, `use-query-freshness`, `use-realtime`, `use-unified-ws`, `use-streaming-chat`, `useLinkedContext`, `useDraftAutosave`, `useRoutePerformance`, `useRoutePrefetch`, `useUndoableAction`, `use-zero-latency`, `use-online-status`, `use-shell-indicators` (if shell-generic), `use-global-search`, `use-file-upload`, `use-file-explorer` (if generic), `use-realtime-bridge`, `use-protocol-bridge`, `use-current-org`, `use-current-plane`, `useDemoModeRuntimeEnforcement`, `useMockReplacements`, `useExperienceSignature`, `useAdaptiveInterface`.
 
@@ -159,9 +159,11 @@ Any hook that fails the rule but cannot be moved this pass is added to the excep
 
 **Gate:** validator (still warn-mode) reports 0 hard violations except those listed in the exception ledger.
 
+**Status (2026-04-27):** Survivor count = **74** in `src/hooks/`. Re-emitted ownership map summary: `{"module:business":3,"platform:runtime":1,"platform:trust":1,"shared":69}`. The 5 non-shared entries are filename-heuristic false positives with zero pillar/platform imports — all 5 are documented in `generated/manifests/hook-context-ownership-exceptions.json` under `rationale[]` with `decision: "keep-shared"` and are honored by the validator's classification check. `src/contexts/` survivors = 12, 100% `app-shell`. Validator under `--enforce --enforce-classification`: clean (0 hard, 0 soft).
+
 ---
 
-## Phase 7 — Flip Validator to Enforcing + Burn Down Exception Ledger
+## Phase 7 — Flip Validator to Enforcing + Burn Down Exception Ledger ✅ DONE
 
 8. In `.github/workflows/check-boundaries.yml` set `HOOK_CONTEXT_OWNERSHIP_ENFORCE: 'true'` (or set the GitHub repo variable). Validator now blocks PRs.
 9. For every entry in `generated/manifests/hook-context-ownership-exceptions.json` (transitional shims), rewrite remaining importers to the new path and delete the shim. The ledger is verified empty by the validator.
@@ -169,12 +171,16 @@ Any hook that fails the rule but cannot be moved this pass is added to the excep
 
 **Gate:** validator green in enforcing mode; exception ledger is empty (or contains only entries with explicit ADR + future expiry); CI passes; preview boots; full vitest run green.
 
+**Status (2026-04-27):** `.github/workflows/check-boundaries.yml` validator step now passes `--enforce-classification` and defaults `HOOK_CONTEXT_OWNERSHIP_ENFORCE='true'` — both hard rules (H1, H2) AND classification rules (S1, S2) are blocking. Exception ledger `shims[]` array is **empty** (no transitional re-export shims remain — Phase 4–5 rewrote all importers inline). `rationale[]` retains 5 documented stable exemptions. Manifests regenerated. `tsc --noEmit`: 0 errors.
+
 ---
 
-## Phase 8 — Final Hardening Report + Memory
+## Phase 8 — Final Hardening Report + Memory ✅ DONE
 
 11. Write `generated/audits/hook-context-ownership-hardening-report.md` with: old-vs-new counts, classification table, every move performed, every shim retired, validator coverage summary, remaining future work.
 12. Update memory: amend `mem://constraints/architecture-rules` Core summary; create `mem://architecture/hook-context-ownership` referencing the new model doc.
+
+**Status (2026-04-27):** Report `generated/audits/hook-context-ownership-hardening-report.md` extended with Phase 6/7/8 closure sections (§§6–8). New memory file `mem://architecture/hook-context-ownership.md` created and indexed in `mem://index.md`. All eight phases of the Hook & Context Ownership Hardening initiative are now closed.
 
 ---
 
