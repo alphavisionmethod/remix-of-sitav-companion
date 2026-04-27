@@ -1,7 +1,7 @@
 // Phase 5 — page-state honesty: WealthCommandCenter
 import { describe, it, expect } from "vitest";
 import { renderFinancePage } from "@/__tests__/finance/_helpers/render-finance-page";
-import WealthCommandCenter from "@/modules/finance/pages/WealthCommandCenter";
+import WealthCommandCenter from "@/modules/finance/pages/_archived/WealthCommandCenter";
 import { expectHonestStateSignal } from "./_shared";
 
 describe("Finance page — WealthCommandCenter (Phase 5)", () => {

@@ -29,7 +29,10 @@ const SURFACES: Array<{ file: string; current: string; tier: string }> = [
     tier: "execution",
   },
   {
-    file: "src/modules/business/pages/RevenueImpactDashboard.tsx",
+    // IA Phase 6: page archived; canonical impl moved under _archived/.
+    // The Autopilot hierarchy markers must remain present on the archived
+    // file so a future un-archive does not silently lose lineage.
+    file: "src/modules/business/pages/_archived/RevenueImpactDashboard.tsx",
     current: "revenue-impact",
     tier: "insight",
   },

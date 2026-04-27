@@ -1,4 +1,4 @@
-// Wave 6 — legacy path re-exports the canonical implementation.
-// Moved to @/modules/finance/pages/WealthCommandCenter
-export { default } from "@/modules/finance/pages/WealthCommandCenter";
-export * from "@/modules/finance/pages/WealthCommandCenter";
+// IA Phase 6 — page archived (orphan root cinematic dashboard duplicating MoneyOverview).
+// /wealth-command route was removed in Phase 4. Shim kept only for legacy tests.
+export { default } from "@/modules/finance/pages/_archived/WealthCommandCenter";
+export * from "@/modules/finance/pages/_archived/WealthCommandCenter";

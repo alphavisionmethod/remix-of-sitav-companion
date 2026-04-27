@@ -16,7 +16,9 @@ const routeImportMap: Record<string, () => Promise<unknown>> = {
   "/proof": () => import("@/pages/ProofCenter"),
   "/boardroom": () => import("@/pages/Boardroom"),
   "/files": () => import("@/pages/FilesCenter"),
-  "/life": () => import("@/pages/LifeDashboard"),
+  // IA Phase 6: /life is redirected to /concierge/overview by USER_REDIRECTS;
+  // prefetch the canonical destination instead of the archived LifeDashboard.
+  "/life": () => import("@/pages/concierge/ConciergeOverview"),
   "/advisors": () => import("@/pages/advisors/AdvisorWorkspace"),
   "/personal-brain": () => import("@/pages/PersonalBrain"),
   "/profile": () => import("@/pages/UserProfilePage"),

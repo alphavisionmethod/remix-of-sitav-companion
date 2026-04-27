@@ -1,4 +1,3 @@
-// Wave 6 — legacy path re-exports the canonical implementation.
-// Moved to @/modules/concierge/pages/PersonalLifeWorkspace
-export { default } from "@/modules/concierge/pages/PersonalLifeWorkspace";
-export * from "@/modules/concierge/pages/PersonalLifeWorkspace";
+// IA Phase 6 — page archived (orphan, never mounted in ConciergeAppShell).
+export { default } from "@/modules/concierge/pages/_archived/PersonalLifeWorkspace";
+export * from "@/modules/concierge/pages/_archived/PersonalLifeWorkspace";
