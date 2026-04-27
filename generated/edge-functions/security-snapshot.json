@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-27T15:43:38.921Z",
+  "generatedAt": "2026-04-27T15:44:03.067Z",
   "totalFunctions": 221,
   "withIndex": 221,
   "entries": [
@@ -228,7 +228,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -263,7 +263,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -1307,7 +1307,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -1585,7 +1585,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -1620,7 +1620,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": true
       },
@@ -1830,7 +1830,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -2644,7 +2644,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -2679,7 +2679,7 @@
         "requireAdmin": false,
         "getUser": false,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -2955,7 +2955,7 @@
         "requireAdmin": false,
         "getUser": false,
         "getClaims": true,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -3540,7 +3540,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -4516,7 +4516,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -5105,7 +5105,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -5696,7 +5696,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -5941,7 +5941,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -5976,7 +5976,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -6289,7 +6289,7 @@
         "requireAdmin": false,
         "getUser": false,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -7466,7 +7466,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -7571,7 +7571,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
@@ -7606,7 +7606,7 @@
         "requireAdmin": false,
         "getUser": true,
         "getClaims": false,
-        "hasRoleCheck": false,
+        "hasRoleCheck": true,
         "usesServiceRole": true,
         "webhookSecretCheck": false
       },
