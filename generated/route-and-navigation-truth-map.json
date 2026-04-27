@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-04-27T17:26:22.765Z",
+  "generatedAt": "2026-04-27T17:27:26.143Z",
   "totals": {
     "descriptors": 118,
     "familyRoutes": 713,
     "uniqueFamilyRoutePaths": 710,
-    "redirects": 52,
-    "orphanedRoutes": 4
+    "redirects": 56,
+    "orphanedRoutes": 0
   },
   "pillars": {
     "business": {
@@ -2150,6 +2150,16 @@
       "reason": "domain-rename"
     },
     {
+      "from": "/business/files",
+      "to": "/business/documents",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/business/revenue-home",
+      "to": "/business/revenue",
+      "reason": "domain-rename"
+    },
+    {
       "from": "/business/revenue-impact",
       "to": "/business/revenue",
       "reason": "shell-consolidation"
@@ -2385,6 +2395,16 @@
       "reason": "shell-consolidation"
     },
     {
+      "from": "/money/documents",
+      "to": "/money/files",
+      "reason": "domain-rename"
+    },
+    {
+      "from": "/money/family-office",
+      "to": "/money/investment-office",
+      "reason": "shell-consolidation"
+    },
+    {
       "from": "/money/investments",
       "to": "/investment",
       "reason": "shell-consolidation"
@@ -2400,26 +2420,5 @@
       "reason": "shell-consolidation"
     }
   ],
-  "orphanedRoutes": [
-    {
-      "path": "/business/files",
-      "family": "business-routes.tsx",
-      "line": 37
-    },
-    {
-      "path": "/business/revenue-home",
-      "family": "business-routes.tsx",
-      "line": 20
-    },
-    {
-      "path": "/money/documents",
-      "family": "money-routes.tsx",
-      "line": 24
-    },
-    {
-      "path": "/money/family-office",
-      "family": "money-routes.tsx",
-      "line": 20
-    }
-  ]
+  "orphanedRoutes": []
 }
