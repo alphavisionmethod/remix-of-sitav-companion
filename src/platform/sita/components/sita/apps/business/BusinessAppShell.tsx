@@ -164,7 +164,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
     items: [
       { id: "revenue-home", label: "Revenue Home", icon: LayoutDashboard },
       { id: "revenue-autopilot", label: "Revenue Autopilot", icon: Zap },
-      { id: "autopilot-hub", label: "Autopilot Hub", icon: Bot },
+      { id: "revenue-autopilot-console", label: "Autopilot Console", icon: Bot },
       { id: "lead-recovery", label: "Lead Recovery", icon: RefreshCw, count: 5, countSeverity: "warning" },
       { id: "social", label: "Social", icon: Share2, count: 4 },
       { id: "ecommerce", label: "E-Commerce", icon: ShoppingCart, count: 2 },
@@ -175,7 +175,6 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
     label: "Intelligence",
     items: [
       { id: "advisor-board", label: "Advisor Board", icon: BrainCircuit },
-      { id: "revenue-impact", label: "Revenue Impact", icon: BarChart3 },
       { id: "kpi-dashboard", label: "KPI Dashboard", icon: Target },
       { id: "playbook-builder", label: "Builder", icon: BookOpen },
       { id: "revenue-forecast", label: "Forecast", icon: LineChart },
