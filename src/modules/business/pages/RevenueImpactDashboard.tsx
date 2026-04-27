@@ -21,6 +21,7 @@ import { SitaCard, SitaCardTitle } from "@/platform/sita/components/sita/SitaCar
 import { useBusinessProfile } from "@/modules/business/hooks/useBusinessProfile";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 import HierarchyHint from "@/modules/business/components/business/shared/HierarchyHint";
+import AutopilotPeers from "@/modules/business/components/business/shared/AutopilotPeers";
 import { ModuleAdvisorInsight } from "@/platform/sita/components/sita/domain-shared/ModuleAdvisorInsight";
 import { KPITile } from "@/platform/sita/components/sita/SitaComponents";
 import {
@@ -266,7 +267,10 @@ const RevenueImpactDashboard = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <PageTruthBanner />
-      <HierarchyHint tier="insight" surface="Revenue Impact" description="Recovered + generated revenue" />
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <HierarchyHint tier="insight" surface="Revenue Impact" description="Result · proof of recovered + generated revenue" />
+        <AutopilotPeers current="revenue-impact" />
+      </div>
 
       {/* KPI Row */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
