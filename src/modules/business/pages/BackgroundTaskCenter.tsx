@@ -12,6 +12,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { useBusinessNavigation } from "@/modules/business/contexts/BusinessNavigationContext";
 import { LegacyEmptyStateCard as EmptyStateCard } from "@/platform/sita/components/sita/EmptyStateCard";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { setLinkedContext } from "@/platform/sita/components/sita/CrossAppAction";
 import {
   useBackgroundJobs,
   useBackgroundJobsRealtime,
@@ -234,7 +235,20 @@ export default function BackgroundTaskCenter() {
                           size="sm"
                           variant="ghost"
                           className="h-6 text-[10px] px-2 text-foreground/60 hover:text-foreground"
-                          onClick={() => navigateTo(task.navigationTarget!.module)}
+                          onClick={() => {
+                            const t = task.navigationTarget!;
+                            // Phase 7: forward the linked entity so the
+                            // destination app's `useLinkedContext()` can
+                            // auto-select / scroll to the originating row.
+                            if (t.entityId && t.entityType) {
+                              setLinkedContext({
+                                entityType: t.entityType,
+                                entityId: t.entityId,
+                                entityLabel: task.linkedEntity?.label ?? task.title,
+                              });
+                            }
+                            navigateTo(t.module);
+                          }}
                           aria-label={task.navigationTarget.label}
                           title={task.navigationTarget.label}
                         >
