@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { ChevronRight } from "lucide-react";
 import { BUSINESS_ADVISOR_LIST } from "@/lib/ai-platform/runtime";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function MobileBusinessAdvisors() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       <header className="px-4 pt-6 pb-3">
         <h1 className="text-xl font-semibold">Business Advisors</h1>
         <p className="text-xs text-muted-foreground mt-1">Nine specialised advisors. Tap to consult.</p>

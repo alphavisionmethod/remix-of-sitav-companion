@@ -1,9 +1,12 @@
 import { Apple } from "lucide-react";
 import HealthMetricsApp from "./HealthMetricsApp";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function HealthNutrition() {
   return (
-    <HealthMetricsApp
+    <>
+      <div className="px-6 pt-4"><PageTruthBanner truthState="partial" /></div>
+      <HealthMetricsApp
       title="Nutrition"
       icon={Apple}
       defaultKind="nutrition.calories"
@@ -16,6 +19,7 @@ export default function HealthNutrition() {
         { value: "nutrition.water_ml",  label: "Water"   },
       ]}
       unitOptions={["kcal", "g", "ml", "oz"]}
-    />
+      />
+    </>
   );
 }

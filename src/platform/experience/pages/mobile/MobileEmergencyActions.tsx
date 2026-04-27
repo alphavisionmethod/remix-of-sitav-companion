@@ -2,6 +2,8 @@
 // SITA OS — Mobile Trusted Device: Emergency Actions
 // Pause automations, emergency deny, device lost mode
 // ═══════════════════════════════════════════════════════════════
+// truth-allow: ia-config — EMERGENCY_ACTIONS / SEVERITY_STYLES below are
+// static action catalogs and styling tables, not telemetry.
 
 import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { AlertTriangle, Pause, XOctagon, Smartphone, ShieldOff, Lock, CheckCircle, AlertCircle } from "lucide-react";
@@ -81,6 +83,7 @@ export default function MobileEmergencyActions() {
 
   return (
     <MobileShell title="Emergency Actions">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       
 
       {/* Warning Banner */}

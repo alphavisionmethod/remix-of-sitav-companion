@@ -6,6 +6,7 @@ import {
   TrendingUp, ChevronRight, RotateCcw, Copy, ThumbsUp, ThumbsDown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 interface ChatMessage {
   id: string;
@@ -110,6 +111,7 @@ const MobileAIChat = () => {
 
   return (
     <MobileShell title="AI Assistant">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       <div className="flex flex-col -mx-4 -my-4" style={{ height: "calc(100vh - 140px)" }}>
         {/* Messages */}
         <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-3 space-y-3">

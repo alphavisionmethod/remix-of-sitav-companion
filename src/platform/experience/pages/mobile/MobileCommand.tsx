@@ -7,6 +7,7 @@ import {
   Bookmark, Search, Filter,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 type CommandStatus = "success" | "pending" | "failed" | "simulated";
 
@@ -80,6 +81,7 @@ const MobileCommand = () => {
 
   return (
     <MobileShell title="Command Center">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       {/* Command Input */}
       <div className="relative mb-4">
         <div className="flex items-center gap-2 rounded-xl border border-border/40 bg-card p-2">

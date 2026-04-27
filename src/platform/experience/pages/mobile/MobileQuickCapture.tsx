@@ -2,6 +2,10 @@
 // SITA OS — Mobile Trusted Device: Quick Capture
 // Photo/file capture, quick note, handoff to desktop workflows
 // ═══════════════════════════════════════════════════════════════
+// truth-allow: ia-config — CAPTURE_MODES / WORKFLOW_TARGETS below are
+// static action catalogs (mode labels, handoff targets), not telemetry.
+// Real telemetry (recentCaptures) lives in the demo fixture and is
+// gated via isDemo at the consume site.
 
 import { MobileShell } from "@/platform/experience/components/mobile/MobileShell";
 import { Camera, FileText, Upload, Send, Image, Mic, StickyNote, CheckCircle, ArrowRight, Sparkles } from "lucide-react";
@@ -9,6 +13,8 @@ import { cn } from "@/lib/utils";
 import { useState, useRef } from "react";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
+import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
+import { MOCK_MOBILE_RECENT_CAPTURES } from "@/data/fixtures/mock-data/mobile-shells";
 
 type CaptureMode = "note" | "photo" | "file" | "voice";
 
@@ -36,13 +42,12 @@ const WORKFLOW_TARGETS = [
 ];
 
 export default function MobileQuickCapture() {
+  const { isDemo } = useRealityModeSafe();
   const [activeMode, setActiveMode] = useState<CaptureMode>("note");
   const [noteText, setNoteText] = useState("");
-  const [recentCaptures, setRecentCaptures] = useState<CapturedItem[]>([
-    { id: "cap-1", type: "note", content: "Follow up with Johnson account re: Q2 renewal", timestamp: "2026-04-09T08:15:00Z", handedOff: true, workflowTarget: "tasks" },
-    { id: "cap-2", type: "photo", content: "Receipt scan — office supplies", timestamp: "2026-04-08T14:30:00Z", handedOff: true, workflowTarget: "receipts" },
-    { id: "cap-3", type: "note", content: "Meeting notes: product roadmap sync", timestamp: "2026-04-08T11:00:00Z", handedOff: false },
-  ]);
+  const [recentCaptures, setRecentCaptures] = useState<CapturedItem[]>(
+    isDemo ? (MOCK_MOBILE_RECENT_CAPTURES as CapturedItem[]) : []
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleCapture = () => {
@@ -70,6 +75,7 @@ export default function MobileQuickCapture() {
 
   return (
     <MobileShell title="Quick Capture">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       
       <input ref={fileInputRef} type="file" className="hidden" onChange={() => toast.success("File queued for upload")} />
 

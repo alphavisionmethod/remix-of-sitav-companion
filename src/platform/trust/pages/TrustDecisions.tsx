@@ -7,6 +7,7 @@
 import { GitBranch, ShieldCheck, Layers, Zap } from "lucide-react";
 import { DECISION_QUEUE, type SurfaceOwner } from "@/contracts";
 import { TRUST_ACTION_LIST } from "@/platform/trust";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const ownerStyles: Record<SurfaceOwner, string> = {
   business: "bg-blue-500/10 text-blue-600 border-blue-500/30",
@@ -26,14 +27,17 @@ const statusStyles: Record<string, string> = {
 export default function TrustDecisions() {
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <header className="flex items-center gap-3 mb-6">
-        <GitBranch className="h-8 w-8 text-primary" />
-        <div>
-          <h1 className="text-3xl font-semibold">Architectural Decisions</h1>
-          <p className="text-muted-foreground">
-            Ownership resolutions for ambiguous surfaces across the 4-pillar OS.
-          </p>
+      <header className="flex items-start justify-between gap-3 mb-6">
+        <div className="flex items-center gap-3">
+          <GitBranch className="h-8 w-8 text-primary" />
+          <div>
+            <h1 className="text-3xl font-semibold">Architectural Decisions</h1>
+            <p className="text-muted-foreground">
+              Ownership resolutions for ambiguous surfaces across the 4-pillar OS.
+            </p>
+          </div>
         </div>
+        <PageTruthBanner truthState="partial" />
       </header>
 
       <div className="rounded-lg border bg-card divide-y">

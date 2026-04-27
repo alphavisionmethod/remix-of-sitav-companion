@@ -5,6 +5,7 @@ import {
   Smartphone, AlertTriangle, Camera, Settings, Briefcase, Gavel,
   Terminal, Bot, Activity, RefreshCw, Clock, Mail,
 } from "lucide-react";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 const links = [
   { icon: Terminal, label: "Command", path: "/mobile/command", color: "bg-primary/15 text-primary" },
@@ -30,6 +31,7 @@ const MobileMore = () => {
 
   return (
     <MobileShell title="More">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       <div className="grid grid-cols-3 gap-3">
         {links.map((item) => {
           const Icon = item.icon;

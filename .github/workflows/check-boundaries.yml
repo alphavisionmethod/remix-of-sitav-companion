@@ -124,6 +124,88 @@ jobs:
           fi
           exit 0
 
+      - name: Run Health production-truth checker
+        env:
+          HEALTH_TRUTH_ENFORCE: ${{ vars.HEALTH_TRUTH_ENFORCE || 'false' }}
+        run: |
+          set +e
+          npx tsx scripts/architecture/check-health-truth.ts
+          status=$?
+          if [ "$HEALTH_TRUTH_ENFORCE" = "true" ] && [ "$status" -ne 0 ]; then
+            echo "::error::Health production-truth gate is enforcing and failed."
+            exit "$status"
+          fi
+          if [ "$status" -ne 0 ]; then
+            echo "::warning::Health production-truth violations detected (non-blocking until HEALTH_TRUTH_ENFORCE=true)."
+          fi
+          exit 0
+
+      - name: Run Trust production-truth checker
+        env:
+          TRUST_TRUTH_ENFORCE: ${{ vars.TRUST_TRUTH_ENFORCE || 'false' }}
+        run: |
+          set +e
+          npx tsx scripts/architecture/check-trust-truth.ts
+          status=$?
+          if [ "$TRUST_TRUTH_ENFORCE" = "true" ] && [ "$status" -ne 0 ]; then
+            echo "::error::Trust production-truth gate is enforcing and failed."
+            exit "$status"
+          fi
+          if [ "$status" -ne 0 ]; then
+            echo "::warning::Trust production-truth violations detected (non-blocking until TRUST_TRUTH_ENFORCE=true)."
+          fi
+          exit 0
+
+      - name: Run Mobile production-truth checker
+        env:
+          MOBILE_TRUTH_ENFORCE: ${{ vars.MOBILE_TRUTH_ENFORCE || 'false' }}
+        run: |
+          set +e
+          npx tsx scripts/architecture/check-mobile-truth.ts
+          status=$?
+          if [ "$MOBILE_TRUTH_ENFORCE" = "true" ] && [ "$status" -ne 0 ]; then
+            echo "::error::Mobile production-truth gate is enforcing and failed."
+            exit "$status"
+          fi
+          if [ "$status" -ne 0 ]; then
+            echo "::warning::Mobile production-truth violations detected (non-blocking until MOBILE_TRUTH_ENFORCE=true)."
+          fi
+          exit 0
+
+      - name: Run Intelligence production-truth checker
+        env:
+          INTELLIGENCE_TRUTH_ENFORCE: ${{ vars.INTELLIGENCE_TRUTH_ENFORCE || 'false' }}
+        run: |
+          set +e
+          npx tsx scripts/architecture/check-intelligence-truth.ts
+          status=$?
+          if [ "$INTELLIGENCE_TRUTH_ENFORCE" = "true" ] && [ "$status" -ne 0 ]; then
+            echo "::error::Intelligence production-truth gate is enforcing and failed."
+            exit "$status"
+          fi
+          if [ "$status" -ne 0 ]; then
+            echo "::warning::Intelligence production-truth violations detected (non-blocking until INTELLIGENCE_TRUTH_ENFORCE=true)."
+          fi
+          exit 0
+
+      - name: Run Personal Brain production-truth checker
+        env:
+          PERSONAL_BRAIN_TRUTH_ENFORCE: ${{ vars.PERSONAL_BRAIN_TRUTH_ENFORCE || 'false' }}
+        run: |
+          set +e
+          # Personal Brain shares the Intelligence manifest/checker until it
+          # gets its own pages root; this entry reserves the enforce gate.
+          npx tsx scripts/architecture/check-intelligence-truth.ts
+          status=$?
+          if [ "$PERSONAL_BRAIN_TRUTH_ENFORCE" = "true" ] && [ "$status" -ne 0 ]; then
+            echo "::error::Personal Brain production-truth gate is enforcing and failed."
+            exit "$status"
+          fi
+          if [ "$status" -ne 0 ]; then
+            echo "::warning::Personal Brain production-truth violations detected (non-blocking until PERSONAL_BRAIN_TRUTH_ENFORCE=true)."
+          fi
+          exit 0
+
       - name: Run mutation traceability gate
         env:
           MUTATION_UNDECLARED_THRESHOLD: "242"

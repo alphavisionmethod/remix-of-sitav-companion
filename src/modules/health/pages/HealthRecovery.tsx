@@ -1,9 +1,12 @@
 import { BedDouble } from "lucide-react";
 import HealthMetricsApp from "./HealthMetricsApp";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function HealthRecovery() {
   return (
-    <HealthMetricsApp
+    <>
+      <div className="px-6 pt-4"><PageTruthBanner truthState="partial" /></div>
+      <HealthMetricsApp
       title="Recovery"
       icon={BedDouble}
       defaultKind="recovery.sleep_hours"
@@ -16,6 +19,7 @@ export default function HealthRecovery() {
         { value: "recovery.mood_1to10",      label: "Mood (1-10)" },
       ]}
       unitOptions={["hours", "score", "ms", "bpm", "rating"]}
-    />
+      />
+    </>
   );
 }

@@ -19,6 +19,7 @@ import { MobileTechAdvisorPanels } from "@/modules/business/components/business-
 import { MobileImportsExportsAdvisorPanels } from "@/modules/business/components/business-advisors/imports-exports/MobileImportsExportsAdvisorPanels";
 import { MobileTaxesLawsAdvisorPanels } from "@/modules/business/components/business-advisors/taxes-laws/MobileTaxesLawsAdvisorPanels";
 import { MobileCEOAdvisorPanels } from "@/modules/business/components/business-advisors/ceo/MobileCEOAdvisorPanels";
+import { PageTruthBanner } from "@/platform/sita/components/sita/PageTruthBanner";
 
 export default function MobileBusinessAdvisorDetail() {
   const { advisorId } = useParams<{ advisorId: string }>();
@@ -54,6 +55,7 @@ export default function MobileBusinessAdvisorDetail() {
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-24">
+      <div className="mb-2"><PageTruthBanner truthState="partial" /></div>
       <header className="sticky top-0 z-10 bg-background/90 backdrop-blur border-b border-border px-3 py-2">
         <Link to="/mobile/business-advisors" className="inline-flex items-center text-sm text-muted-foreground">
           <ChevronLeft className="h-4 w-4 mr-1" />Advisors
