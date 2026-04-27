@@ -286,3 +286,98 @@ export async function unlinkCrmCustomer(linkId: string): Promise<void> {
     .eq("user_id", userId);
   if (error) throw new Error(error.message);
 }
+
+// ─────────────────────────────────────────────────────────────────────
+// Phase 2 (Cross-Module Integration Deepening) — company-side helpers.
+//
+// `crm_customer_link.crm_contact_id` is NOT NULL by schema, so company
+// linkage is expressed as the union of links carried by the company's
+// contacts. These helpers give the Finance ↔ CRM bridge a company-aware
+// surface without introducing a parallel "company link" table.
+// ─────────────────────────────────────────────────────────────────────
+
+/**
+ * List the billing customers reachable from a CRM company, by walking
+ * its contacts. Returns the deduplicated set of customer ids together
+ * with the link rows that proved each one.
+ */
+export async function findCustomersForCompany(
+  crmCompanyId: string,
+): Promise<{ customer_id: string; link_id: string; crm_contact_id: string }[]> {
+  const userId = await getUserId();
+  const { data, error } = await fromTable("crm_customer_link")
+    .select("id, customer_id, crm_contact_id")
+    .eq("user_id", userId)
+    .eq("crm_company_id", crmCompanyId)
+    .order("created_at", { ascending: false });
+  if (error) throw new Error(error.message);
+  const rows = (data ?? []) as Array<{ id: string; customer_id: string; crm_contact_id: string }>;
+  const seen = new Set<string>();
+  const out: { customer_id: string; link_id: string; crm_contact_id: string }[] = [];
+  for (const r of rows) {
+    if (seen.has(r.customer_id)) continue;
+    seen.add(r.customer_id);
+    out.push({ customer_id: r.customer_id, link_id: r.id, crm_contact_id: r.crm_contact_id });
+  }
+  return out;
+}
+
+/**
+ * Resolve a single customer for a company. Picks the most recently linked
+ * contact's customer (deterministic and matches the UI's "primary contact"
+ * heuristic). Returns null when no contact under the company has been
+ * billed yet.
+ */
+export async function findPrimaryCustomerForCompany(
+  crmCompanyId: string,
+): Promise<{ customer_id: string; link_id: string; crm_contact_id: string } | null> {
+  const all = await findCustomersForCompany(crmCompanyId);
+  return all[0] ?? null;
+}
+
+/**
+ * Given a billing customer id, walk back to the CRM contact + (optional)
+ * company that originated it. Used by Finance detail surfaces to render
+ * the "Open in CRM" back-link.
+ */
+export async function resolveCrmEntityForCustomer(customerId: string): Promise<
+  | {
+      crm_contact_id: string;
+      crm_company_id: string | null;
+      link_id: string;
+      contact_name: string | null;
+      company_name: string | null;
+    }
+  | null
+> {
+  const userId = await getUserId();
+  const { data, error } = await fromTable("crm_customer_link")
+    .select(
+      "id, crm_contact_id, crm_company_id, crm_contacts(first_name, last_name), crm_companies(name)",
+    )
+    .eq("user_id", userId)
+    .eq("customer_id", customerId)
+    .order("created_at", { ascending: true })
+    .limit(1)
+    .maybeSingle();
+  if (error) throw new Error(error.message);
+  if (!data) return null;
+  const row = data as {
+    id: string;
+    crm_contact_id: string;
+    crm_company_id: string | null;
+    crm_contacts: { first_name: string | null; last_name: string | null } | null;
+    crm_companies: { name: string | null } | null;
+  };
+  const contactName = row.crm_contacts
+    ? [row.crm_contacts.first_name, row.crm_contacts.last_name].filter(Boolean).join(" ").trim() ||
+      null
+    : null;
+  return {
+    crm_contact_id: row.crm_contact_id,
+    crm_company_id: row.crm_company_id,
+    link_id: row.id,
+    contact_name: contactName,
+    company_name: row.crm_companies?.name ?? null,
+  };
+}
