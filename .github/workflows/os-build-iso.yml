@@ -195,7 +195,7 @@ jobs:
         profile: [user, operator]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: sita-os-iso-${{ matrix.profile }}
           path: out/
@@ -234,7 +234,7 @@ jobs:
         profile: [user, operator]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: sita-os-iso-${{ matrix.profile }}
           path: release-assets/
@@ -279,7 +279,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: sita-os-iso-user
           path: out/

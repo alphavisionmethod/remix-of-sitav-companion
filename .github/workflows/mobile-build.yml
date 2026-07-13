@@ -62,7 +62,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v3
 
       - run: npm ci --no-audit --no-fund
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: web-dist
           path: dist
@@ -118,7 +118,7 @@ jobs:
           node-version: '20'
 
       - run: npm ci --no-audit --no-fund
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: web-dist
           path: dist
