@@ -257,7 +257,7 @@ jobs:
           ls -lh staged/
 
       - name: Attach to GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: staged/*
           fail_on_unmatched_files: false
@@ -319,7 +319,7 @@ jobs:
 
       - name: Attach OVA to GitHub Release
         if: github.event_name == 'release'
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             out/*.ova
