@@ -40,7 +40,7 @@ jobs:
       matrix:
         profile: [user, operator]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Free disk space
         run: |
@@ -194,7 +194,7 @@ jobs:
       matrix:
         profile: [user, operator]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v4
         with:
           name: sita-os-iso-${{ matrix.profile }}
@@ -233,7 +233,7 @@ jobs:
       matrix:
         profile: [user, operator]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v4
         with:
           name: sita-os-iso-${{ matrix.profile }}
@@ -277,7 +277,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - uses: actions/download-artifact@v4
         with:
