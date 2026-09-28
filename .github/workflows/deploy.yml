@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Check latest CI run
         if: ${{ github.event.inputs.skip_ci_check != 'true' }}
         run: |
@@ -78,7 +78,7 @@ jobs:
     timeout-minutes: 15
     needs: verify-ci
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
@@ -121,7 +121,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'staging' }}
     environment: staging
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Download dist
         uses: actions/download-artifact@v4
         with:
@@ -152,7 +152,7 @@ jobs:
     if: ${{ github.event.inputs.environment == 'production' }}
     environment: production
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Download dist
         uses: actions/download-artifact@v4
         with:
